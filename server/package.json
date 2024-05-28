@@ -4,6 +4,9 @@
   "type": "module",
   "description": "A recipe web scraping project that uses Typescript.",
   "main": "index.ts",
+  "engines": {
+    "node": "20.14.0"
+  },
   "scripts": {
     "start": "nodemon dist/index.js",
     "build": "tsc",

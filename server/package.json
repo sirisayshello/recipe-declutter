@@ -5,8 +5,8 @@
   "description": "A recipe web scraping project that uses Typescript.",
   "main": "index.ts",
   "scripts": {
-    "start": "node dist/index.js",
-    "build": "tsc && npx playwright install",
+    "start": "nodemon dist/index.js",
+    "build": "npx playwright install && tsc",
     "dev": "tsx src/index.ts",
     "watch": "tsx watch src/index.ts"
   },
@@ -23,6 +23,7 @@
     "@types/node": "^20.12.12",
     "express": "^4.19.2",
     "he": "^1.2.0",
+    "nodemon": "^3.1.1",
     "playwright": "^1.44.0"
   }
 }

@@ -6,7 +6,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "nodemon dist/index.js",
-    "build": "npm install && npx playwright install && npx playwright install-deps && tsc",
+    "build": "npm install && npx playwright install-deps && npx playwright install && tsc",
     "dev": "tsx src/index.ts",
     "watch": "tsx watch src/index.ts"
   },

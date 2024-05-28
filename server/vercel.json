@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "npx playwright install && tsc",
   "builds": [
     {
       "src": "dist/index.js",

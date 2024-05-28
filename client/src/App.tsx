@@ -5,6 +5,8 @@ import { RecipeWrapper } from "./components/Recipe/RecipeWrapper";
 import { Header } from "./components/Header/Header";
 import { ErrorContainer } from "./components/Error/ErrorContainer";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export type RecipeData = {
   ingredients?: Ingredients;
   instructions?: Instructions;
@@ -28,10 +30,7 @@ function App() {
       }),
     };
 
-    const response = await fetch(
-      "http://localhost:3001/recipe",
-      requestOptions
-    );
+    const response = await fetch(`${apiUrl}/recipe`, requestOptions);
 
     const data = await response.json();
 

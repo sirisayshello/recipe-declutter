@@ -1,11 +1,11 @@
-"use client"
-import Link from "next/link"
+"use client";
+import Link from "next/link";
 
 const recipes = [
-  { id: "1", name: "Siris Lunch" },
-  { id: "2", name: "Joars Lunch" },
-  { id: "3", name: "Julias Lunch" },
-]
+  { id: "recipe1", name: "Siris Lunch" },
+  { id: "recipe2", name: "Joars Lunch" },
+  { id: "recipe3", name: "Julias Lunch" },
+];
 
 export default function Dashboard() {
   return (
@@ -19,5 +19,5 @@ export default function Dashboard() {
         ))}
       </ul>
     </div>
-  )
+  );
 }

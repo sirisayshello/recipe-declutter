@@ -1,40 +1,48 @@
-"use client"
-import Link from "next/link"
-import { useEffect, useState } from "react"
-import { getScrapedRecipe } from "./actions/scraper"
+"use client";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getScrapedRecipe } from "./actions/scraper";
 
 type recipe =
   | {
-      ingredients: string[]
-      instructions: string[]
+      ingredients: string[];
+      instructions: string[];
     }
-  | { message: string }
+  | { message: string };
 
 export default function Home() {
-  const [recipe, setRecipe] = useState<recipe>()
-  const [url, setUrl] = useState("")
+  const [recipe, setRecipe] = useState<recipe>();
+  const [url, setUrl] = useState("");
 
   useEffect(() => {
-    console.log(recipe)
-  }, [recipe])
+    console.log(recipe);
+  }, [recipe]);
 
   async function handleSubmit(e: any) {
-    e.preventDefault()
-    console.log(url)
-    const data = await getScrapedRecipe(url)
-    setRecipe(data)
+    e.preventDefault();
+    console.log(url);
+    const data = await getScrapedRecipe(url);
+    setRecipe(data);
   }
 
   function handleInputChange(e: any) {
-    setUrl(e.target.value)
+    setUrl(e.target.value);
   }
 
   return (
     <>
       <nav>
-        <Link href="/dashboard">Dashboard</Link>
-        <Link href="/login">Login</Link>
-        <Link href="/signup">Signup</Link>
+        <ul>
+          <li>
+            <Link href="/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <Link href="/login">Login</Link>
+          </li>
+          <li>
+            <Link href="/signup">Signup</Link>
+          </li>
+        </ul>
       </nav>
       <form onSubmit={handleSubmit}>
         <input type="text" onChange={handleInputChange} />
@@ -43,8 +51,8 @@ export default function Home() {
 
       {recipe &&
         recipe?.ingredients.map((ingredient, index) => {
-          return <div key={index}>{ingredient}</div>
+          return <div key={index}>{ingredient}</div>;
         })}
     </>
-  )
+  );
 }

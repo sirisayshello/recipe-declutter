@@ -10,7 +10,9 @@ import {
 } from "@/lib/functions";
 import { Browser, chromium, Page } from "playwright";
 
-export const getScrapedRecipe = async (url: string): Promise<Recipe> => {
+export const getScrapedRecipe = async (
+  url: string
+): Promise<Recipe | RecipeError> => {
   try {
     const browser: Browser = await chromium.launch({
       headless: true,

@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getScrapedRecipe } from "./actions/scraper";
 
@@ -31,19 +30,6 @@ export default function Home() {
 
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link href="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link href="/login">Login</Link>
-          </li>
-          <li>
-            <Link href="/signup">Signup</Link>
-          </li>
-        </ul>
-      </nav>
       <form onSubmit={handleSubmit}>
         <input type="text" onChange={handleInputChange} />
         <button type="submit">submit</button>

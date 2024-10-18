@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getScrapedRecipe } from "./actions/scraper";
+import { Typography } from "@mui/material";
+import { Button } from "@mui/material";
 
 type recipe =
   | {

@@ -31,7 +31,7 @@ export default function Recipe({ params }: { params: { id: string } }) {
         </Box>
       </Box>
       <Box component="section">
-        <Box sx={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+        <Box sx={{ display: "flex", justifyContent: "center", gap: 1 }}>
           <Button
             onClick={() => setColumn("ingredients")}
             variant="contained"

@@ -84,7 +84,7 @@ export const getScrapedRecipe = async (url: string): Promise<Recipe> => {
     }
 
     const ingredientsData = recipeData.recipeIngredient;
-    let instructionsArray: unknown[] = []; // Initialize as an array of any type
+    let instructionsArray: any[] = []; // Initialize as an array of any type
     let instructionsData: string[] = [];
 
     if (

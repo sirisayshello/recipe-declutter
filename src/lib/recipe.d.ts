@@ -1,10 +1,6 @@
-type Ingredient = {
-  text: string;
-};
+type Ingredient = string;
 
-type Instruction = {
-  text: string;
-};
+type Instruction = string;
 
 type Recipe =
   | {

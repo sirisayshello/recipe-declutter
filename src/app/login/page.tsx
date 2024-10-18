@@ -50,7 +50,7 @@ export default function Login() {
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <FormLabel htmlFor="password">Password</FormLabel>
           <Link
-            component="button"
+            
             type="button"
             // onClick={handleClickOpen}
             variant="body2"

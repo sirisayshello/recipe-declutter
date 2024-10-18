@@ -1,5 +1,5 @@
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-import { StyledRoot } from "./styledRoot";
+import { StyledRoot } from "./StyledRoot";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";

@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { getScrapedRecipe } from "@/app/actions/scraper";
+import { getScrapedRecipe } from "@/lib/scraper";
 
 export default function Dashboard() {
   const [recipe, setRecipe] = useState<Recipe | undefined>();

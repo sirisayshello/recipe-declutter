@@ -1,20 +1,5 @@
 import he from "he";
 
-// export type Instruction = {
-//   text: string
-// }
-
-export type GraphObject = {
-  "@type": string | unknown[];
-  recipeIngredient?: Ingredient[];
-  recipeInstructions?: Instruction[];
-};
-
-export type RawRecipeData =
-  | GraphObject
-  | { "@graph": GraphObject[] }
-  | GraphObject[];
-
 export function findGraphObjectWithRecipeData(inputData: GraphObject[]) {
   const result = inputData.find((obj: GraphObject) => {
     return obj["@type"] === "Recipe";

@@ -5,9 +5,8 @@ import {
   findGraphObjectWithRecipeData,
   generateStringArray,
   getErrorMessage,
-  GraphObject,
-  RawRecipeData,
-} from "@/lib/functions";
+} from "@/lib/utils";
+
 import { Browser, chromium, Page } from "playwright";
 
 export const getScrapedRecipe = async (

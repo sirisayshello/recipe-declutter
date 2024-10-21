@@ -3,9 +3,9 @@ generator client {
 }
 
 datasource db {
-  // as of now, use sqlite for local development
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Recipe {

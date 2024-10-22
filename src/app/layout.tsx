@@ -3,6 +3,8 @@ import Navbar from "@/components/Navbar";
 import { StyledRoot } from "./StyledRoot";
 import type { Metadata } from "next";
 import "./globals.css";
+import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
 
 export const metadata: Metadata = {
   title: "Recipe Declutter",
@@ -17,13 +19,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AppRouterCacheProvider>
-          {" "}
-          <StyledRoot>
-            <Navbar />
-            {children}
-          </StyledRoot>
-        </AppRouterCacheProvider>
+        <MantineProvider>
+          <AppRouterCacheProvider>
+            {" "}
+            <StyledRoot>
+              <Navbar />
+              {children}
+            </StyledRoot>
+          </AppRouterCacheProvider>
+        </MantineProvider>
       </body>
     </html>
   );

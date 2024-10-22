@@ -1,5 +1,6 @@
 "use client";
 import { getRecipes } from "@/lib/queries";
+import { TextInput } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 // This file was used as a way to test that the prisma client works correctly.
@@ -27,6 +28,12 @@ export default function DatabaseTest() {
       ) : (
         <div>no recipes in db yet</div>
       )}
+
+      <TextInput
+        label="Input label"
+        description="Mantine textinput"
+        placeholder="Input placeholder"
+      />
     </div>
   );
 }

@@ -10,8 +10,9 @@ import {
 } from "@mui/material";
 
 import { getScrapedRecipe } from "@/lib/scraper";
+import { TextInput } from "@mantine/core";
 
-export default function Dashboard() {
+export default function Home() {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
   const [url, setUrl] = useState("");
@@ -59,6 +60,12 @@ export default function Dashboard() {
           Paste, click, and get the essentials—your ingredients and instructions
           at your fingertips.
         </Typography>
+
+        <TextInput
+          label="Input label"
+          description="Mantine textinput"
+          placeholder="Input placeholder"
+        />
 
         <Box
           component="form"

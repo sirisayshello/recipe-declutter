@@ -9,15 +9,17 @@ datasource db {
 }
 
 model Recipe {
-  id    Int    @id @default(autoincrement())
-  title String
-
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  id           Int      @id @default(autoincrement())
+  title        String
+  slug         String
+  ingredients  String[]
+  instructions String[]
+  userId       String?
+  User         User?    @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id       String   @id @default(dbgenerated("(gen_random_uuid())")) @db.Uuid
+  id       String   @id @default(uuid())
   email    String   @unique
   name     String
   password String

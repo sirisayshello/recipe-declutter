@@ -14,8 +14,8 @@ model Recipe {
   slug         String
   ingredients  String[]
   instructions String[]
-  userId       String?
   User         User?    @relation(fields: [userId], references: [id])
+  userId       String?
 }
 
 model User {
@@ -23,5 +23,5 @@ model User {
   email    String   @unique
   name     String
   password String
-  posts    Recipe[]
+  recipes  Recipe[]
 }

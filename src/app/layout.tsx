@@ -1,4 +1,5 @@
 import SessionProvider from "@/components/SessionProvider";
+
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { StyledRoot } from "./StyledRoot";

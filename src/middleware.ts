@@ -13,6 +13,14 @@ export async function middleware(request: NextRequest) {
 
   // Redirect to login page if there's no token i.e. user is not authenticated
   if (!token) {
+    // If user already on /login or /signup, do nothing
+    if (
+      request.nextUrl.pathname === "/login" ||
+      request.nextUrl.pathname === "/signup"
+    ) {
+      return NextResponse.next();
+    }
+    // Otherwise, redirect to /login
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

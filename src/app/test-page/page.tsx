@@ -18,8 +18,6 @@ export default function TestPage() {
 
   const router = useRouter();
 
-  const { data: session } = useSession();
-
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(""); // Reset any errors on submit
@@ -105,11 +103,9 @@ export default function TestPage() {
           <Button type="submit" variant="contained" className="w-full mt-2">
             Logga in
           </Button>
-          {session && (
-            <Button variant="outlined" onClick={() => signOut()}>
-              Sign Out
-            </Button>
-          )}
+          <Button variant="outlined" onClick={() => signOut()}>
+            Sign Out
+          </Button>
         </Box>
       </form>
     </Box>

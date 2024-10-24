@@ -1,19 +1,14 @@
-"use client";
-
-import { SessionProvider } from "next-auth/react";
-//import type { Metadata } from "next";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-import { StyledRoot } from "./StyledRoot";
-import { MantineProvider } from "@mantine/core";
+import { Navbar } from "../components/Header/Navbar";
+import { Container, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-
-// metadata can not be used in this way here
-// export const metadata: Metadata = {
-//   title: "Recipe Declutter",
-//   description: "Declutter your favorite recipes here!",
-// };
+import { theme } from "./theme";
+                                                  
+export const metadata: Metadata = {
+  title: "Recipe Declutter",
+  description: "Declutter your favorite recipes here!",
+};
 
 export default function RootLayout({
   children,
@@ -23,16 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SessionProvider>
-          <MantineProvider>
-            <AppRouterCacheProvider>
-              <StyledRoot>
-                <Navbar />
-                {children}
-              </StyledRoot>
-            </AppRouterCacheProvider>
-          </MantineProvider>
-        </SessionProvider>
+        <MantineProvider theme={theme}>
+          <Navbar />
+          <Container>{children}</Container>
+        </MantineProvider>
       </body>
     </html>
   );

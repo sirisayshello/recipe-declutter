@@ -1,21 +1,21 @@
 "use client";
 import { useState } from "react";
+import { getScrapedRecipe } from "@/lib/scraper";
 import {
   Box,
   Button,
-  List,
-  ListItem,
-  TextField,
-  Typography,
-} from "@mui/material";
-
-import { getScrapedRecipe } from "@/lib/scraper";
-import { TextInput } from "@mantine/core";
+  Flex,
+  Space,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
+import { useField } from "@mantine/form";
+import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 
 export default function Home() {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
-  const [url, setUrl] = useState("");
   const [view, setView] = useState("ingredients");
 
   // Type guard function for Recipe
@@ -28,155 +28,91 @@ export default function Home() {
     return (data as RecipeError).message !== undefined;
   }
 
-  async function handleSubmit(e: any) {
-    e.preventDefault();
+  const field = useField({
+    initialValue: "",
+  });
 
+  async function handleSubmit() {
     setRecipe(undefined);
     setRecipeError(undefined);
 
-    const data = await getScrapedRecipe(url);
+    const url = field.getValue();
 
+    const data = await getScrapedRecipe(url);
     if (isRecipe(data)) {
       setRecipe(data);
-      // if success, clear the input field:
-      setUrl("");
       console.log("Recipe:", data);
     } else if (isRecipeError(data)) {
       setRecipeError(data);
       console.log("RecipeError:", data);
     }
-  }
-
-  function handleInputChange(e: any) {
-    setUrl(e.target.value);
+    field.reset();
   }
 
   return (
     <>
-      {/* "hero" and form section: */}
-      <Box component="section">
-        <Typography variant="h1">Welcome to Recipe Declutter!</Typography>
-        <Typography variant="body1">
-          Paste, click, and get the essentials—your ingredients and instructions
-          at your fingertips.
-        </Typography>
-
-        <TextInput
-          label="Input label"
-          description="Mantine textinput"
-          placeholder="Input placeholder"
-        />
-
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
-          <TextField
-            id="outlined-basic"
-            // label="Enter your recipe URL"
-            variant="outlined"
-            placeholder="Enter your recipe URL"
-            onChange={handleInputChange}
-            value={url}
+      <Box component="section" mt="md">
+        <Flex gap="md" justify="center" align="center" direction="column">
+          <Title ta="center">Welcome to Recipe Declutter!</Title>
+          <Text ta="center">
+            Paste, click, and get the essentials — your ingredients and
+            instructions at your fingertips.
+          </Text>
+        </Flex>
+        <Space h="xl" />
+        <Flex gap="md" justify="center" align="center" direction="column">
+          <TextInput
+            {...field.getInputProps()}
+            aria-label="Enter recipe URL"
+            placeholder="Recipe URL"
+            radius="xl"
+            size="md"
+            style={{ width: "100%" }}
           />
           <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            size="large"
+            fullWidth
+            variant="filled"
+            color="gray"
+            size="md"
+            radius="xl"
+            onClick={handleSubmit}
           >
             Declutter
           </Button>
-        </Box>
+        </Flex>
+        <Space h="xl" />
       </Box>
 
-      {/* recipe section: */}
       {recipe?.ingredients && recipe.instructions.length > 0 && (
-        <Box component="section">
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Button
-              variant="contained"
-              size="large"
-              sx={
-                view === "ingredients"
-                  ? { backgroundColor: "grey.700" }
-                  : { backgroundColor: "grey.500" }
-              }
-              onClick={() => setView("ingredients")}
-            >
-              Ingredients
-            </Button>
-            <Button
-              variant="contained"
-              size="large"
-              color="secondary"
-              sx={
-                view === "instructions"
-                  ? { backgroundColor: "grey.700" }
-                  : { backgroundColor: "grey.500" }
-              }
-              onClick={() => setView("instructions")}
-            >
-              Instructions
-            </Button>
-          </Box>
-
-          {view === "ingredients" && (
-            <List component="ul" sx={{ listStyleType: "disc", pl: 2 }}>
-              {recipe.ingredients.map((ingredient, index) => {
-                return (
-                  <ListItem key={index} sx={{ display: "list-item", pl: 0 }}>
-                    {ingredient}
-                  </ListItem>
-                );
-              })}
-            </List>
-          )}
-
-          {view === "instructions" && (
-            <List component="ol" sx={{ listStyleType: "decimal", pl: 2 }}>
-              {recipe.instructions.map((instruction, index) => {
-                return (
-                  <ListItem key={index} sx={{ display: "list-item", pl: 0 }}>
-                    {instruction}
-                  </ListItem>
-                );
-              })}
-            </List>
-          )}
-        </Box>
+        <IngredientsAndInstructionsToggle
+          recipe={recipe}
+          view={view}
+          setView={setView}
+        />
       )}
 
-      {/* error section: */}
       {recipeError?.message && (
-        <Box component="section">
-          <Typography variant="body1">{recipeError.message}</Typography>
+        <Box component="section" mt="md">
+          <Text>{recipeError.message}</Text>
         </Box>
       )}
 
-      {/* save recipe section: */}
-      <Box
+      <Flex
+        direction="column"
+        gap="md"
+        align="center"
         component="section"
-        sx={{
-          bgcolor: "grey.500",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+        color="gray"
+        mt="md"
       >
-        <Typography variant="h2" sx={{ textAlign: "center" }}>
+        <Title order={2} ta="center">
           Would you like to save your recipes for a later time?
-        </Typography>
-        <Button variant="contained" color="primary" size="large">
-          Create Account
+        </Title>
+        <Button variant="filled" color="gray" size="md" radius="xl">
+          Create account
         </Button>
-      </Box>
+      </Flex>
+      <Space h="xl" />
     </>
   );
 }

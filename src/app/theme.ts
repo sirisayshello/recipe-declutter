@@ -1,69 +1,46 @@
-"use client";
-import { Poppins } from "next/font/google";
-import { deepPurple, blue } from "@mui/material/colors";
-import { createTheme } from "@mui/material/styles";
+import { createTheme, rem } from "@mantine/core";
 
-const poppins = Poppins({
-  weight: ["300", "400", "500", "700"],
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const theme = createTheme({
-  // Edit here when you want to change the theme colors
-  /*
-  palette: {
-    primary: deepPurple,
-    secondary: blue,
-  },*/
-  typography: {
-    fontFamily: poppins.style.fontFamily,
-
-    h1: {
-      fontSize: "2rem",
-      fontWeight: 400,
-      lineHeight: 1.5,
-    },
-    h2: {
-      fontSize: "1.75rem",
-      fontWeight: 400,
-      lineHeight: 1.5,
-    },
-    h3: {
-      fontSize: "1.5rem",
-      fontWeight: 400,
-      lineHeight: 1.5,
-    },
-    h4: {
-      fontSize: "1.25rem",
-      fontWeight: 500,
-      lineHeight: 1.5,
-    },
+export const theme = createTheme({
+  colors: {
+    // Add your color
+    deepBlue: [
+      "#eef3ff",
+      "#dce4f5",
+      "#b9c7e2",
+      "#94a8d0",
+      "#748dc1",
+      "#5f7cb8",
+      "#5474b4",
+      "#44639f",
+      "#39588f",
+      "#2d4b81",
+    ],
+    // or replace default theme color
+    blue: [
+      "#eef3ff",
+      "#dee2f2",
+      "#bdc2de",
+      "#98a0ca",
+      "#7a84ba",
+      "#6672b0",
+      "#5c68ac",
+      "#4c5897",
+      "#424e88",
+      "#364379",
+    ],
   },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        contained: {
-          boxShadow: "none", // Remove shadow for contained buttons
-          "&:hover": {
-            boxShadow: "none", // Remove hover shadow for contained buttons
-          },
-        },
-        outlined: {
-          boxShadow: "none", // Remove shadow for outlined buttons
-          "&:hover": {
-            boxShadow: "none", // Remove hover shadow for outlined buttons
-          },
-        },
-        text: {
-          boxShadow: "none", // Remove shadow for text buttons
-          "&:hover": {
-            boxShadow: "none", // Remove hover shadow for text buttons
-          },
-        },
-      },
+
+  shadows: {
+    md: "1px 1px 3px rgba(0, 0, 0, .25)",
+    xl: "5px 5px 3px rgba(0, 0, 0, .25)",
+  },
+
+  headings: {
+    fontFamily: "Roboto, sans-serif",
+    sizes: {
+      h1: { fontSize: rem(32) },
+      h2: { fontSize: rem(24) },
+      h3: { fontSize: rem(18) },
     },
   },
 });
-
-export default theme;

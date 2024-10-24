@@ -80,7 +80,7 @@ export default function Signup() {
       <Typography sx={{ textAlign: "center" }}>
         Already have an account?{" "}
         <span>
-          <Link href="/signin" variant="body2" sx={{ alignSelf: "center" }}>
+          <Link href="/login" variant="body2" sx={{ alignSelf: "center" }}>
             Sign in
           </Link>
         </span>

@@ -1,10 +1,9 @@
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-import Navbar from "@/components/Navbar";
-import { StyledRoot } from "./StyledRoot";
+import { Navbar } from "../components/Header/Navbar";
+import { Container, MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import "./globals.css";
-import { MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css";
+import { theme } from "./theme";
 
 export const metadata: Metadata = {
   title: "Recipe Declutter",
@@ -19,14 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <MantineProvider>
-          <AppRouterCacheProvider>
-            {" "}
-            <StyledRoot>
-              <Navbar />
-              {children}
-            </StyledRoot>
-          </AppRouterCacheProvider>
+        <MantineProvider theme={theme}>
+          <Navbar />
+          <Container>{children}</Container>
         </MantineProvider>
       </body>
     </html>

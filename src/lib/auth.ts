@@ -1,12 +1,13 @@
 import prisma from "@/lib/db";
 // import { compare } from "bcryptjs";
 // import bcrypt again when we have implemented hashing of passwords
-import type { NextAuthOptions } from "next-auth";
+import { getServerSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
+    maxAge: 1 * 24 * 60 * 60, // 1 day
   },
   providers: [
     CredentialsProvider({
@@ -20,22 +21,19 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) {
+        const { email, password } = credentials || {};
+
+        if (!email || !password) {
           return null;
         }
 
         const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
+          where: { email },
         });
-
-        console.log("user:", user?.password);
-        console.log("credentials:", credentials.password);
 
         // if (!user || !(await compare(credentials.password, user.password))) {
         // Replace the line below with the one above when we have added password hashing
-        if (!user || credentials.password !== user.password) {
+        if (!user || password !== user.password) {
           return null;
         }
 
@@ -43,34 +41,35 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          randomKey: "Some random Key",
         };
       },
     }),
   ],
   callbacks: {
-    session: ({ session, token }) => {
-      console.log("Session Callback", { session, token });
+    jwt: ({ token, user, session }) => {
+      console.log("JWT Callback", { token, user, session });
+      // Pass user id into token
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+        };
+      }
+      return token;
+    },
+    session: ({ session, token, user }) => {
+      console.log("Session Callback", { session, token, user });
+      // Pass user id to the session
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id,
-          randomKey: token.randomKey,
         },
       };
     },
-    jwt: ({ token, user }) => {
-      console.log("JWT Callback", { token, user });
-      if (user) {
-        const u = user as unknown as any;
-        return {
-          ...token,
-          id: u.id,
-          randomKey: u.randomKey,
-        };
-      }
-      return token;
-    },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
+
+export const getAuth = () => getServerSession(authOptions);

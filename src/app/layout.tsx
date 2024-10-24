@@ -4,7 +4,7 @@ import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import "./globals.css";
 import { theme } from "./theme";
-
+                                                  
 export const metadata: Metadata = {
   title: "Recipe Declutter",
   description: "Declutter your favorite recipes here!",

@@ -1,4 +1,4 @@
-.page {
+/* .page {
   --gray-rgb: 0, 0, 0;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
   --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
@@ -103,11 +103,11 @@ a.secondary {
 
 .footer img {
   flex-shrink: 0;
-}
+} */
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
+  /* a.primary:hover {
     background: var(--button-primary-hover);
     border-color: transparent;
   }
@@ -120,11 +120,11 @@ a.secondary {
   .footer a:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
-  }
+  } */
 }
 
 @media (max-width: 600px) {
-  .page {
+  /* .page {
     padding: 32px;
     padding-bottom: 80px;
   }
@@ -161,5 +161,5 @@ a.secondary {
 @media (prefers-color-scheme: dark) {
   .logo {
     filter: invert();
-  }
+  } */
 }

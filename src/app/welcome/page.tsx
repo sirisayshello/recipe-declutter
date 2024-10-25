@@ -15,6 +15,7 @@ import {
 import { getScrapedRecipe } from "@/lib/scraper";
 import { Session } from "next-auth";
 import { saveRecipe } from "@/lib/queries";
+import { signOut } from "next-auth/react";
 
 export default function WelcomePage({ session }: { session: Session | null }) {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
@@ -87,6 +88,9 @@ export default function WelcomePage({ session }: { session: Session | null }) {
 
   return (
     <>
+      <Button variant="outlined" onClick={() => signOut()}>
+        Sign Out
+      </Button>
       {/* form section */}
       <Box
         component="form"

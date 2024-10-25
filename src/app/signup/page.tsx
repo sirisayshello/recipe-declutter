@@ -1,90 +1,90 @@
 "use client";
 
 import {
-  Box,
+  Anchor,
   Button,
-  FormControl,
-  FormLabel,
-  Link,
-  TextField,
-  Typography,
-} from "@mui/material";
+  Container,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
+import { hasLength, isEmail, useForm } from "@mantine/form";
+import { useState } from "react";
 
 export default function Signup() {
-  const handleSubmit = () => {
-    console.log("sign up");
+  const [submittedValues, setSubmittedValues] = useState<
+    typeof form.values | null
+  >(null);
+
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: { name: "", email: "", password: "" },
+    validate: {
+      // These do not seem to work
+      name: hasLength({ min: 3 }, "Must be at least 3 characters"),
+      email: isEmail("Invalid email"),
+      password: hasLength({ min: 3 }, "Must be at least 3 characters"),
+    },
+  });
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
+    form.onSubmit(setSubmittedValues);
+    console.log({ submittedValues: submittedValues });
+
+    const inputValues = form.getValues();
+    console.log({ input: inputValues });
+    form.reset();
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-      }}
-    >
-      <Typography variant="h1">Create account</Typography>
-      <FormControl>
-        <FormLabel htmlFor="name">First and last name</FormLabel>
-        <TextField
-          // error={nameError}
-          // helperText={nameErrorMessage}
-          id="name"
-          type="text"
-          name="name"
+    <Container style={{ height: "90dvh", alignContent: "center" }}>
+      <Title ta="center" mb="md">
+        Create account
+      </Title>
+      <form onSubmit={handleSubmit}>
+        <TextInput
+          {...form.getInputProps("name")}
+          key={form.key("name")}
+          label="Name"
           placeholder="Jane Doe"
-          autoFocus
-          required
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel htmlFor="email">Email</FormLabel>
-        <TextField
-          // error={emailError}
-          // helperText={emailErrorMessage}
-          id="email"
-          type="email"
-          name="email"
+        <TextInput
+          {...form.getInputProps("email")}
+          key={form.key("email")}
+          mt="md"
+          label="Email"
           placeholder="your@email.com"
-          autoFocus
-          required
         />
-      </FormControl>
-      <FormControl>
-        <TextField
-          // error={passwordError}
-          // helperText={passwordErrorMessage}
-          name="password"
+        <TextInput
+          {...form.getInputProps("password")}
+          key={form.key("password")}
+          mt="md"
+          label="Password"
           placeholder="••••••"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          autoFocus
-          required
-          fullWidth
-          variant="outlined"
-          // color={passwordError ? "error" : "primary"}
         />
-      </FormControl>
-
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        // onClick={validateInputs}
-      >
-        Sign in
-      </Button>
-      <Typography sx={{ textAlign: "center" }}>
+        <Button
+          type="submit"
+          mt="xl"
+          mb="md"
+          fullWidth
+          variant="filled"
+          color="gray"
+          size="md"
+          radius="xl"
+        >
+          Submit
+        </Button>
+      </form>
+      <Text ta="center">
         Already have an account?{" "}
         <span>
-          <Link href="/login" variant="body2" sx={{ alignSelf: "center" }}>
-            Sign in
-          </Link>
+          <Anchor href="/login" underline="never">
+            Log in
+          </Anchor>
         </span>
-      </Typography>
-    </Box>
+      </Text>
+    </Container>
   );
 }

@@ -1,95 +1,82 @@
 "use client";
 
 import {
-  Box,
+  Title,
+  Text,
+  TextInput,
+  Anchor,
   Button,
-  FormControl,
-  FormLabel,
-  Link,
-  TextField,
-  Typography,
-} from "@mui/material";
-import React from "react";
+  Container,
+} from "@mantine/core";
+import { useForm, isEmail } from "@mantine/form";
+import React, { useState } from "react";
 
 export default function Login() {
-  // const [emailError, setEmailError] = React.useState(false);
-  // const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  // const [passwordError, setPasswordError] = React.useState(false);
-  // const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
+  const [submittedValues, setSubmittedValues] = useState<
+    typeof form.values | null
+  >(null);
 
-  const handleSubmit = (e: any) => {
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: { email: "", password: "" },
+    validate: {
+      // This does not seem to work
+      email: isEmail("Invalid email"),
+    },
+  });
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log("submit");
+
+    form.onSubmit(setSubmittedValues);
+    console.log({ submittedValues: submittedValues });
+
+    const inputValues = form.getValues();
+    console.log({ input: inputValues });
+    form.reset();
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-      }}
-    >
-      <Typography variant="h1">Log in</Typography>
-      <FormControl>
-        <FormLabel htmlFor="email">Email</FormLabel>
-        <TextField
-          // error={emailError}
-          // helperText={emailErrorMessage}
-          id="email"
-          type="email"
-          name="email"
+    <Container style={{ height: "90dvh", alignContent: "center" }}>
+      <Title ta="center" mb="md">
+        Log in
+      </Title>
+      <form onSubmit={handleSubmit}>
+        <TextInput
+          {...form.getInputProps("email")}
+          key={form.key("email")}
+          mt="md"
+          label="Email"
           placeholder="your@email.com"
-          autoFocus
-          required
         />
-      </FormControl>
-      <FormControl>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <FormLabel htmlFor="password">Password</FormLabel>
-          <Link
-            type="button"
-            // onClick={handleClickOpen}
-            variant="body2"
-            sx={{ alignSelf: "baseline" }}
-          >
-            Forgot your password?
-          </Link>
-        </Box>
-        <TextField
-          // error={passwordError}
-          // helperText={passwordErrorMessage}
-          name="password"
+        <TextInput
+          {...form.getInputProps("password")}
+          key={form.key("password")}
+          mt="md"
+          label="Password"
           placeholder="••••••"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          autoFocus
-          required
-          fullWidth
-          variant="outlined"
-          // color={passwordError ? "error" : "primary"}
         />
-      </FormControl>
-
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        // onClick={validateInputs}
-      >
-        Sign in
-      </Button>
-      <Typography sx={{ textAlign: "center" }}>
+        <Button
+          type="submit"
+          mt="xl"
+          mb="md"
+          fullWidth
+          variant="filled"
+          color="gray"
+          size="md"
+          radius="xl"
+        >
+          Submit
+        </Button>
+      </form>
+      <Text ta="center">
         Don&apos;t have an account?{" "}
         <span>
-          <Link href="/signup" variant="body2" sx={{ alignSelf: "center" }}>
+          <Anchor href="/signup" underline="never">
             Create account
-          </Link>
+          </Anchor>
         </span>
-      </Typography>
-    </Box>
+      </Text>
+    </Container>
   );
 }

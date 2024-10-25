@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-// getServerSession can not be used in middleware. Checking for user token instead.
-
 export async function middleware(request: NextRequest) {
   // Check for session token
   const token = await getToken({
@@ -11,13 +9,12 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
+  const { pathname } = request.nextUrl;
+
   // Redirect to login page if there's no token i.e. user is not authenticated
   if (!token) {
     // If user already on /login or /signup, do nothing
-    if (
-      request.nextUrl.pathname === "/login" ||
-      request.nextUrl.pathname === "/signup"
-    ) {
+    if (pathname === "/login" || pathname === "/signup") {
       return NextResponse.next();
     }
     // Otherwise, redirect to /login
@@ -25,15 +22,10 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect authenticated users away from /login and /signup
-  if (token) {
-    const { pathname } = request.nextUrl;
-    if (pathname === "/login" || pathname === "/signup") {
-      return NextResponse.redirect(new URL("/", request.url)); // Redirect to homepage
-    }
-    return NextResponse.next(); // Allow access to other routes
+  if (pathname === "/login" || pathname === "/signup") {
+    return NextResponse.redirect(new URL("/", request.url)); // Redirect to homepage
   }
-
-  return NextResponse.next();
+  return NextResponse.next(); // Allow access to other routes
 }
 
 export const config = {

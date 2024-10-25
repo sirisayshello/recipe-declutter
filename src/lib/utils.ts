@@ -2,7 +2,13 @@ import he from "he";
 
 export function findGraphObjectWithRecipeData(inputData: GraphObject[]) {
   const result = inputData.find((obj: GraphObject) => {
-    return obj["@type"] === "Recipe";
+    if (typeof obj["@type"] === "string") {
+      return obj["@type"] === "Recipe";
+    }
+
+    if (Array.isArray(obj["@type"])) {
+      return obj["@type"].includes("Recipe");
+    }
   });
 
   return result;

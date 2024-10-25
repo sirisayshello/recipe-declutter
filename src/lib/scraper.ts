@@ -11,7 +11,7 @@ import { Browser, chromium, Page } from "playwright";
 
 export const getScrapedRecipe = async (
   url: string
-): Promise<Recipe | RecipeError> => {
+): Promise<GetScrapedRecipeResponse> => {
   try {
     const browser: Browser = await chromium.launch({
       headless: true,
@@ -19,6 +19,11 @@ export const getScrapedRecipe = async (
 
     const page: Page = await browser.newPage();
     await page.goto(url);
+
+    // Sometimes the scripts are loaded after the initial page load - wait 500ms
+    await page
+      .waitForSelector('script[type="application/ld+json"]', { timeout: 500 })
+      .catch(() => {}); // If timeout, do nothing since we catch errors with "No application/ld+json scripts" below
 
     // Get all scripts of type "application/ld+json" from the provided url
     const jsonLdData: string[] = await page.evaluate(() => {
@@ -128,12 +133,33 @@ export const getScrapedRecipe = async (
     const decodedIngredients: Ingredient[] = decodeData(ingredientsData);
     const decodedInstructions: Instruction[] = decodeData(instructionsData);
 
+    // get the title from the url as a fallback
+    let recipeTitle =
+      new URL(url).pathname.split("/").filter(Boolean).pop() || "";
+    // replace dashes and underscores with spaces
+    recipeTitle = recipeTitle.replace(/[-_]/g, " ");
+
+    // if the recipeData object has a name property, use that as the title
+    if ("name" in recipeData && typeof recipeData.name === "string") {
+      recipeTitle = recipeData.name;
+    }
+
     return {
-      ingredients: decodedIngredients,
-      instructions: decodedInstructions,
+      success: true,
+      data: {
+        title: recipeTitle,
+        ingredients: decodedIngredients,
+        instructions: decodedInstructions,
+      },
     };
   } catch (error) {
     console.error(error);
-    return { message: getErrorMessage(error) };
+
+    return {
+      success: false,
+      error: {
+        message: getErrorMessage(error),
+      },
+    };
   }
 };

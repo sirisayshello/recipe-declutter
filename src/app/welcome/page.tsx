@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Alert,
   Box,
@@ -21,15 +21,10 @@ export default function WelcomePage({ session }: { session: Session | null }) {
   const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
   const [url, setUrl] = useState("");
   const [view, setView] = useState("ingredients");
-  const [loggedIn, setLoggedIn] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (session) setLoggedIn(true);
-  }, []);
 
   // Type guard function for Recipe
   function isRecipe(data: any): data is Recipe {
@@ -197,7 +192,7 @@ export default function WelcomePage({ session }: { session: Session | null }) {
         </Alert>
       </Snackbar>
 
-      {loggedIn && recipe && (
+      {recipe && (
         <Box
           component="form"
           onSubmit={handleSaveRecipe}
@@ -218,28 +213,8 @@ export default function WelcomePage({ session }: { session: Session | null }) {
           </Button>
         </Box>
       )}
-
-      {/* recent recipes / create account section: */}
-      {loggedIn ? (
-        <div>recent recipes...</div>
-      ) : (
-        <Box
-          component="section"
-          sx={{
-            bgcolor: "grey.500",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h2" sx={{ textAlign: "center" }}>
-            Would you like to save your recipes for a later time?
-          </Typography>
-          <Button variant="contained" color="primary" size="large">
-            Create Account
-          </Button>
-        </Box>
-      )}
+      {/* recent recipes */}
+      <div>recent recipes...</div>
     </>
   );
 }

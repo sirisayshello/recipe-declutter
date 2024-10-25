@@ -7,7 +7,7 @@
 // Outcommented stuff is kept for better backtracking.
 //
 import { TextField, Button, Alert, Box, Typography } from "@mui/material";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 

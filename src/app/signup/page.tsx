@@ -17,7 +17,6 @@ const SignUpPage = () => {
       });
 
       const data = await res.json();
-      console.log("Response:", data);
 
       if (!res.ok) {
         throw new Error(data.message);

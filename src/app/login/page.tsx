@@ -8,6 +8,7 @@ import {
   Button,
   Container,
   Alert,
+  PasswordInput,
 } from "@mantine/core";
 import { useForm, isEmail } from "@mantine/form";
 import React, { useState } from "react";
@@ -59,7 +60,7 @@ export default function Login() {
           label="Email"
           placeholder="your@email.com"
         />
-        <TextInput
+        <PasswordInput
           {...form.getInputProps("password")}
           key={form.key("password")}
           mt="md"

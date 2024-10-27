@@ -3,6 +3,7 @@ import {
   Anchor,
   Button,
   Container,
+  PasswordInput,
   Text,
   TextInput,
   Title,
@@ -52,7 +53,7 @@ export default function SignUpForm({ onSubmit }: SignUpFormProps) {
           label="Email"
           placeholder="your@email.com"
         />
-        <TextInput
+        <PasswordInput
           {...form.getInputProps("password")}
           key={form.key("password")}
           mt="md"

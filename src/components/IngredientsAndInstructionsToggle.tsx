@@ -1,18 +1,24 @@
-import { Button, Group, List, Stack } from "@mantine/core";
+"use client";
+import { Button, Group, List, Stack, Text } from "@mantine/core";
+import { useState } from "react";
 
 type IngAndInstToggleProps = {
   recipe: Recipe;
-  view: string;
-  setView: (view: string) => void;
 };
 
 export const IngredientsAndInstructionsToggle = ({
   recipe,
-  view,
-  setView,
 }: IngAndInstToggleProps) => {
+  const [view, setView] = useState("ingredients");
+
   return (
-    <Stack component="section">
+    <Stack component="section" style={{ minHeight: "50dvh" }}>
+      <Group justify="center" mb="md">
+        <Text size="xs">Prep time: 20min</Text>
+        <Text size="xs">Cook time: 30min</Text>
+        <Text size="xs">Total time: 50min</Text>
+        <Text size="xs">Yield: 4 servings</Text>
+      </Group>
       <Group justify="space-between" grow>
         <Button
           variant={view === "ingredients" ? "filled" : "light"}
@@ -34,11 +40,6 @@ export const IngredientsAndInstructionsToggle = ({
           Instructions
         </Button>
       </Group>
-
-      {/* <Text>Prep time:</Text> {recipe.prepTime}
-      <Text>Cook time:</Text> {recipe.cookTime}
-      <Text>Total time:</Text> {recipe.totalTime}
-      <Text>Yield:</Text> {recipe.yield} */}
 
       {view === "ingredients" && (
         <List>

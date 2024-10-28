@@ -10,7 +10,7 @@ type UserData = {
   password: string;
 };
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   if (req.method === "POST") {
     const userData: UserData = await req.json();
 

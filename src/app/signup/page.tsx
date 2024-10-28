@@ -1,5 +1,6 @@
 "use client";
 import SignUpForm from "@/components/SignUpForm";
+import { useRouter } from "next/navigation";
 
 type UserData = {
   email: string;
@@ -8,6 +9,7 @@ type UserData = {
 };
 
 const SignUpPage = () => {
+  const router = useRouter();
   const submitUserData = async (userData: UserData) => {
     try {
       const res = await fetch("/api/signup", {
@@ -22,6 +24,7 @@ const SignUpPage = () => {
         throw new Error(data.message);
       }
       console.log("User created:", data);
+      router.push("/login");
     } catch (error) {
       console.error(error);
     }

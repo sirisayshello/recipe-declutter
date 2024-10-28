@@ -1,6 +1,5 @@
 import prisma from "@/lib/db";
-// import { compare } from "bcryptjs";
-// import bcrypt again when we have implemented hashing of passwords
+import { compare } from "bcrypt";
 import { getServerSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -31,9 +30,7 @@ export const authOptions: NextAuthOptions = {
           where: { email },
         });
 
-        // if (!user || !(await compare(credentials.password, user.password))) {
-        // Replace the line below with the one above when we have added password hashing
-        if (!user || password !== user.password) {
+        if (!user || !(await compare(password, user.password))) {
           return null;
         }
 

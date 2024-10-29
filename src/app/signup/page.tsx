@@ -1,35 +1,24 @@
-"use client";
 import SignUpForm from "@/components/SignUpForm";
-import { useRouter } from "next/navigation";
+import { Anchor, Container, Title, Text } from "@mantine/core";
 
-type UserData = {
-  email: string;
-  name: string;
-  password: string;
-};
+export default function SignUp() {
+  return (
+    <>
+      <Container style={{ height: "90dvh", alignContent: "center" }}>
+        <Title ta="center" mb="md">
+          Create account
+        </Title>
+        <SignUpForm />
+        <Text ta="center">
+          Already have an account?{" "}
+          <span>
+            <Anchor href="/login" underline="never">
+              Log in
+            </Anchor>
+          </span>
+        </Text>
+      </Container>
+    </>
+  );
+}
 
-const SignUpPage = () => {
-  const router = useRouter();
-  const submitUserData = async (userData: UserData) => {
-    try {
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message);
-      }
-      console.log("User created:", data);
-      router.push("/login");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return <SignUpForm onSubmit={submitUserData} />;
-};
-export default SignUpPage;

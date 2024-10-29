@@ -3,8 +3,12 @@ type Ingredient = string;
 type Instruction = string;
 
 type Recipe = {
+  title: string;
+  id: number;
+  slug: string;
   ingredients: Ingredient[];
   instructions: Instruction[];
+  userId: string | null;
 };
 
 type RecipeError = {

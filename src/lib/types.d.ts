@@ -4,7 +4,13 @@ type Instruction = string;
 
 type Recipe = {
   title: string;
+  ingredients: Ingredient[];
+  instructions: Instruction[];
+};
+
+type userRecipe = {
   id: number;
+  title: string;
   slug: string;
   ingredients: Ingredient[];
   instructions: Instruction[];
@@ -39,11 +45,7 @@ type SaveRecipeResponse = {
 
 type GetScrapedRecipeResponse = {
   success: boolean;
-  data?: {
-    title: string;
-    ingredients: string[];
-    instructions: string[];
-  };
+  recipe?: Recipe;
   error?: {
     message: string;
   };

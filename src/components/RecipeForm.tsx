@@ -34,12 +34,13 @@ export const RecipeForm = () => {
     const url = field.getValue();
 
     const data = await getScrapedRecipe(url);
-    if (isRecipe(data)) {
-      setRecipe(data);
-      console.log("Recipe:", data);
+    console.log(data);
+
+    if (isRecipe(data.recipe)) {
+      setRecipe(data.recipe);
     } else if (isRecipeError(data)) {
-      setRecipeError(data);
-      console.log("RecipeError:", data);
+      setRecipeError(data.error);
+      console.log("RecipeError:", data.error);
     }
     field.reset();
     setLoading(false);

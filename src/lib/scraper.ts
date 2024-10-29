@@ -41,6 +41,8 @@ export const getScrapedRecipe = async (
 
     await browser.close();
 
+    console.log("Hello");
+
     let scriptWithRecipeData: string = "";
 
     // Find the correct json string
@@ -133,6 +135,9 @@ export const getScrapedRecipe = async (
     const decodedIngredients: Ingredient[] = decodeData(ingredientsData);
     const decodedInstructions: Instruction[] = decodeData(instructionsData);
 
+    console.log("decodedIngredients", decodedIngredients);
+    console.log("decodedInstructions", decodedInstructions);
+
     // get the title from the url as a fallback
     let recipeTitle =
       new URL(url).pathname.split("/").filter(Boolean).pop() || "";
@@ -146,7 +151,7 @@ export const getScrapedRecipe = async (
 
     return {
       success: true,
-      data: {
+      recipe: {
         title: recipeTitle,
         ingredients: decodedIngredients,
         instructions: decodedInstructions,

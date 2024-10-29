@@ -1,7 +1,8 @@
 import React from "react";
 import CategoryFilter from "@/components/CategoryFilter";
 import prisma from "@/lib/db";
-import { Anchor, Center, List, Stack, Title } from "@mantine/core";
+import { Center, Stack, Title } from "@mantine/core";
+import { RecentRecipes } from "@/components/RecentRecipes";
 
 // categories hardcoded for now
 const categories = [
@@ -27,24 +28,7 @@ export default async function Dashboard() {
 
       <Stack component="section">
         <CategoryFilter categories={categories} />
-        <Title order={2}>Recent recipes</Title>
-        <List listStyleType="none">
-          {recipes.map((recipe) => {
-            return (
-              <li
-                key={recipe.id}
-                style={{
-                  borderBottom: "1px solid var(--mantine-color-gray-3)",
-                  padding: "10px 0",
-                }}
-              >
-                <Anchor href={`/dashboard/${recipe.id}`} underline="never">
-                  {recipe.title}
-                </Anchor>
-              </li>
-            );
-          })}
-        </List>
+        <RecentRecipes recipes={recipes} />
       </Stack>
     </>
   );

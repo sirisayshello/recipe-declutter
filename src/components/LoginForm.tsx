@@ -1,13 +1,19 @@
 "use client";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { TextInput, Button, Alert, PasswordInput } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 
-type LoginFormProps = {
-  onSubmit: (values: { email: string; password: string }) => void;
-  error: string | null;
+type Credentials = {
+  email: string;
+  password: string;
 };
 
-export default function LoginForm({ onSubmit, error }: LoginFormProps) {
+export default function LoginForm() {
+  const [error, setError] = useState("");
+  const router = useRouter();
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { email: "", password: "" },
@@ -16,9 +22,34 @@ export default function LoginForm({ onSubmit, error }: LoginFormProps) {
     },
   });
 
+  const submitCredentials = async (values: Credentials) => {
+    setError(""); // Clear any previous error
+
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: values.email,
+        password: values.password,
+      });
+
+      if (result?.error) {
+        setError("Invalid email or password. Please try again.");
+      } else {
+        form.reset(); // Reset form only if submission was successful
+        router.push("/welcome"); // Redirect to landing page
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
+    }
+  };
+
   return (
     <>
-      <form onSubmit={form.onSubmit(onSubmit)}>
+      <form onSubmit={form.onSubmit(submitCredentials)}>
         {error && (
           <Alert variant="light" color="red" title="Login failed" mt="md">
             {error}

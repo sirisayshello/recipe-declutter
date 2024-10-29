@@ -1,17 +1,19 @@
 "use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Alert, Button, PasswordInput, TextInput } from "@mantine/core";
 import { hasLength, isEmail, useForm } from "@mantine/form";
 
-type SignUpFormProps = {
-  onSubmit: (userData: {
-    email: string;
-    name: string;
-    password: string;
-  }) => void;
-  error: string | null;
+type UserData = {
+  email: string;
+  name: string;
+  password: string;
 };
 
-export default function SignUpForm({ onSubmit, error }: SignUpFormProps) {
+export default function SignUpForm() {
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { name: "", email: "", password: "" },
@@ -22,12 +24,34 @@ export default function SignUpForm({ onSubmit, error }: SignUpFormProps) {
     },
   });
 
-  const handleSubmit = (values: typeof form.values) => {
-    onSubmit(values);
+  const submitUserData = async (userData: UserData) => {
+    setError(null); // Clear any previous error
+
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+      form.reset(); // Reset form only if submission was successful
+      router.push("/login"); // Redirect to login
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
+    }
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={form.onSubmit(submitUserData)}>
       {error && (
         <Alert variant="light" color="red" title="Sign up failed" mb="md">
           {error}

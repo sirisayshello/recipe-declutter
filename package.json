@@ -20,6 +20,7 @@
     "@mantine/hooks": "^7.13.3",
     "@prisma/client": "^5.21.0",
     "@tabler/icons-react": "^3.20.0",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "he": "^1.2.0",
     "next": "14.2.15",
@@ -29,6 +30,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/he": "^1.2.3",
     "@types/node": "^20.16.14",
@@ -41,6 +43,7 @@
     "postcss": "^8.4.47",
     "prisma": "^5.21.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.1",
     "typescript": "^5"
   }
 }

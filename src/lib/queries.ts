@@ -2,12 +2,11 @@
 import prisma from "./db";
 import { generateSlug } from "./utils";
 
-
 // Wrapper function to use when we want to fetch all recipes in a client component:
 export const getRecipes = async () => {
   const recipes = await prisma.recipe.findMany();
   return recipes;
-}
+};
 
 // Delete recipe by id. Function is called on a click event.
 export const deleteRecipeById = async (id: number) => {
@@ -21,19 +20,6 @@ export const deleteRecipeById = async (id: number) => {
   } catch (error) {
     console.log(error);
   }
-};
-
-type SaveRecipeResponse = {
-  success: boolean;
-  data?: {
-    id: number;
-    title: string;
-    ingredients: string[];
-    instructions: string[];
-  };
-  error?: {
-    message: string;
-  };
 };
 
 // Save a recipe to the database as a logged in user:

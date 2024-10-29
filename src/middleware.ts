@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-// getServerSession can not be used in middleware. Checking for user token instead.
-
 export async function middleware(request: NextRequest) {
   // Check for session token
   const token = await getToken({
@@ -11,31 +9,39 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  // Redirect to login page if there's no token i.e. user is not authenticated
-  if (!token) {
-    // If user already on /login or /signup, do nothing
-    if (
-      request.nextUrl.pathname === "/login" ||
-      request.nextUrl.pathname === "/signup"
-    ) {
+  // If token exists, user is authenticated
+  const user = token ? token : null;
+
+  const { pathname } = request.nextUrl;
+  const publicRoutes = ["/", "/login", "/signup"];
+  const isPublicRoute = publicRoutes.includes(pathname);
+
+  if (!user) {
+    // If user is already on public route, do nothing
+    if (isPublicRoute) {
       return NextResponse.next();
+    }
+    // If user is on private route "/welcome", redirect to "/"
+    if (pathname === "/welcome") {
+      return NextResponse.redirect(new URL("/", request.url));
     }
     // Otherwise, redirect to /login
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Redirect authenticated users away from /login and /signup
-  if (token) {
-    const { pathname } = request.nextUrl;
-    if (pathname === "/login" || pathname === "/signup") {
-      return NextResponse.redirect(new URL("/", request.url)); // Redirect to homepage
-    }
-    return NextResponse.next(); // Allow access to other routes
+  // Redirect authenticated users away from public routes
+  if (isPublicRoute) {
+    return NextResponse.redirect(new URL("/welcome", request.url));
   }
-
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/login/:path*", "/signup/:path*", "/dashboard/:path*"],
+  matcher: [
+    "/login/:path*",
+    "/signup/:path*",
+    "/dashboard/:path*",
+    "/welcome/:path*",
+    "/",
+  ],
 };

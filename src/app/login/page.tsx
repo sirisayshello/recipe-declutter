@@ -7,14 +7,36 @@ import {
   Anchor,
   Button,
   Container,
+  Alert,
+  PasswordInput,
 } from "@mantine/core";
 import { useForm, isEmail } from "@mantine/form";
 import React, { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const [submittedValues, setSubmittedValues] = useState<
-    typeof form.values | null
-  >(null);
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const onSubmit = async (values: { email: string; password: string }) => {
+    setError(""); // Reset any errors on submit
+
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: values.email,
+      password: values.password,
+    });
+
+    if (result?.error) {
+      setError("Invalid email or password. Please try again.");
+      console.error("Login failed", result.error);
+    } else {
+      console.log("Login successful:", result);
+      router.push("/welcome");
+    }
+    form.reset();
+  };
 
   const form = useForm({
     mode: "uncontrolled",
@@ -25,23 +47,12 @@ export default function Login() {
     },
   });
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-
-    form.onSubmit(setSubmittedValues);
-    console.log({ submittedValues: submittedValues });
-
-    const inputValues = form.getValues();
-    console.log({ input: inputValues });
-    form.reset();
-  };
-
   return (
     <Container style={{ height: "90dvh", alignContent: "center" }}>
       <Title ta="center" mb="md">
         Log in
       </Title>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={form.onSubmit(onSubmit)}>
         <TextInput
           {...form.getInputProps("email")}
           key={form.key("email")}
@@ -49,13 +60,18 @@ export default function Login() {
           label="Email"
           placeholder="your@email.com"
         />
-        <TextInput
+        <PasswordInput
           {...form.getInputProps("password")}
           key={form.key("password")}
           mt="md"
           label="Password"
           placeholder="••••••"
         />
+        {error && (
+          <Alert variant="light" color="red">
+            {error}
+          </Alert>
+        )}
         <Button
           type="submit"
           mt="xl"

@@ -1,46 +1,46 @@
-import Link from "next/link";
-import { Box, Typography, Chip } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import EditIcon from "@mui/icons-material/Edit";
 import prisma from "@/lib/db";
-import RecipeList from "@/components/RecipeList";
+import Link from "next/link";
+import { Group, Pill, Stack, Title } from "@mantine/core";
+import { IconArrowNarrowLeft, IconPencil } from "@tabler/icons-react";
+import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 
-export default async function Recipe({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function RecipePage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   const recipe = await prisma.recipe.findUnique({
     where: {
-      id: parseInt(id),
+      id: parseInt(params.id),
     },
   });
 
-  if (recipe === null) {
-    return <div>something went wrong</div>;
+  if (!recipe) {
+    return <div>Something went wrong</div>;
   }
 
   return (
     <>
-      <Box
-        className="iconBanner"
-        sx={{ display: "flex", justifyContent: "space-between" }}
-      >
+      <Group justify="space-between" mt="md">
         <Link href="/dashboard">
-          <ArrowBackIcon />
+          <IconArrowNarrowLeft />
         </Link>
         <Link href={`/dashboard/${recipe.id}/edit`}>
-          <EditIcon />
+          <IconPencil />
         </Link>
-      </Box>
-      <Box component="section">
-        <Typography variant="h1">{recipe.title}</Typography>
-        <Box className="recipeChips">
-          <Chip label="Breakfast" />
-          <Chip label="Dessert" />
-          <Chip label="Pancakes" />
-        </Box>
-      </Box>
+      </Group>
+      <Stack component="section">
+        <Title ta="center" mt="md" mb="md">
+          {recipe.title}
+        </Title>
+      </Stack>
 
-      <RecipeList {...recipe} />
+      <IngredientsAndInstructionsToggle recipe={recipe} />
+      <Group mt="md" mb="md">
+        <Pill size="md">Lunch</Pill>
+      </Group>
     </>
   );
 }

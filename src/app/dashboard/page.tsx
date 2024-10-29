@@ -1,8 +1,7 @@
-import { Box, List, ListItem, Typography } from "@mui/material";
 import React from "react";
 import CategoryFilter from "@/components/CategoryFilter";
 import prisma from "@/lib/db";
-import Link from "next/link";
+import { Anchor, Center, List, Stack, Title } from "@mantine/core";
 
 // categories hardcoded for now
 const categories = [
@@ -22,21 +21,31 @@ export default async function Dashboard() {
 
   return (
     <>
-      <Box component="section" sx={{ p: 2 }}>
-        <Typography variant="h1">Your Recipes</Typography>
-      </Box>
+      <Center component="section" mt="md">
+        <Title mb="xl">Your Recipes</Title>
+      </Center>
 
-      <Box component="section" sx={{ p: 2, backgroundColor: "grey.300" }}>
+      <Stack component="section">
         <CategoryFilter categories={categories} />
-        <Typography variant="h2">Recent recipes</Typography>
-        <List>
-          {recipes.map((recipe) => (
-            <ListItem divider key={recipe.id}>
-              <Link href={`/dashboard/${recipe.id}`}>{recipe.title}</Link>
-            </ListItem>
-          ))}
+        <Title order={2}>Recent recipes</Title>
+        <List listStyleType="none">
+          {recipes.map((recipe) => {
+            return (
+              <li
+                key={recipe.id}
+                style={{
+                  borderBottom: "1px solid var(--mantine-color-gray-3)",
+                  padding: "10px 0",
+                }}
+              >
+                <Anchor href={`/dashboard/${recipe.id}`} underline="never">
+                  {recipe.title}
+                </Anchor>
+              </li>
+            );
+          })}
         </List>
-      </Box>
+      </Stack>
     </>
   );
 }

@@ -1,40 +1,119 @@
 "use client";
 
 import { useState } from "react";
-import { RecipeForm } from "@/components/RecipeForm";
-import { Alert, Button, Space } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Flex,
+  Space,
+  TextInput,
+  Title,
+  Text,
+} from "@mantine/core";
+import { useField } from "@mantine/form";
 import { Session } from "next-auth";
-import { saveRecipe } from "@/lib/queries";
 import { signOut } from "next-auth/react";
+import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
+import { getScrapedRecipe } from "@/lib/scraper";
+import { SaveRecipeComponent } from "@/components/SaveRecipeComponent";
 
 export default function WelcomePage({ session }: { session: Session | null }) {
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [recipe, setRecipe] = useState<Recipe | undefined>();
+  const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
+  const [loading, setLoading] = useState(false);
 
-  // async function handleSaveRecipe() {
-  //   try {
-  //     setIsLoading(true);
-  //     setError(null);
+  // Type guard function for Recipe
+  function isRecipe(data: any): data is Recipe {
+    return Array.isArray((data as Recipe).ingredients);
+  }
 
-  //     const result = await saveRecipe(session?.user?.email, recipe);
+  // Type guard function for RecipeError
+  function isRecipeError(data: any): data is RecipeError {
+    return (data as RecipeError).message !== undefined;
+  }
 
-  //     if (!result.success) {
-  //       setError(result.error?.message || "Failed to save recipe");
-  //       return;
-  //     }
+  const field = useField({
+    initialValue: "",
+  });
 
-  //     setSuccess(true);
-  //   } catch (error) {
-  //     console.error(error);
-  //     setError("An unexpected error occurred. Please try again.");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }
+  async function handleSubmit() {
+    setLoading(true);
 
+    setRecipe(undefined);
+    setRecipeError(undefined);
+
+    const url = field.getValue();
+
+    const data = await getScrapedRecipe(url);
+    console.log(data);
+
+    if (isRecipe(data.recipe)) {
+      setRecipe(data.recipe);
+    } else if (isRecipeError(data)) {
+      setRecipeError(data.error);
+      console.log("RecipeError:", data.error);
+    }
+    field.reset();
+    setLoading(false);
+  }
   return (
     <>
+      <Flex
+        gap="md"
+        justify="center"
+        align="center"
+        direction={{ base: "column", sm: "row" }}
+      >
+        <TextInput
+          {...field.getInputProps()}
+          aria-label="Enter recipe URL"
+          placeholder="Recipe URL"
+          radius="xl"
+          size="md"
+          style={{ width: "100%", flexGrow: 1 }}
+        />
+        <Button
+          fullWidth
+          // style={{ flexBasis: "30%" }}
+          variant="filled"
+          color="gray"
+          size="md"
+          radius="xl"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          Declutter
+        </Button>
+      </Flex>
+
+      {recipe?.ingredients && recipe.instructions.length > 0 && (
+        <Box
+          component="section"
+          style={{
+            borderTop: "1px solid var(--mantine-color-gray-3)",
+            paddingTop: "10px",
+          }}
+        >
+          <Title order={2} ta="center" mb="md">
+            {recipe.title}
+          </Title>
+          <IngredientsAndInstructionsToggle recipe={recipe} />
+        </Box>
+      )}
+
+      {recipeError?.message && (
+        <Box component="section" mt="md">
+          <Text>{recipeError.message}</Text>
+        </Box>
+      )}
+
+      <Space h="xl" />
+
+      {recipe && (
+        <Box component="section" mb="md">
+          <SaveRecipeComponent recipe={recipe} session={session} />
+        </Box>
+      )}
       <Button
         onClick={() => signOut()}
         variant="filled"
@@ -44,58 +123,6 @@ export default function WelcomePage({ session }: { session: Session | null }) {
       >
         Sign out
       </Button>
-
-      <RecipeForm />
-
-      <Space h="xl" />
-
-      {/* Error section for saving recipes. Probably we should combine this with the recipeError handling above. */}
-
-      <Alert
-        display={!!error ? "block" : "none"}
-        variant="light"
-        color="blue"
-        title="Alert title"
-        onClose={() => setError(null)}
-        withCloseButton
-        closeButtonLabel="Dismiss"
-      >
-        {error}
-      </Alert>
-
-      {/* When successfully saving a recipe: */}
-
-      {/* <Snackbar
-        open={success}
-        autoHideDuration={6000}
-        onClose={() => setSuccess(false)}
-      >
-        <Alert severity="success" onClose={() => setSuccess(false)}>
-          Recipe saved successfully!
-        </Alert>
-      </Snackbar> */}
-
-      {/* {recipe && (
-        <Box
-          component="form"
-          onSubmit={handleSaveRecipe}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Button
-            onClick={handleSaveRecipe}
-            disabled={isLoading}
-            variant="contained"
-            color="primary"
-            size="large"
-          >
-            {isLoading ? "Saving..." : "Save Recipe"}
-          </Button>
-        </Box>
-      )} */}
     </>
   );
 }

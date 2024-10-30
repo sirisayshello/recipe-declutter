@@ -14,8 +14,8 @@ export default function CategoryFilter({
   return (
     <Group justify="center" align="center" wrap="nowrap">
       <MultiSelect
-        label="Your recipe lables"
-        placeholder="Pick label"
+        label="Filter recipes"
+        placeholder="Pick tags"
         data={categories}
         value={filteredCategories}
         onChange={setFilteredCategories}

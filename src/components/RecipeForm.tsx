@@ -85,7 +85,7 @@ export const RecipeForm = () => {
           }}
         >
           <Title order={2} ta="center">
-            Title here
+            {recipe.title}
           </Title>
           <IngredientsAndInstructionsToggle recipe={recipe} />
           <Flex

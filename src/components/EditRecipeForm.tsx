@@ -13,14 +13,17 @@ import { useForm } from "@mantine/form";
 import { IconTrash, IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { updateRecipe } from "@/lib/queries";
 
 type EditRecipeProps = {
-  recipe: userRecipe;
+  recipe: UserRecipe;
 };
 
 export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
   const [view, setView] = useState("ingredients");
   const [tags, setTags] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   const form = useForm({
@@ -52,7 +55,7 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
     form.removeListItem("instruction", index);
   };
 
-  const handleSubmit = (values: Recipe) => {
+  async function handleSubmit(values: Recipe) {
     const updatedRecipe = {
       ...recipe,
       title: values.title,
@@ -64,11 +67,24 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
       ),
     };
 
-    // Replace this with insertion to db
-    console.log("Updated Recipe:", updatedRecipe);
+    try {
+      const result = await updateRecipe(updatedRecipe);
 
+      if (!result.success) {
+        setError(result.error?.message || "Failed to save recipe");
+        return;
+      }
+
+      setSuccess(true);
+      console.log(success);
+    } catch (err) {
+      console.error(err);
+      setError("An unexpected error occurred. Please try again.");
+      console.log(error);
+    }
+    console.log("Updated Recipe:", updatedRecipe);
     router.push(`/dashboard/${recipe.id}`);
-  };
+  }
 
   return (
     <>

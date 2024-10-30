@@ -1,12 +1,10 @@
-import { getServerSession } from "next-auth";
+import { getAuth } from "@/lib/auth";
 import { Box, Flex, Title, Space, Text } from "@mantine/core";
 import RecentRecipes from "@/components/RecentRecipes";
-import Welcome from "@/components/Welcome";
+import Welcome from "@/app/welcome/components/Welcome";
 
 export default async function WelcomeLayout() {
-  const session = await getServerSession();
-
-  console.log({ session });
+  const session = await getAuth();
 
   return (
     <>

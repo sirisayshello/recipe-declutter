@@ -18,7 +18,7 @@ export async function getUserRecipes() {
     // Get current session
     const session = await getAuth();
     if (!session || !session.user) {
-      throw new Error("No session found");
+      throw new Error("User not authenticated");
     }
     // Extract user id from session
     const userId = session.user.id as string;

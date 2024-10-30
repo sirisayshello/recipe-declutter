@@ -1,4 +1,5 @@
 "use server";
+import { getAuth } from "./auth";
 import prisma from "./db";
 import { generateSlug } from "./utils";
 
@@ -85,4 +86,12 @@ export const saveRecipe = async (
       },
     };
   }
+};
+
+// Get recipes by user id
+export const getRecipeByUserId = async (userId: string) => {
+  const userRecipes = await prisma.recipe.findMany({
+    where: { userId: userId },
+  });
+  return userRecipes;
 };

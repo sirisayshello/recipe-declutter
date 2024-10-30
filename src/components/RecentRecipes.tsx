@@ -1,10 +1,8 @@
+import { getUserRecipes } from "@/lib/actions";
 import { Anchor, List, Title } from "@mantine/core";
 
-type RecentRecipesProps = {
-  recipes: userRecipe[];
-};
-
-export const RecentRecipes = ({ recipes }: RecentRecipesProps) => {
+export default async function RecentRecipes() {
+  const recipes = await getUserRecipes();
   return (
     <>
       <Title order={2}>Recent recipes</Title>
@@ -27,4 +25,4 @@ export const RecentRecipes = ({ recipes }: RecentRecipesProps) => {
       </List>
     </>
   );
-};
+}

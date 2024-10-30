@@ -1,8 +1,7 @@
 import React from "react";
 import CategoryFilter from "@/components/CategoryFilter";
-import prisma from "@/lib/db";
 import { Center, Stack, Title } from "@mantine/core";
-import { RecentRecipes } from "@/components/RecentRecipes";
+import RecentRecipes from "@/components/RecentRecipes";
 
 // categories hardcoded for now
 const categories = [
@@ -18,8 +17,6 @@ const categories = [
 ];
 
 export default async function Dashboard() {
-  const recipes = await prisma.recipe.findMany();
-
   return (
     <>
       <Center component="section" mt="md">
@@ -28,7 +25,7 @@ export default async function Dashboard() {
 
       <Stack component="section">
         <CategoryFilter categories={categories} />
-        <RecentRecipes recipes={recipes} />
+        <RecentRecipes />
       </Stack>
     </>
   );

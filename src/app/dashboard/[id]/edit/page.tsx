@@ -1,9 +1,9 @@
 import DeleteRecipeButton from "@/components/DeleteRecipeButton";
-import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
+import { EditRecipeForm } from "@/components/EditRecipeForm";
 import prisma from "@/lib/db";
-import { Group, Pill, Stack, Title } from "@mantine/core";
+import { Group, Title } from "@mantine/core";
 
-export default async function EditRecipe({
+export default async function EditRecipePage({
   params,
 }: {
   params: { id: string };
@@ -26,12 +26,8 @@ export default async function EditRecipe({
         <Title size="h3">Edit recipe</Title>
         <DeleteRecipeButton id={recipe.id} />
       </Group>
-      <Stack component="section"></Stack>
 
-      <IngredientsAndInstructionsToggle recipe={recipe} />
-      <Group mt="md" mb="md">
-        <Pill size="md">Lunch</Pill>
-      </Group>
+      <EditRecipeForm recipe={recipe} />
     </>
   );
 }

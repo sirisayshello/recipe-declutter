@@ -61,13 +61,10 @@ export const saveRecipe = async (
       };
     }
 
-    // placeholder until we also scrape the title (or let the user fill it in)
-    const placeholderTitle = "A placeholder title";
-
     const newRecipe = await prisma.recipe.create({
       data: {
-        title: placeholderTitle,
-        slug: generateSlug(placeholderTitle),
+        title: recipe.title,
+        slug: generateSlug(recipe.title),
         ingredients: recipe.ingredients,
         instructions: recipe.instructions,
         userId: user.id,

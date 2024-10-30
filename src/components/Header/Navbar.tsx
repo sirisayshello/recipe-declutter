@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Container, Group, Burger, Anchor, Flex } from "@mantine/core";
+import {
+  Container,
+  Group,
+  Burger,
+  Anchor,
+  Flex,
+  ActionIcon,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconUser } from "@tabler/icons-react";
 import classes from "./Navbar.module.css";
@@ -36,19 +43,26 @@ export const Navbar = () => {
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
+        {/* <Group> */}
+        <Group gap={5} visibleFrom="xs">
+          {items}
+        </Group>
+        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
         <Anchor href="/" underline="never">
           Recipe Declutter
         </Anchor>
-        <Group>
-          <Flex hiddenFrom="xs">
+        <Flex hiddenFrom="xs">
+          <ActionIcon
+            variant="transparent"
+            component="a"
+            href="/dashboard"
+            aria-label="Dashboard"
+          >
             <IconUser stroke={1} style={{ justifySelf: "end" }} />
-          </Flex>
-          <Group gap={5} visibleFrom="xs">
-            {items}
-          </Group>
+          </ActionIcon>
+        </Flex>
 
-          <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-        </Group>
+        {/* </Group> */}
       </Container>
     </header>
   );

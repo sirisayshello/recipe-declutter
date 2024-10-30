@@ -11,16 +11,6 @@ export const RecipeForm = () => {
   const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
   const [loading, setLoading] = useState(false);
 
-  // Type guard function for Recipe
-  function isRecipe(data: any): data is Recipe {
-    return Array.isArray((data as Recipe).ingredients);
-  }
-
-  // Type guard function for RecipeError
-  function isRecipeError(data: any): data is RecipeError {
-    return (data as RecipeError).message !== undefined;
-  }
-
   const field = useField({
     initialValue: "",
   });
@@ -36,9 +26,9 @@ export const RecipeForm = () => {
     const data = await getScrapedRecipe(url);
     console.log(data);
 
-    if (isRecipe(data.recipe)) {
+    if (data.recipe) {
       setRecipe(data.recipe);
-    } else if (isRecipeError(data)) {
+    } else if (data.error) {
       setRecipeError(data.error);
       console.log("RecipeError:", data.error);
     }

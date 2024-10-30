@@ -1,9 +1,9 @@
 import { getAuth } from "@/lib/auth";
 import { Box, Flex, Title, Space, Text } from "@mantine/core";
 import RecentRecipes from "@/components/RecentRecipes";
-import Welcome from "@/app/welcome/components/Welcome";
+import WelcomeComponent from "@/app/welcome/components/WelcomeComponent";
 
-export default async function WelcomeLayout() {
+export default async function Welcome() {
   const session = await getAuth();
 
   return (
@@ -19,7 +19,7 @@ export default async function WelcomeLayout() {
         <Space h="xl" />
       </Box>
 
-      <Welcome session={session} />
+      <WelcomeComponent session={session} />
       <RecentRecipes />
     </>
   );

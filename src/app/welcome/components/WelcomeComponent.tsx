@@ -17,7 +17,11 @@ import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndIns
 import { getScrapedRecipe } from "@/lib/scraper";
 import { SaveRecipeComponent } from "@/components/SaveRecipeComponent";
 
-export default function Welcome({ session }: { session: Session | null }) {
+export default function WelcomeComponent({
+  session,
+}: {
+  session: Session | null;
+}) {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
   const [loading, setLoading] = useState(false);
@@ -58,7 +62,7 @@ export default function Welcome({ session }: { session: Session | null }) {
   }
   return (
     <>
-      {/* Move this when we know where to put it :) */}
+      {/* Move sign out button when we know where to put it :) */}
       <Button
         onClick={() => signOut()}
         variant="filled"

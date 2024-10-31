@@ -92,7 +92,7 @@ export const getScrapedRecipe = async (
     }
 
     const ingredientsData = recipeData.recipeIngredient;
-    let instructionsArray: any[] = []; // Initialize as an array of any type
+    let instructionsArray: ScrapedInstruction[];
     let instructionsData: string[] = [];
 
     if (
@@ -108,23 +108,33 @@ export const getScrapedRecipe = async (
     }
 
     // the array of instructions comes wither as an array of strings,
-    // or as an object which should fall under "HowToStep" or "HowToSection" below
+    // or as an array of objects which should fall under "HowToStep" or "HowToSection",
     // see https://developers.google.com/search/docs/appearance/structured-data/recipe#recipe-properties
+
+    // case string:
     if (typeof instructionsArray[0] === "string") {
       instructionsData = instructionsArray as string[];
+
+      // case HowToSection:
     } else if (
       typeof instructionsArray[0] === "object" &&
       instructionsArray[0]["@type"] === "HowToSection"
     ) {
-      instructionsArray.forEach((section) => {
+      const sections = instructionsArray as HowToSection[];
+      sections.forEach((section) => {
         const items = generateStringArray(section.itemListElement);
         instructionsData.push(...items);
       });
+
+      // case HowToStep:
     } else if (
       typeof instructionsArray[0] === "object" &&
       instructionsArray[0]["@type"] === "HowToStep"
     ) {
-      instructionsData = generateStringArray(instructionsArray);
+      const steps = instructionsArray as HowToStep[];
+      instructionsData = generateStringArray(steps);
+
+      // (case error:)
     } else {
       console.log("Instructions must be of either type objects or strings");
       throw new Error(

@@ -1,10 +1,12 @@
 import { getAuth } from "@/lib/auth";
 import { Box, Flex, Title, Space, Text } from "@mantine/core";
 import RecentRecipes from "@/components/RecentRecipes";
+import { getUserRecipes } from "@/lib/actions";
 import { RecipeForm } from "@/components/RecipeForm";
 
 export default async function Welcome() {
   const session = await getAuth();
+  const recipes = await getUserRecipes();
 
   return (
     <>
@@ -19,7 +21,7 @@ export default async function Welcome() {
         <Space h="xl" />
       </Box>
       <RecipeForm session={session} />
-      <RecentRecipes />
+      <RecentRecipes recipes={recipes} />
       <Space h="xl" />
     </>
   );

@@ -1,7 +1,9 @@
-import React from "react";
 import CategoryFilter from "@/components/CategoryFilter";
 import { Center, Stack, Title } from "@mantine/core";
 import RecentRecipes from "@/components/RecentRecipes";
+import { getUserRecipes } from "@/lib/actions";
+import { getAuth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 // categories hardcoded for now
 const categories = [
@@ -17,6 +19,14 @@ const categories = [
 ];
 
 export default async function Dashboard() {
+  const session = await getAuth();
+
+  if (!session || !session.user) {
+    redirect("/login");
+  }
+
+  const recipes = await getUserRecipes();
+
   return (
     <>
       <Center component="section" mt="md">
@@ -25,7 +35,7 @@ export default async function Dashboard() {
 
       <Stack component="section">
         <CategoryFilter categories={categories} />
-        <RecentRecipes />
+        <RecentRecipes recipes={recipes} />
       </Stack>
     </>
   );

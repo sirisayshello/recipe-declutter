@@ -1,5 +1,5 @@
 import { Navbar } from "../components/Header/Navbar";
-import { Container, MantineProvider } from "@mantine/core";
+import { ColorSchemeScript, Container, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import { theme } from "./theme";
@@ -16,8 +16,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <ColorSchemeScript
+          nonce="8IBTHwOdqNKAWeKl7plt8g=="
+          defaultColorScheme="auto"
+        />
+      </head>
       <body>
-        <MantineProvider theme={theme}>
+        <MantineProvider defaultColorScheme="auto" theme={theme}>
           <Navbar />
           <Container>{children}</Container>
         </MantineProvider>

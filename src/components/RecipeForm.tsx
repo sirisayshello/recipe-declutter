@@ -71,7 +71,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           fullWidth
           // style={{ flexBasis: "30%" }}
           variant="filled"
-          color="gray"
+          color="dustyRed"
           size="md"
           radius="xl"
           onClick={handleSubmit}

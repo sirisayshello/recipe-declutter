@@ -162,8 +162,13 @@ export const updateRecipe = async (
 
 // Get recipes by user id
 export const getRecipeByUserId = async (userId: string) => {
-  const userRecipes = await prisma.recipe.findMany({
-    where: { userId: userId },
-  });
-  return userRecipes;
+  try {
+    const userRecipes = await prisma.recipe.findMany({
+      where: { userId: userId },
+    });
+    return userRecipes;
+  } catch (error) {
+    console.log("Error fetching user recipes");
+    throw new Error("Failed to fetch recipes. Please try again later.");
+  }
 };

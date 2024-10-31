@@ -14,8 +14,19 @@ import { getRecipeByUserId } from "./queries";
 // }
 
 export async function getUserRecipes() {
-  const session = await getAuth();
-  const userId = session?.user.id as string;
-  const recipes = await getRecipeByUserId(userId);
-  return recipes;
+  try {
+    // Get current session
+    const session = await getAuth();
+    if (!session || !session.user) {
+      throw new Error("User not authenticated");
+    }
+    // Extract user id from session
+    const userId = session.user.id as string;
+    // Fetch recipes based on user id
+    const recipes = await getRecipeByUserId(userId);
+    return recipes;
+  } catch (error) {
+    console.log("Failed to fetch recipes:", error);
+    throw new Error("Failed to fetch recipes.");
+  }
 }

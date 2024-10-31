@@ -77,7 +77,7 @@ export const SaveRecipeComponent = ({
         onClick={open}
         disabled={isLoading}
         variant="filled"
-        color="gray"
+        color="dustyRed"
         size="md"
         radius="xl"
       >

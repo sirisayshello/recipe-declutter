@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <MantineProvider theme={theme}>
+        <MantineProvider defaultColorScheme="auto" theme={theme}>
           <Navbar />
           <Container>{children}</Container>
         </MantineProvider>

@@ -56,7 +56,7 @@ export const RecipeForm = () => {
           fullWidth
           // style={{ flexBasis: "30%" }}
           variant="filled"
-          color="gray"
+          color="dustyRed"
           size="md"
           radius="xl"
           onClick={handleSubmit}
@@ -89,7 +89,7 @@ export const RecipeForm = () => {
             <Title order={2} ta="center">
               Would you like to save your recipes for a later time?
             </Title>
-            <Button variant="filled" color="gray" size="md" radius="xl">
+            <Button color="dustyRed" variant="filled" size="md" radius="xl">
               Create account
             </Button>
           </Flex>

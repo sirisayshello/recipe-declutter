@@ -47,12 +47,19 @@ export const Navbar = () => {
         <Group gap={5} visibleFrom="xs">
           {items}
         </Group>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-        <Anchor href="/" underline="never">
+        <Burger
+          color="#fff9f5"
+          opened={opened}
+          onClick={toggle}
+          hiddenFrom="xs"
+          size="sm"
+        />
+        <Anchor className={classes.link} href="/" underline="never">
           Recipe Declutter
         </Anchor>
         <Flex hiddenFrom="xs">
           <ActionIcon
+            color="#fff9f5"
             variant="transparent"
             component="a"
             href="/dashboard"

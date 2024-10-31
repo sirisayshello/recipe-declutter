@@ -22,7 +22,6 @@ export const IngredientsAndInstructionsToggle = ({
       <Group justify="space-between" grow>
         <Button
           variant={view === "ingredients" ? "filled" : "light"}
-          color="gray"
           size="md"
           radius="xl"
           onClick={() => setView("ingredients")}
@@ -32,7 +31,6 @@ export const IngredientsAndInstructionsToggle = ({
 
         <Button
           variant={view === "instructions" ? "filled" : "light"}
-          color="gray"
           size="md"
           radius="xl"
           onClick={() => setView("instructions")}

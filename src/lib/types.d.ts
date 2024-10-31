@@ -8,7 +8,7 @@ type Recipe = {
   instructions: Instruction[];
 };
 
-type userRecipe = {
+type UserRecipe = {
   id: number;
   title: string;
   slug: string;
@@ -35,6 +35,7 @@ type SaveRecipeResponse = {
   data?: {
     id: number;
     title: string;
+    slug?: string;
     ingredients: string[];
     instructions: string[];
   };

@@ -51,3 +51,19 @@ type GetScrapedRecipeResponse = {
     message: string;
   };
 };
+
+type HowToStep = {
+  "@type": "HowToStep";
+  text: string;
+  name?: string;
+  url?: string;
+  image?: string;
+};
+
+type HowToSection = {
+  "@type": "HowToSection";
+  name: string;
+  itemListElement: HowToStep[];
+};
+
+type ScrapedInstruction = HowToStep | HowToSection | string;

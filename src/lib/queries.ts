@@ -168,7 +168,7 @@ export const getRecipeByUserId = async (userId: string) => {
     });
     return userRecipes;
   } catch (error) {
-    console.log("Error fetching user recipes");
+    console.log("Error fetching user recipes", error);
     throw new Error("Failed to fetch recipes. Please try again later.");
   }
 };

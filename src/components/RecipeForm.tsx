@@ -1,12 +1,27 @@
 "use client";
 
 import { getScrapedRecipe } from "@/lib/scraper";
-import { Flex, TextInput, Button, Box, Title, Text } from "@mantine/core";
+import {
+  Flex,
+  TextInput,
+  Button,
+  Box,
+  Title,
+  Text,
+  Space,
+} from "@mantine/core";
 import { useField } from "@mantine/form";
 import { useState } from "react";
 import { IngredientsAndInstructionsToggle } from "./IngredientsAndInstructionsToggle";
+import { SaveRecipeComponent } from "./SaveRecipeComponent";
+import { Session } from "next-auth";
+import Link from "next/link";
 
-export const RecipeForm = () => {
+type RecipeFormProps = {
+  session?: Session | null;
+};
+
+export const RecipeForm = ({ session }: RecipeFormProps) => {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
   const [loading, setLoading] = useState(false);
@@ -78,21 +93,39 @@ export const RecipeForm = () => {
             {recipe.title}
           </Title>
           <IngredientsAndInstructionsToggle recipe={recipe} />
-          <Flex
-            direction="column"
-            gap="md"
-            align="center"
-            component="section"
-            color="gray"
-            mt="md"
-          >
-            <Title order={2} ta="center">
-              Would you like to save your recipes for a later time?
-            </Title>
-            <Button color="dustyRed" variant="filled" size="md" radius="xl">
-              Create account
-            </Button>
-          </Flex>
+
+          {session !== undefined ? (
+            <Box component="section" mb="md">
+              {recipe && (
+                <SaveRecipeComponent recipe={recipe} session={session} />
+              )}
+            </Box>
+          ) : (
+            recipe && (
+              <Flex
+                direction="column"
+                gap="md"
+                align="center"
+                component="section"
+                color="gray"
+                mt="md"
+              >
+                <Title order={2} ta="center">
+                  Would you like to save your recipes for a later time?
+                </Title>
+                <Button
+                  href="/signup"
+                  component={Link}
+                  variant="filled"
+                  color="gray"
+                  size="md"
+                  radius="xl"
+                >
+                  Create account
+                </Button>
+              </Flex>
+            )
+          )}
         </Box>
       )}
 
@@ -101,6 +134,7 @@ export const RecipeForm = () => {
           <Text>{recipeError.message}</Text>
         </Box>
       )}
+      <Space h="xl" />
     </>
   );
 };

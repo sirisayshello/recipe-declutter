@@ -1,17 +1,7 @@
 "use server";
 
-import { getServerSession } from "next-auth";
-import { authOptions, getAuth } from "./auth";
-import { redirect } from "next/navigation";
+import { getAuth } from "./auth";
 import { getRecipeByUserId } from "./queries";
-
-// TODO:
-// Rename this function
-// export async function test() {
-//   const session = await getServerSession(authOptions);
-//   console.log("server side log:", session);
-//   redirect("/");
-// }
 
 export async function getUserRecipes() {
   try {
@@ -21,7 +11,7 @@ export async function getUserRecipes() {
       throw new Error("User not authenticated");
     }
     // Extract user id from session
-    const userId = session.user.id as string;
+    const userId = session.user.id;
     // Fetch recipes based on user id
     const recipes = await getRecipeByUserId(userId);
     return recipes;

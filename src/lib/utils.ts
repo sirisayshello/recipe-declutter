@@ -15,7 +15,7 @@ export function findGraphObjectWithRecipeData(inputData: GraphObject[]) {
 }
 
 // Function to generate array of recipeInstructions
-export function generateStringArray(recipeInstructions: Instruction[]) {
+export function generateStringArray(recipeInstructions: HowToStep[]): string[] {
   return recipeInstructions.map((instruction) => instruction.text);
 }
 

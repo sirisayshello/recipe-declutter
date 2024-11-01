@@ -18,7 +18,7 @@ export const IngredientsAndInstructionsToggle = ({
         <Text size="xs">Total time: {recipe.time}</Text>
         <Text size="xs">Servings: {recipe.yield}</Text>
       </Group>
-      <Group justify="space-between" grow>
+      <Group justify="space-between" grow mb="md">
         <Button
           variant={view === "ingredients" ? "filled" : "light"}
           size="md"

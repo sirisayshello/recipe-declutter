@@ -1,6 +1,7 @@
 "use server";
 
 import {
+  convertTime,
   decodeData,
   findGraphObjectWithRecipeData,
   generateStringArray,
@@ -40,8 +41,6 @@ export const getScrapedRecipe = async (
     });
 
     await browser.close();
-
-    console.log("Hello");
 
     let scriptWithRecipeData: string = "";
 
@@ -149,10 +148,44 @@ export const getScrapedRecipe = async (
       recipeTitle = recipeData.name;
     }
 
+    // Get author
+    let recipeAuthor = "-";
+    if ("author" in recipeData) {
+      if (Array.isArray(recipeData.author)) {
+        recipeAuthor = recipeData.author[0].name;
+      } else if (typeof recipeData.author === "object") {
+        recipeAuthor = recipeData.author.name;
+      }
+    }
+
+    //Total time
+    let recipeTime = "-";
+    if ("totalTime" in recipeData && typeof recipeData.totalTime === "string") {
+      recipeTime = convertTime(recipeData.totalTime);
+    }
+
+    // // Get yield (servings)
+    let recipeYield = "-";
+    if ("recipeYield" in recipeData && recipeData.recipeYield) {
+      if (typeof recipeData.recipeYield === "string") {
+        // Search for "undefined" and remove it + whitespace
+        recipeYield = recipeData.recipeYield
+          .replace(/undefined/g, "")
+          .trim()
+          .replace(/\s+/g, " ");
+      } else if (typeof recipeData.recipeYield === "number") {
+        // Convert to string for consistency
+        recipeYield = recipeData.recipeYield.toString();
+      }
+    }
+
     return {
       success: true,
       recipe: {
         title: recipeTitle,
+        author: recipeAuthor,
+        time: recipeTime,
+        yield: recipeYield,
         ingredients: decodedIngredients,
         instructions: decodedInstructions,
       },

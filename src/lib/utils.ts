@@ -42,3 +42,30 @@ export function generateSlug(title: string): string {
     .replace(/^-+/, "") // Remove leading dashes
     .replace(/-+$/, ""); // Remove trailing dashes
 }
+
+// Function to convert PT time to hours and minutes
+export function convertTime(duration: string) {
+  const regex = /PT(?:(\d+(\.\d+)?)H)?(?:(\d+(\.\d+)?)M)?/;
+  const matches = duration.match(regex);
+  if (!matches) {
+    return "Invalid duration format";
+  }
+  // Extract hours (allow decimal)
+  let hours = matches[1] ? parseFloat(matches[1]) : 0;
+  // Extract minutes
+  let minutes = matches[3] ? parseInt(matches[3]) : 0;
+
+  // Convert decimal hours to minutes
+  minutes += Math.floor((hours % 1) * 60);
+  hours = Math.floor(hours);
+
+  if (hours > 0 && minutes > 0) {
+    return `${hours} hour${hours > 1 ? "s" : ""} and ${minutes} minute${
+      minutes > 1 ? "s" : ""
+    }`;
+  } else if (hours > 0) {
+    return `${hours} hour${hours > 1 ? "s" : ""}`;
+  } else {
+    return `${minutes} minute${minutes > 1 ? "s" : ""}`;
+  }
+}

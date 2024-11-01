@@ -9,6 +9,7 @@ import {
   Title,
   Text,
   Space,
+  LoadingOverlay,
 } from "@mantine/core";
 import { useField } from "@mantine/form";
 import { useState } from "react";
@@ -54,17 +55,21 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
   return (
     <>
       <Flex
+        component="form"
         gap="md"
         justify="center"
         align="center"
         direction={{ base: "column", sm: "row" }}
       >
+        <LoadingOverlay visible={loading} overlayProps={{ blur: 3 }} />
+
         <TextInput
           {...field.getInputProps()}
           aria-label="Enter recipe URL"
           placeholder="Recipe URL"
           size="md"
           style={{ width: "100%", flexGrow: 1 }}
+          disabled={loading}
         />
         <Button
           fullWidth
@@ -73,6 +78,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           size="md"
           onClick={handleSubmit}
           disabled={loading}
+          type="submit"
         >
           Declutter
         </Button>

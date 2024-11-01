@@ -9,8 +9,6 @@ export default async function RecipePage({
 }: {
   params: { id: string };
 }) {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
   const recipe = await prisma.recipe.findUnique({
     where: {
       id: parseInt(params.id),

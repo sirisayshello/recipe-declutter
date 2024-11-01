@@ -48,7 +48,10 @@ export function convertTime(duration: string) {
   const regex = /PT(?:(\d+(\.\d+)?)H)?(?:(\d+(\.\d+)?)M)?/;
   const matches = duration.match(regex);
   if (!matches) {
-    return "Invalid duration format";
+    console.log("Could not collect recipe time data. Invalid duration format.");
+    // if we can't parse the time because it's written in the wrong format,
+    // simply return a dash, which will be the value saved in the users recipe.
+    return "-";
   }
   // Extract hours (allow decimal)
   let hours = matches[1] ? parseFloat(matches[1]) : 0;

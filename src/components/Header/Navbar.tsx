@@ -1,18 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Container,
-  Group,
-  Burger,
-  Anchor,
-  Flex,
-  ActionIcon,
-} from "@mantine/core";
+import { Container, Group, Burger, Anchor, Flex } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconUser } from "@tabler/icons-react";
 import classes from "./Navbar.module.css";
 import Link from "next/link";
+import { LoginButton } from "../LogInButton";
+import { useSession } from "next-auth/react";
 
 const links = [
   { link: "/dashboard", label: "Dashboard" },
@@ -24,6 +18,7 @@ const links = [
 ];
 
 export const Navbar = () => {
+  const { data: session } = useSession();
   const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[0].link);
 
@@ -48,7 +43,7 @@ export const Navbar = () => {
           {items}
         </Group>
         <Burger
-          color="#fff9f5"
+          color="cream.0"
           opened={opened}
           onClick={toggle}
           hiddenFrom="xs"
@@ -63,15 +58,7 @@ export const Navbar = () => {
           Recipe Declutter
         </Anchor>
         <Flex hiddenFrom="xs">
-          <ActionIcon
-            color="#fff9f5"
-            variant="transparent"
-            component="a"
-            href="/dashboard"
-            aria-label="Dashboard"
-          >
-            <IconUser stroke={1} style={{ justifySelf: "end" }} />
-          </ActionIcon>
+          <LoginButton session={session} />
         </Flex>
       </Container>
     </header>

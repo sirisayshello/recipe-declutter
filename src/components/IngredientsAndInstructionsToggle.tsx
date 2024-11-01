@@ -14,9 +14,9 @@ export const IngredientsAndInstructionsToggle = ({
   return (
     <Stack component="section" style={{ minHeight: "50dvh" }}>
       <Group justify="center" mb="md">
-        <Text size="xs">Author {recipe.author}</Text>
+        <Text size="xs">Author: {recipe.author}</Text>
         <Text size="xs">Total time: {recipe.time}</Text>
-        <Text size="xs">Yield: {recipe.yield}</Text>
+        <Text size="xs">Servings: {recipe.yield}</Text>
       </Group>
       <Group justify="space-between" grow>
         <Button

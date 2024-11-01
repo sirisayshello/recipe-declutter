@@ -1,4 +1,5 @@
 import { Anchor, List, Title } from "@mantine/core";
+import Link from "next/link";
 
 export default async function RecentRecipes({
   recipes,
@@ -18,7 +19,11 @@ export default async function RecentRecipes({
                 padding: "10px 0",
               }}
             >
-              <Anchor href={`/dashboard/${recipe.id}`} underline="never">
+              <Anchor
+                component={Link}
+                href={`/dashboard/${recipe.id}`}
+                underline="never"
+              >
                 {recipe.title}
               </Anchor>
             </li>

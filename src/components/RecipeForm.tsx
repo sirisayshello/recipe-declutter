@@ -63,7 +63,6 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           {...field.getInputProps()}
           aria-label="Enter recipe URL"
           placeholder="Recipe URL"
-          radius="xl"
           size="md"
           style={{ width: "100%", flexGrow: 1 }}
         />
@@ -71,9 +70,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           fullWidth
           // style={{ flexBasis: "30%" }}
           variant="filled"
-          color="dustyRed"
           size="md"
-          radius="xl"
           onClick={handleSubmit}
           disabled={loading}
         >
@@ -117,9 +114,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
                   href="/signup"
                   component={Link}
                   variant="filled"
-                  color="gray"
                   size="md"
-                  radius="xl"
                 >
                   Create account
                 </Button>

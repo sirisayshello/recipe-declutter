@@ -83,9 +83,7 @@ export default function SignUpForm() {
         mb="md"
         fullWidth
         variant="filled"
-        color="gray"
         size="md"
-        radius="xl"
       >
         Submit
       </Button>

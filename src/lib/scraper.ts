@@ -177,6 +177,9 @@ export const getScrapedRecipe = async (
     // // Get yield (servings)
     let recipeYield = "-";
     if ("recipeYield" in recipeData && recipeData.recipeYield) {
+      if (Array.isArray(recipeData.recipeYield)) {
+        recipeYield = recipeData.recipeYield[0].toString();
+      }
       if (typeof recipeData.recipeYield === "string") {
         // Search for "undefined" and remove it + whitespace
         recipeYield = recipeData.recipeYield

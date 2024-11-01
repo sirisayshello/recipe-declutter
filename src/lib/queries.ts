@@ -65,6 +65,9 @@ export const saveRecipe = async (
       data: {
         title: recipe.title,
         slug: generateSlug(recipe.title),
+        author: recipe.author,
+        time: recipe.time,
+        yield: recipe.yield,
         ingredients: recipe.ingredients,
         instructions: recipe.instructions,
         userId: user.id,
@@ -132,12 +135,18 @@ export const updateRecipe = async (
       update: {
         title: recipe.title,
         slug: generateSlug(recipe.title),
+        author: recipe.author,
+        time: recipe.time,
+        yield: recipe.yield,
         ingredients: recipe.ingredients,
         instructions: recipe.instructions,
       },
       create: {
         title: recipe.title,
         slug: generateSlug(recipe.title),
+        author: recipe.author,
+        time: recipe.time,
+        yield: recipe.yield,
         ingredients: recipe.ingredients,
         instructions: recipe.instructions,
         // userId: user.id,

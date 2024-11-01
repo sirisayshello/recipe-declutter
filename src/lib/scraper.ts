@@ -159,7 +159,7 @@ export const getScrapedRecipe = async (
     }
 
     // Get author
-    let recipeAuthor = "-";
+    let recipeAuthor = "Unknown";
     if ("author" in recipeData) {
       if (Array.isArray(recipeData.author)) {
         recipeAuthor = recipeData.author[0].name;

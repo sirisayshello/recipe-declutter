@@ -1,7 +1,13 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Alert, Button, PasswordInput, TextInput } from "@mantine/core";
+import {
+  Alert,
+  Button,
+  LoadingOverlay,
+  PasswordInput,
+  TextInput,
+} from "@mantine/core";
 import { hasLength, isEmail, useForm } from "@mantine/form";
 
 type UserData = {
@@ -12,6 +18,8 @@ type UserData = {
 
 export default function SignUpForm() {
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const form = useForm({
@@ -26,6 +34,7 @@ export default function SignUpForm() {
 
   const submitUserData = async (userData: UserData) => {
     setError(null); // Clear any previous error
+    setLoading(true);
 
     try {
       const res = await fetch("/api/signup", {
@@ -47,11 +56,15 @@ export default function SignUpForm() {
       } else {
         setError("An unknown error occurred.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form onSubmit={form.onSubmit(submitUserData)}>
+      <LoadingOverlay visible={loading} overlayProps={{ blur: 3 }} />
+
       {error && (
         <Alert variant="light" color="red" title="Sign up failed" mb="md">
           {error}
@@ -61,7 +74,8 @@ export default function SignUpForm() {
         {...form.getInputProps("name")}
         key={form.key("name")}
         label="Name"
-        placeholder="Jane Doe"
+        placeholder="Your name"
+        disabled={loading}
       />
       <TextInput
         {...form.getInputProps("email")}
@@ -69,6 +83,7 @@ export default function SignUpForm() {
         mt="md"
         label="Email"
         placeholder="your@email.com"
+        disabled={loading}
       />
       <PasswordInput
         {...form.getInputProps("password")}
@@ -76,6 +91,7 @@ export default function SignUpForm() {
         mt="md"
         label="Password"
         placeholder="••••••"
+        disabled={loading}
       />
       <Button
         type="submit"
@@ -84,6 +100,7 @@ export default function SignUpForm() {
         fullWidth
         variant="filled"
         size="md"
+        disabled={loading}
       >
         Submit
       </Button>

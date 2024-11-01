@@ -1,7 +1,6 @@
 .header {
   height: 56px;
   background-color: var(--mantine-color-dustyRed-7);
-  border-bottom: 1px solid var(--mantine-color-gray-3);
 }
 
 .inner {
@@ -16,7 +15,7 @@
   line-height: 1;
   padding: 8px 12px;
   text-decoration: none;
-  color: #fff9f5;
+  color: var(--mantine-color-cream-0);
   font-size: var(--mantine-font-size-sm);
   font-weight: 500;
 }

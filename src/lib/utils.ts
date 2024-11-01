@@ -43,7 +43,7 @@ export function generateSlug(title: string): string {
     .replace(/-+$/, ""); // Remove trailing dashes
 }
 
-// Function to convert PT time to hours and minutes
+// Function to convert ISO 8601 duration format to hours and minutes
 export function convertTime(duration: string) {
   // Check if the input is a plain number (e.g., "75")
   const plainMinutes = parseInt(duration);
@@ -51,12 +51,13 @@ export function convertTime(duration: string) {
     return `${plainMinutes} min`;
   }
 
-  // Regex to match ISO 8601 duration format (for example "P0Y0M0DT0H75M0S")
+  // Regex to match ISO 8601 format (for example "P0Y0M0DT0H75M0S")
   const regex =
     /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?T(?:(\d+(\.\d+)?)H)?(?:(\d+(\.\d+)?)M)?(?:(\d+(\.\d+)?)S)?/;
   const matches = duration.match(regex);
 
-  // If no matches found, log the error and return "-"
+  // If no matches are found, and we can't parse the time because it's written in the wrong format,
+  // simply return a dash, which will be the value saved in the users recipe.
   if (!matches) {
     console.log(
       `Could not collect recipe time data. Invalid duration format: "${duration}"`

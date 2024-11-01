@@ -87,9 +87,10 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
       {recipe?.ingredients && recipe.instructions.length > 0 && (
         <Box
           component="section"
+          pt="md"
+          mt="xl"
           style={{
             borderTop: "1px solid var(--mantine-color-gray-3)",
-            paddingTop: "10px",
           }}
         >
           <Title order={2} ta="center">

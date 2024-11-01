@@ -23,7 +23,6 @@ export const IngredientsAndInstructionsToggle = ({
         <Button
           variant={view === "ingredients" ? "filled" : "light"}
           size="md"
-          radius="xl"
           onClick={() => setView("ingredients")}
         >
           Ingredients
@@ -32,7 +31,6 @@ export const IngredientsAndInstructionsToggle = ({
         <Button
           variant={view === "instructions" ? "filled" : "light"}
           size="md"
-          radius="xl"
           onClick={() => setView("instructions")}
         >
           Instructions

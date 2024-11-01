@@ -1,5 +1,6 @@
 import SignUpForm from "@/components/SignUpForm";
 import { Anchor, Container, Title, Text } from "@mantine/core";
+import Link from "next/link";
 
 export default function SignUp() {
   return (
@@ -12,7 +13,7 @@ export default function SignUp() {
         <Text ta="center">
           Already have an account?{" "}
           <span>
-            <Anchor href="/login" underline="never">
+            <Anchor component={Link} href="/login" underline="never">
               Log in
             </Anchor>
           </span>
@@ -21,4 +22,3 @@ export default function SignUp() {
     </>
   );
 }
-

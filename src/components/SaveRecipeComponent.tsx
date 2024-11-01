@@ -73,14 +73,7 @@ export const SaveRecipeComponent = ({
       </Alert>
 
       {/* Save button that triggers modal */}
-      <Button
-        onClick={open}
-        disabled={isLoading}
-        variant="filled"
-        color="dustyRed"
-        size="md"
-        radius="xl"
-      >
+      <Button onClick={open} disabled={isLoading} variant="filled" size="md">
         {isLoading ? <Loader size="sm" color="white" /> : "Save Recipe"}
       </Button>
 
@@ -107,9 +100,7 @@ export const SaveRecipeComponent = ({
           onClick={handleSaveRecipe}
           disabled={isLoading}
           variant="filled"
-          color="gray"
           size="md"
-          radius="xl"
         >
           {isLoading ? "Saving..." : "Save Recipe"}
         </Button>

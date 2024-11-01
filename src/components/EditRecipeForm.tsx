@@ -99,9 +99,7 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
         <Group justify="space-between" grow mt="md" mb="md">
           <Button
             variant={view === "ingredients" ? "filled" : "light"}
-            color="dustyRed"
             size="md"
-            radius="xl"
             onClick={() => setView("ingredients")}
           >
             Ingredients
@@ -109,9 +107,7 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
 
           <Button
             variant={view === "instructions" ? "filled" : "light"}
-            color="dustyRed"
             size="md"
-            radius="xl"
             onClick={() => setView("instructions")}
           >
             Instructions
@@ -194,14 +190,12 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
         </Fieldset>
 
         <Group mt="md" mb="md">
-          <Button color="dustyRed" size="md" radius="xl" type="submit">
+          <Button size="md" type="submit">
             Save Changes
           </Button>
           <Button
             component="a"
-            color="dustyRed"
             size="md"
-            radius="xl"
             onClick={() => router.push(`/dashboard/${recipe.id}`)}
           >
             Cancel

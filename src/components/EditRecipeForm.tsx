@@ -30,6 +30,9 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
     mode: "uncontrolled",
     initialValues: {
       title: recipe.title,
+      author: recipe.author,
+      time: recipe.time,
+      yield: recipe.yield,
       ingredients: recipe.ingredients,
       instructions: recipe.instructions,
     },
@@ -59,6 +62,9 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
     const updatedRecipe = {
       ...recipe,
       title: values.title,
+      author: values.author,
+      time: values.time,
+      yield: values.yield,
       ingredients: values.ingredients.filter(
         (ingredient) => ingredient.trim() !== ""
       ),
@@ -94,6 +100,21 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
             label="Title"
             placeholder="Recipe title"
             {...form.getInputProps("title")}
+          />
+          <TextInput
+            label="Author"
+            placeholder="Recipe author"
+            {...form.getInputProps("author")}
+          />
+          <TextInput
+            label="Total time"
+            placeholder="Total time to cook"
+            {...form.getInputProps("time")}
+          />
+          <TextInput
+            label="Servings"
+            placeholder="Serving size"
+            {...form.getInputProps("yield")}
           />
         </Fieldset>
         <Group justify="space-between" grow mt="md" mb="md">

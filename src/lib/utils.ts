@@ -45,30 +45,33 @@ export function generateSlug(title: string): string {
 
 // Function to convert PT time to hours and minutes
 export function convertTime(duration: string) {
-  const regex = /PT(?:(\d+(\.\d+)?)H)?(?:(\d+(\.\d+)?)M)?/;
+  // Check if the input is a plain number (e.g., "75")
+  const plainMinutes = parseInt(duration);
+  if (!isNaN(plainMinutes)) {
+    return `${plainMinutes} min`;
+  }
+
+  // Regex to match ISO 8601 duration format (for example "P0Y0M0DT0H75M0S")
+  const regex =
+    /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?T(?:(\d+(\.\d+)?)H)?(?:(\d+(\.\d+)?)M)?(?:(\d+(\.\d+)?)S)?/;
   const matches = duration.match(regex);
+
+  // If no matches found, log the error and return "-"
   if (!matches) {
-    console.log("Could not collect recipe time data. Invalid duration format.");
-    // if we can't parse the time because it's written in the wrong format,
-    // simply return a dash, which will be the value saved in the users recipe.
+    console.log(
+      `Could not collect recipe time data. Invalid duration format: "${duration}"`
+    );
     return "-";
   }
-  // Extract hours (allow decimal)
-  let hours = matches[1] ? parseFloat(matches[1]) : 0;
-  // Extract minutes
-  let minutes = matches[3] ? parseInt(matches[3]) : 0;
 
-  // Convert decimal hours to minutes
-  minutes += Math.floor((hours % 1) * 60);
-  hours = Math.floor(hours);
+  // Extract hours and minutes from the T section
+  const hours = matches[4] ? Math.floor(parseFloat(matches[4])) : 0; // 0 if undefined
+  const minutes = matches[6] ? Math.floor(parseInt(matches[6])) : 0; // 0 if undefined
 
-  if (hours > 0 && minutes > 0) {
-    return `${hours} hour${hours > 1 ? "s" : ""} and ${minutes} minute${
-      minutes > 1 ? "s" : ""
-    }`;
-  } else if (hours > 0) {
-    return `${hours} hour${hours > 1 ? "s" : ""}`;
-  } else {
-    return `${minutes} minute${minutes > 1 ? "s" : ""}`;
-  }
+  // Format the result as "h min"
+  return (
+    `${hours > 0 ? hours + " h" : ""} ${
+      minutes > 0 ? minutes + " min" : ""
+    }`.trim() || "0 min"
+  );
 }

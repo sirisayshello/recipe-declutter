@@ -12,6 +12,9 @@ model Recipe {
   id           Int      @id @default(autoincrement())
   title        String
   slug         String
+  author       String
+  time         String
+  yield        String
   ingredients  String[]
   instructions String[]
   User         User?    @relation(fields: [userId], references: [id])

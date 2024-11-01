@@ -15,6 +15,9 @@ type UserRecipe = {
   id: number;
   title: string;
   slug: string;
+  author: string;
+  time: string;
+  yield: string;
   ingredients: Ingredient[];
   instructions: Instruction[];
   userId: string | null;
@@ -51,6 +54,9 @@ type SaveRecipeResponse = {
     slug?: string;
     ingredients: string[];
     instructions: string[];
+    author: string;
+    time: string;
+    yield: string;
   };
   error?: {
     message: string;

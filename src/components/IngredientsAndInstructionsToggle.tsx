@@ -14,10 +14,9 @@ export const IngredientsAndInstructionsToggle = ({
   return (
     <Stack component="section" style={{ minHeight: "50dvh" }}>
       <Group justify="center" mb="md">
-        <Text size="xs">Prep time: 20min</Text>
-        <Text size="xs">Cook time: 30min</Text>
-        <Text size="xs">Total time: 50min</Text>
-        <Text size="xs">Yield: 4 servings</Text>
+        <Text size="xs">Author {recipe.author}</Text>
+        <Text size="xs">Total time: {recipe.time}</Text>
+        <Text size="xs">Yield: {recipe.yield}</Text>
       </Group>
       <Group justify="space-between" grow>
         <Button

@@ -7,9 +7,7 @@
     "build": "next build",
     "postbuild": "npx playwright install && npx playwright install-deps",
     "start": "next start",
-    "lint": "next lint"
-  },
-  "prisma": {
+    "lint": "next lint",
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {

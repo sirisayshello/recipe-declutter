@@ -1,5 +1,6 @@
 "use client";
 
+import { updateRecipe } from "@/lib/queries";
 import {
   ActionIcon,
   Button,
@@ -12,18 +13,19 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconTrash, IconPlus } from "@tabler/icons-react";
-import { useState } from "react";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { updateRecipe } from "@/lib/queries";
+import { useState } from "react";
 
 type EditRecipeProps = {
   recipe: UserRecipe;
 };
 
 export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
-  const [view, setView] = useState("ingredients");
-  const [tags, setTags] = useState<string[]>([]);
+  const [view, setView] = useState<"ingredients" | "instructions">(
+    "ingredients"
+  );
+  const [tags, setTags] = useState<string[]>(recipe.tags || []);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
@@ -32,60 +34,48 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
     mode: "uncontrolled",
     initialValues: {
       title: recipe.title,
-      ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
+      ingredients: recipe.ingredients || [""],
+      instructions: recipe.instructions || [""],
+    },
+    validate: {
+      title: (value) => (value ? null : "Title is required"),
     },
   });
 
-  // Add a new ingredient
-  const addIngredient = () => {
-    form.insertListItem("ingredients", "");
-  };
-
-  // Remove an ingredient
-  const removeIngredient = (index: number) => {
-    form.removeListItem("ingredients", index);
-  };
-
-  // Add a new instruction
-  const addInstruction = () => {
-    form.insertListItem("instructions", "");
-  };
-
-  // Remove an instruction
-  const removeInstruction = (index: number) => {
-    form.removeListItem("instruction", index);
-  };
+  const addItem = (field: "ingredients" | "instructions") =>
+    form.insertListItem(field, "");
+  const removeItem = (field: "ingredients" | "instructions", index: number) =>
+    form.removeListItem(field, index);
 
   async function handleSubmit(values: Recipe) {
-    const updatedRecipe = {
-      ...recipe,
-      title: values.title,
-      ingredients: values.ingredients.filter(
-        (ingredient) => ingredient.trim() !== ""
-      ),
-      instructions: values.instructions.filter(
-        (instruction) => instruction.trim() !== ""
-      ),
-    };
+    if (!form.validate().hasErrors) {
+      const updatedRecipe = {
+        ...recipe,
+        title: values.title,
+        ingredients: values.ingredients.filter(
+          (ingredient) => ingredient.trim() !== ""
+        ),
+        instructions: values.instructions.filter(
+          (instruction) => instruction.trim() !== ""
+        ),
+        tags,
+      };
 
-    try {
-      const result = await updateRecipe(updatedRecipe);
+      try {
+        const result = await updateRecipe(updatedRecipe);
+        if (!result.success)
+          throw new Error(result.error?.message || "Failed to save recipe");
 
-      if (!result.success) {
-        setError(result.error?.message || "Failed to save recipe");
-        return;
+        setSuccess(true);
+        console.log(success);
+
+        setTimeout(() => router.push(`/dashboard/${recipe.id}`), 1500);
+      } catch (err) {
+        console.error(err);
+        setError("An error occurred while saving. Please try again.");
+        console.log(error);
       }
-
-      setSuccess(true);
-      console.log(success);
-    } catch (err) {
-      console.error(err);
-      setError("An unexpected error occurred. Please try again.");
-      console.log(error);
     }
-    console.log("Updated Recipe:", updatedRecipe);
-    router.push(`/dashboard/${recipe.id}`);
   }
 
   return (
@@ -98,87 +88,57 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
             {...form.getInputProps("title")}
           />
         </Fieldset>
-        <Group justify="space-between" grow mt="md" mb="md">
-          <Button
-            variant={view === "ingredients" ? "filled" : "light"}
-            size="md"
-            onClick={() => setView("ingredients")}
-          >
-            Ingredients
-          </Button>
 
-          <Button
-            variant={view === "instructions" ? "filled" : "light"}
-            size="md"
-            onClick={() => setView("instructions")}
-          >
-            Instructions
-          </Button>
+        {/* Switch view buttons */}
+        <Group justify="space-between" grow mt="md" mb="md">
+          {["ingredients", "instructions"].map((section) => (
+            <Button
+              key={section}
+              variant={view === section ? "filled" : "light"}
+              size="md"
+              onClick={() => setView(section as "ingredients" | "instructions")}
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </Button>
+          ))}
         </Group>
 
-        {/* Ingredients Section */}
-        {view === "ingredients" && (
-          <Fieldset mb="md" legend="Ingredients">
-            {form.values.ingredients.map((ingredient, index) => (
-              <Group wrap="nowrap" key={index} mt="xs">
+        {/* Ingredients or Instructions Section */}
+        <Fieldset mb="md" legend={view.charAt(0).toUpperCase() + view.slice(1)}>
+          {form.values[view].map((item, index) => (
+            <Group wrap="nowrap" key={index} mt="xs" align="flex-start">
+              {view === "ingredients" ? (
                 <TextInput
                   style={{ width: "100%" }}
                   placeholder={`Ingredient ${index + 1}`}
-                  {...form.getInputProps(`ingredients.${index}`)}
+                  {...form.getInputProps(`${view}.${index}`)}
                 />
-
-                <ActionIcon
-                  onClick={() => removeIngredient(index)}
-                  variant="transparent"
-                  aria-label="Delete ingredient"
-                >
-                  <IconTrash />
-                </ActionIcon>
-              </Group>
-            ))}
-
-            <Button
-              leftSection={<IconPlus size={14} />}
-              onClick={addIngredient}
-              variant="transparent"
-              aria-label="Add ingredient"
-            >
-              Add ingredient
-            </Button>
-          </Fieldset>
-        )}
-
-        {/* Instructions Section */}
-        {view === "instructions" && (
-          <Fieldset mb="md" legend="Instructions">
-            {form.values.instructions.map((instruction, index) => (
-              <Group wrap="nowrap" key={index} mt="xs" align="flex-start">
+              ) : (
                 <Textarea
                   style={{ width: "100%" }}
                   placeholder={`Instruction ${index + 1}`}
                   minRows={3}
-                  {...form.getInputProps(`instructions.${index}`)}
+                  {...form.getInputProps(`${view}.${index}`)}
                 />
-                <ActionIcon
-                  onClick={() => removeInstruction(index)}
-                  variant="transparent"
-                  aria-label="Delete ingredient"
-                >
-                  <IconTrash />
-                </ActionIcon>
-              </Group>
-            ))}
-
-            <Button
-              leftSection={<IconPlus size={14} />}
-              onClick={addInstruction}
-              variant="transparent"
-              aria-label="Add ingredient"
-            >
-              Add instruction
-            </Button>
-          </Fieldset>
-        )}
+              )}
+              <ActionIcon
+                onClick={() => removeItem(view, index)}
+                variant="transparent"
+                aria-label={`Delete ${view}`}
+              >
+                <IconTrash />
+              </ActionIcon>
+            </Group>
+          ))}
+          <Button
+            leftSection={<IconPlus size={14} />}
+            onClick={() => addItem(view)}
+            variant="light"
+            aria-label={`Add ${view}`}
+          >
+            Add {view.slice(0, -1)}
+          </Button>
+        </Fieldset>
 
         <Fieldset mb="md" legend="Recipe tags">
           <TagsInput

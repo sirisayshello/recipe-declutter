@@ -135,7 +135,6 @@ export const updateRecipe = async (
       update: {
         title: recipe.title,
         slug: generateSlug(recipe.title),
-        author: recipe.author,
         time: recipe.time,
         yield: recipe.yield,
         ingredients: recipe.ingredients,

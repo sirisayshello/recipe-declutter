@@ -34,8 +34,11 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
     mode: "uncontrolled",
     initialValues: {
       title: recipe.title,
-      ingredients: recipe.ingredients || [""],
-      instructions: recipe.instructions || [""],
+      author: recipe.author,
+      time: recipe.time,
+      yield: recipe.yield,
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
     },
     validate: {
       title: (value) => (value ? null : "Title is required"),
@@ -86,6 +89,16 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
             label="Title"
             placeholder="Recipe title"
             {...form.getInputProps("title")}
+          />
+          <TextInput
+            label="Total time"
+            placeholder="Total time to cook"
+            {...form.getInputProps("time")}
+          />
+          <TextInput
+            label="Servings"
+            placeholder="Serving size"
+            {...form.getInputProps("yield")}
           />
         </Fieldset>
 

@@ -12,6 +12,7 @@ type Recipe = {
 };
 
 type UserRecipe = {
+  tags?: string[];
   id: number;
   title: string;
   slug: string;

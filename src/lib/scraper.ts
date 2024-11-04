@@ -90,9 +90,14 @@ export const getScrapedRecipe = async (
       );
     }
 
+    type StructuredInstruction = {
+      name: string;
+      text: string[];
+    };
+
     const ingredientsData = recipeData.recipeIngredient;
     let instructionsArray: ScrapedInstruction[];
-    let instructionsData: string[] = [];
+    let decodedInstructions: string[] | StructuredInstruction[] = [];
 
     if (
       Array.isArray(recipeData.recipeInstructions) &&
@@ -112,7 +117,8 @@ export const getScrapedRecipe = async (
 
     // case string:
     if (typeof instructionsArray[0] === "string") {
-      instructionsData = instructionsArray as string[];
+      const instructions = instructionsArray as string[];
+      decodedInstructions = decodeData(instructions);
 
       // case HowToSection:
     } else if (
@@ -120,10 +126,16 @@ export const getScrapedRecipe = async (
       instructionsArray[0]["@type"] === "HowToSection"
     ) {
       const sections = instructionsArray as HowToSection[];
-      sections.forEach((section) => {
-        const items = generateStringArray(section.itemListElement);
-        instructionsData.push(...items);
-      });
+      decodedInstructions = sections.map((section) => ({
+        name: section.name,
+        text: section.itemListElement.map((item) => item.text),
+      }));
+
+      // const sections = instructionsArray as HowToSection[];
+      // sections.forEach((section) => {
+      //   const items = generateStringArray(section.itemListElement);
+      //   instructionsData.push(...items);
+      // });
 
       // case HowToStep:
     } else if (
@@ -131,7 +143,7 @@ export const getScrapedRecipe = async (
       instructionsArray[0]["@type"] === "HowToStep"
     ) {
       const steps = instructionsArray as HowToStep[];
-      instructionsData = generateStringArray(steps);
+      decodedInstructions = decodeData(generateStringArray(steps));
 
       // (case error:)
     } else {
@@ -142,7 +154,6 @@ export const getScrapedRecipe = async (
     }
 
     const decodedIngredients: Ingredient[] = decodeData(ingredientsData);
-    const decodedInstructions: Instruction[] = decodeData(instructionsData);
 
     console.log("decodedIngredients", decodedIngredients);
     console.log("decodedInstructions", decodedInstructions);
@@ -161,7 +172,9 @@ export const getScrapedRecipe = async (
     // Get author
     let recipeAuthor = "Unknown";
     if ("author" in recipeData) {
-      if (Array.isArray(recipeData.author)) {
+      if (recipeData.author === null) {
+        recipeAuthor = "Unknown";
+      } else if (Array.isArray(recipeData.author)) {
         recipeAuthor = recipeData.author[0].name;
       } else if (typeof recipeData.author === "object") {
         recipeAuthor = recipeData.author.name;

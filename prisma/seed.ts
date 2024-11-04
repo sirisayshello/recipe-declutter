@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +10,8 @@ async function main() {
     create: {
       email: "joar@mail.se",
       name: "Joar",
-      password: "123", // add hashing when we are ready to test it
+      password: await bcrypt.hash("12345678", 10),
+      // add hashing when we are ready to test it
       recipes: {
         create: [
           {
@@ -17,6 +19,9 @@ async function main() {
             slug: "macka",
             ingredients: ["bröd", "ost", "smör"],
             instructions: ["Bre macka", "Hyvla ost", "Lägg ost på mackan"],
+            author: "Joar",
+            time: "2h",
+            yield: "1 serving",
           },
           {
             title: "Pasta Carbonara",
@@ -38,6 +43,9 @@ async function main() {
               "Add the crispy bacon and season with black pepper and salt to taste.",
               "Serve immediately.",
             ],
+            author: "Joar",
+            time: "30m",
+            yield: "4 servings",
           },
         ],
       },
@@ -50,7 +58,7 @@ async function main() {
     create: {
       email: "julia@mail.se",
       name: "Julia",
-      password: "456", // add hashing when we are ready to test it
+      password: await bcrypt.hash("12345678", 10),
       recipes: {
         create: [
           {
@@ -73,6 +81,9 @@ async function main() {
               "Bake for 30-35 minutes or until a toothpick inserted into the center comes out clean.",
               "Let the cake cool before serving.",
             ],
+            author: "Julia",
+            time: "1h",
+            yield: "8 servings",
           },
           {
             title: "Caesar Salad",
@@ -92,6 +103,9 @@ async function main() {
               "Top the salad with the grilled chicken strips.",
               "Serve immediately.",
             ],
+            author: "Julia",
+            time: "20m",
+            yield: "2 servings",
           },
         ],
       },
@@ -104,7 +118,7 @@ async function main() {
     create: {
       email: "siri@mail.se",
       name: "Siri",
-      password: "789", // add hashing when we are ready to test it
+      password: await bcrypt.hash("12345678", 10),
       recipes: {
         create: [
           {
@@ -128,6 +142,9 @@ async function main() {
               "Season with salt and pepper to taste.",
               "Serve hot.",
             ],
+            author: "Siri",
+            time: "30m",
+            yield: "4 servings",
           },
           {
             title: "Grilled Cheese Sandwich",
@@ -140,6 +157,9 @@ async function main() {
               "Place the sandwich in the skillet and cook until the bread is golden brown and the cheese is melted, about 2-3 minutes per side.",
               "Serve immediately.",
             ],
+            author: "Siri",
+            time: "10m",
+            yield: "1 serving",
           },
         ],
       },

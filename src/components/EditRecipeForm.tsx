@@ -3,8 +3,10 @@
 import {
   ActionIcon,
   Button,
+  Container,
   Fieldset,
   Group,
+  Space,
   TagsInput,
   Textarea,
   TextInput,
@@ -188,19 +190,31 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
             mb="md"
           />
         </Fieldset>
+        <Space h="xl" />
+        <Space h="xl" />
 
-        <Group mt="md" mb="md">
-          <Button size="md" type="submit">
-            Save Changes
-          </Button>
-          <Button
-            component="a"
-            size="md"
-            onClick={() => router.push(`/dashboard/${recipe.id}`)}
-          >
-            Cancel
-          </Button>
-        </Group>
+        <Container
+          pos="fixed"
+          style={{
+            backgroundColor: "white",
+            bottom: 0,
+            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+            width: "100%",
+          }}
+        >
+          <Group justify="center" mt="md" mb="md">
+            <Button size="md" type="submit">
+              Save Changes
+            </Button>
+            <Button
+              component="a"
+              size="md"
+              onClick={() => router.push(`/dashboard/${recipe.id}`)}
+            >
+              Cancel
+            </Button>
+          </Group>
+        </Container>
       </form>
     </>
   );

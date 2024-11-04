@@ -1,10 +1,38 @@
 "use client";
-import { Button, Group, List, Stack, Text } from "@mantine/core";
+import { Button, Group, List, Stack, Text, Title } from "@mantine/core";
 import { useState } from "react";
+import { render } from "react-dom";
 
 type IngAndInstToggleProps = {
   recipe: Recipe;
 };
+
+function renderInstructions(recipe) {
+  if (typeof recipe.instructions[0] === "string") {
+    return (
+      <List type="ordered" spacing="xs">
+        {recipe.instructions.map((instruction, index) => {
+          return <List.Item key={index}>{instruction}</List.Item>;
+        })}
+      </List>
+    );
+  } else if (typeof recipe.instructions[0] === "object") {
+    return (
+      <>
+        {recipe.instructions.map((section, sectionIndex) => (
+          <div key={sectionIndex}>
+            <Title order={3}>{section.name}</Title>
+            <List type="ordered" spacing="xs">
+              {section.text.map((instruction, index) => (
+                <List.Item key={index}>{instruction}</List.Item>
+              ))}
+            </List>
+          </div>
+        ))}
+      </>
+    );
+  }
+}
 
 export const IngredientsAndInstructionsToggle = ({
   recipe,
@@ -43,13 +71,7 @@ export const IngredientsAndInstructionsToggle = ({
           })}
         </List>
       )}
-      {view === "instructions" && (
-        <List type="ordered" spacing="xs">
-          {recipe.instructions.map((instruction, index) => {
-            return <List.Item key={index}>{instruction}</List.Item>;
-          })}
-        </List>
-      )}
+      {view === "instructions" && renderInstructions(recipe)}
     </Stack>
   );
 };

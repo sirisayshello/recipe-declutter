@@ -1,5 +1,5 @@
 "use client";
-import { Button, Group, List, Stack, Text, Title } from "@mantine/core";
+import { Button, Group, List, Stack, Text } from "@mantine/core";
 import { useState } from "react";
 import renderInstructions from "./RenderedInstructions";
 

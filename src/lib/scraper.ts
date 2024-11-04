@@ -7,6 +7,7 @@ import {
   generateStringArray,
   getErrorMessage,
 } from "@/lib/utils";
+import he from "he";
 
 import { Browser, chromium, Page } from "playwright";
 
@@ -90,14 +91,10 @@ export const getScrapedRecipe = async (
       );
     }
 
-    type StructuredInstruction = {
-      name: string;
-      text: string[];
-    };
-
     const ingredientsData = recipeData.recipeIngredient;
-    let instructionsArray: ScrapedInstruction[];
-    let decodedInstructions: string[] | StructuredInstruction[] = [];
+    const decodedIngredients: Ingredient[] = decodeData(ingredientsData);
+    let instructionsArray: ScrapedInstruction[] = [];
+    let decodedInstructions: string[] | SectionInstruction[] = [];
 
     if (
       Array.isArray(recipeData.recipeInstructions) &&
@@ -127,15 +124,9 @@ export const getScrapedRecipe = async (
     ) {
       const sections = instructionsArray as HowToSection[];
       decodedInstructions = sections.map((section) => ({
-        name: section.name,
-        text: section.itemListElement.map((item) => item.text),
+        name: he.decode(section.name),
+        text: decodeData(section.itemListElement.map((item) => item.text)),
       }));
-
-      // const sections = instructionsArray as HowToSection[];
-      // sections.forEach((section) => {
-      //   const items = generateStringArray(section.itemListElement);
-      //   instructionsData.push(...items);
-      // });
 
       // case HowToStep:
     } else if (
@@ -152,8 +143,6 @@ export const getScrapedRecipe = async (
         "Oh no! The provided URL does not contain the necessary recipe data."
       );
     }
-
-    const decodedIngredients: Ingredient[] = decodeData(ingredientsData);
 
     console.log("decodedIngredients", decodedIngredients);
     console.log("decodedInstructions", decodedInstructions);

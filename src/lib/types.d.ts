@@ -2,13 +2,18 @@ type Ingredient = string;
 
 type Instruction = string;
 
+type SectionInstruction = {
+  name: string;
+  text: string[];
+};
+
 type Recipe = {
   title: string;
   author: string;
   time: string;
   yield: string;
   ingredients: Ingredient[];
-  instructions: Instruction[];
+  instructions: (Instruction | SectionInstruction)[];
 };
 
 type UserRecipe = {

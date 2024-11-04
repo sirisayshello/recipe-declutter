@@ -1,8 +1,9 @@
 import { saveRecipe } from "@/lib/queries";
-import { Alert, Button, Loader, Modal, TagsInput, Text } from "@mantine/core";
+import { Button, Loader, Modal, Stack, TagsInput, Text } from "@mantine/core";
 import { useState } from "react";
 import { Session } from "next-auth";
 import { useDisclosure } from "@mantine/hooks";
+import { IconCheck } from "@tabler/icons-react";
 
 type SaveRecipeComponentProps = {
   session: Session | null;
@@ -33,7 +34,9 @@ export const SaveRecipeComponent = ({
       }
 
       setSuccess(true);
-      close();
+      setTimeout(() => {
+        close();
+      }, 1500);
     } catch (error) {
       console.error(error);
       setError("An unexpected error occurred. Please try again.");
@@ -44,34 +47,6 @@ export const SaveRecipeComponent = ({
 
   return (
     <>
-      {/* Error section for saving recipes. Probably we should combine this with the recipeError handling above. */}
-
-      <Alert
-        display={!!error ? "block" : "none"}
-        variant="light"
-        color="blue"
-        title="Alert title"
-        onClose={() => setError(null)}
-        withCloseButton
-        closeButtonLabel="Dismiss"
-      >
-        {error}
-      </Alert>
-
-      {/* When successfully saving a recipe: */}
-
-      <Alert
-        display={success ? "block" : "none"}
-        variant="light"
-        color="blue"
-        title="Alert title"
-        onClose={() => setSuccess(false)}
-        withCloseButton
-        closeButtonLabel="Dismiss"
-      >
-        Recipe saved successfully!
-      </Alert>
-
       {/* Save button that triggers modal */}
       <Button
         mt="md"
@@ -83,33 +58,53 @@ export const SaveRecipeComponent = ({
         {isLoading ? <Loader size="sm" color="white" /> : "Save Recipe"}
       </Button>
 
-      {/* Modal for adding tags */}
+      {/* Modal for adding tags and saving recipe */}
       <Modal
         opened={opened}
         onClose={close}
-        title="Add tags to recipe"
+        title="Save recipe"
         centered
+        size="md"
+        overlayProps={{
+          backgroundOpacity: 0.55,
+          blur: 3,
+        }}
       >
-        <Text pb="md" fw={700}>
-          {recipe.title}
-        </Text>
-        <TagsInput
-          label="Recipe tags"
-          placeholder="Press Enter to submit a tag"
-          data={[]}
-          value={tags}
-          onChange={setTags}
-          mb="md"
-        />
-        <Button
-          type="submit"
-          onClick={handleSaveRecipe}
-          disabled={isLoading}
-          variant="filled"
-          size="md"
-        >
-          {isLoading ? "Saving..." : "Save Recipe"}
-        </Button>
+        {success ? (
+          <Stack align="center">
+            <Text fw={700}>Recipe saved!</Text>
+            <IconCheck size={60} color="green" />
+          </Stack>
+        ) : (
+          <>
+            {error && (
+              <Stack align="center" mb="md">
+                <Text fw={700}>{error}</Text>
+              </Stack>
+            )}
+
+            <Text pb="md" fw={700}>
+              {recipe.title}
+            </Text>
+            <TagsInput
+              label="Recipe tags"
+              placeholder="Press Enter to submit a tag"
+              data={[]}
+              value={tags}
+              onChange={setTags}
+              mb="md"
+            />
+            <Button
+              type="submit"
+              onClick={handleSaveRecipe}
+              disabled={isLoading}
+              variant="filled"
+              size="md"
+            >
+              {isLoading ? <Loader size="sm" color="white" /> : "Save Recipe"}
+            </Button>
+          </>
+        )}
       </Modal>
     </>
   );

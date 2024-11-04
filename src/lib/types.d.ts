@@ -30,6 +30,10 @@ type Author = {
 
 type ScrapedAuthor = Author | Author[];
 
+type Yield = string | number;
+
+type ScrapedYield = Yield | Yield[];
+
 type RecipeError = {
   message: string;
 };

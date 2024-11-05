@@ -16,7 +16,7 @@ import { useState } from "react";
 import { IngredientsAndInstructionsToggle } from "./IngredientsAndInstructionsToggle";
 import { SaveRecipeComponent } from "./SaveRecipeComponent";
 import { Session } from "next-auth";
-import Link from "next/link";
+import CreateAccountCTA from "./CTABanner";
 
 type RecipeFormProps = {
   session?: Session | null;
@@ -84,6 +84,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
         </Button>
       </Flex>
 
+      <CreateAccountCTA />
       {recipe?.ingredients && recipe.instructions.length > 0 && (
         <Box
           component="section"
@@ -98,36 +99,11 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           </Title>
           <IngredientsAndInstructionsToggle recipe={recipe} />
 
-          {session !== undefined ? (
-            <Box component="section" mb="md">
-              {recipe && (
-                <SaveRecipeComponent recipe={recipe} session={session} />
-              )}
-            </Box>
-          ) : (
-            recipe && (
-              <Flex
-                direction="column"
-                gap="md"
-                align="center"
-                component="section"
-                color="gray"
-                mt="md"
-              >
-                <Title order={2} ta="center">
-                  Would you like to save your recipes for a later time?
-                </Title>
-                <Button
-                  href="/signup"
-                  component={Link}
-                  variant="filled"
-                  size="md"
-                >
-                  Create account
-                </Button>
-              </Flex>
-            )
-          )}
+          <Box component="section" mb="md">
+            {recipe && (
+              <SaveRecipeComponent recipe={recipe} session={session} />
+            )}
+          </Box>
         </Box>
       )}
 

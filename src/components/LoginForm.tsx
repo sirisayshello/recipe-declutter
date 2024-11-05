@@ -7,7 +7,8 @@ import {
   Button,
   Alert,
   PasswordInput,
-  LoadingOverlay,
+  Stack,
+  Paper,
 } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 
@@ -44,7 +45,6 @@ export default function LoginForm() {
       if (result?.error) {
         setError("Invalid email or password. Please try again.");
       } else {
-        form.reset(); // Reset form only if submission was successful
         router.push("/welcome"); // Redirect to landing page
       }
     } catch (error: unknown) {
@@ -60,42 +60,42 @@ export default function LoginForm() {
 
   return (
     <>
-      <form onSubmit={form.onSubmit(submitCredentials)}>
-        <LoadingOverlay visible={loading} overlayProps={{ blur: 3 }} />
+      <Paper
+        radius="md"
+        p={{ base: "md", sm: "xl" }}
+        withBorder
+        shadow="md"
+        maw="30rem"
+        mx="auto"
+      >
+        <form onSubmit={form.onSubmit(submitCredentials)}>
+          <Stack>
+            {error && (
+              <Alert variant="light" color="red" title="Sign up failed">
+                {error}
+              </Alert>
+            )}
+            <TextInput
+              {...form.getInputProps("email")}
+              key={form.key("email")}
+              label="Email"
+              placeholder="your@email.com"
+              disabled={loading}
+            />
+            <PasswordInput
+              {...form.getInputProps("password")}
+              key={form.key("password")}
+              label="Password"
+              placeholder="Your password"
+              disabled={loading}
+            />
 
-        {error && (
-          <Alert variant="light" color="red" title="Login failed" mt="md">
-            {error}
-          </Alert>
-        )}
-        <TextInput
-          {...form.getInputProps("email")}
-          key={form.key("email")}
-          mt="md"
-          label="Email"
-          placeholder="your@email.com"
-          disabled={loading}
-        />
-        <PasswordInput
-          {...form.getInputProps("password")}
-          key={form.key("password")}
-          mt="md"
-          label="Password"
-          placeholder="••••••"
-          disabled={loading}
-        />
-        <Button
-          type="submit"
-          mt="xl"
-          mb="md"
-          fullWidth
-          variant="filled"
-          size="md"
-          disabled={loading}
-        >
-          Submit
-        </Button>
-      </form>
+            <Button type="submit" mt="md" variant="filled" loading={loading}>
+              Log in
+            </Button>
+          </Stack>
+        </form>
+      </Paper>
     </>
   );
 }

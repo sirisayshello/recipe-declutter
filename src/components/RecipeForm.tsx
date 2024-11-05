@@ -46,7 +46,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
   });
 
   useEffect(() => {
-    // Check for pending recipe when session becomes available
+    // Check for pending recipe if session is available
     if (session) {
       const pendingRecipe = getPendingRecipe();
       if (pendingRecipe) {
@@ -68,7 +68,6 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
 
       if (data.recipe) {
         setRecipe(data.recipe);
-        // clearPendingRecipe();
       } else if (data.error) {
         setRecipeError(data.error);
         console.log("RecipeError:", data.error);
@@ -103,7 +102,6 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
         />
         <Button
           fullWidth
-          // style={{ flexBasis: "30%" }}
           variant="filled"
           size="md"
           onClick={handleSubmit}

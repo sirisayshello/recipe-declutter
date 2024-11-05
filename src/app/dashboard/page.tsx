@@ -4,7 +4,7 @@ import RecentRecipes from "@/components/RecentRecipes";
 import { getUserRecipes } from "@/lib/actions";
 import { getAuth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import LogoutButton from "@/components/LogoutButton";
+import SignOutButton from "@/components/SignOutButton";
 
 // categories hardcoded for now
 const categories = [
@@ -30,7 +30,6 @@ export default async function Dashboard() {
 
   return (
     <>
-      <LogoutButton />
       <Center component="section" mt="md">
         <Title mb="xl">Your Recipes</Title>
       </Center>
@@ -39,6 +38,7 @@ export default async function Dashboard() {
         <CategoryFilter categories={categories} />
         <RecentRecipes recipes={recipes} />
       </Stack>
+      <SignOutButton />
     </>
   );
 }

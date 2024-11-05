@@ -12,44 +12,75 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { useField } from "@mantine/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IngredientsAndInstructionsToggle } from "./IngredientsAndInstructionsToggle";
 import { SaveRecipeComponent } from "./SaveRecipeComponent";
 import { Session } from "next-auth";
 import CreateAccountCTA from "./CTABanner";
 
+
 type RecipeFormProps = {
   session?: Session | null;
+};
+
+const PENDING_RECIPE_KEY = "pendingRecipeToSave";
+
+const getPendingRecipe = () => {
+  if (typeof window === "undefined") return null;
+  const recipe = localStorage.getItem(PENDING_RECIPE_KEY);
+  return recipe ? JSON.parse(recipe) : null;
+};
+
+const clearPendingRecipe = () => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(PENDING_RECIPE_KEY);
+  }
 };
 
 export const RecipeForm = ({ session }: RecipeFormProps) => {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
   const [loading, setLoading] = useState(false);
+  const [shouldOpenModal, setShouldOpenModal] = useState(false);
 
   const field = useField({
     initialValue: "",
   });
 
+  useEffect(() => {
+    // Check for pending recipe if session is available
+    if (session) {
+      const pendingRecipe = getPendingRecipe();
+      if (pendingRecipe) {
+        setRecipe(pendingRecipe);
+        setShouldOpenModal(true);
+        clearPendingRecipe();
+      }
+    }
+  }, [session]);
+
   async function handleSubmit() {
     setLoading(true);
-
     setRecipe(undefined);
     setRecipeError(undefined);
 
-    const url = field.getValue();
+    try {
+      const url = field.getValue();
+      const data = await getScrapedRecipe(url);
 
-    const data = await getScrapedRecipe(url);
-    console.log(data);
-
-    if (data.recipe) {
-      setRecipe(data.recipe);
-    } else if (data.error) {
-      setRecipeError(data.error);
-      console.log("RecipeError:", data.error);
+      if (data.recipe) {
+        setRecipe(data.recipe);
+      } else if (data.error) {
+        setRecipeError(data.error);
+        console.log("RecipeError:", data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching recipe:", error);
+      setRecipeError({ message: "Failed to fetch recipe" });
+    } finally {
+      field.reset();
+      setLoading(false);
     }
-    field.reset();
-    setLoading(false);
   }
 
   return (
@@ -73,7 +104,6 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
         />
         <Button
           fullWidth
-          // style={{ flexBasis: "30%" }}
           variant="filled"
           size="md"
           onClick={handleSubmit}
@@ -101,7 +131,12 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
 
           <Box component="section" mb="md">
             {recipe && (
-              <SaveRecipeComponent recipe={recipe} session={session} />
+              <SaveRecipeComponent
+                recipe={recipe}
+                session={session}
+                isOpen={shouldOpenModal}
+                onClose={() => setShouldOpenModal(false)}
+              />
             )}
           </Box>
         </Box>

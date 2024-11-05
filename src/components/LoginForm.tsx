@@ -34,6 +34,8 @@ export default function LoginForm() {
     setError(""); // Clear any previous error
     setLoading(true);
 
+    values.email = values.email.toLowerCase();
+
     try {
       const result = await signIn("credentials", {
         redirect: false,

@@ -1,6 +1,8 @@
 "use server";
 import prisma from "./db";
 import { generateSlug } from "./utils";
+import { SaveRecipeResponse, UserRecipe } from "./jsonTypes";
+import { Prisma } from "@prisma/client";
 
 // Wrapper function to use when we want to fetch all recipes in a client component:
 export const getRecipes = async () => {
@@ -96,30 +98,6 @@ export const updateRecipe = async (
   recipe: UserRecipe | undefined
 ): Promise<SaveRecipeResponse> => {
   try {
-    // if (!userEmail) {
-    //   return {
-    //     success: false,
-    //     error: {
-    //       message: "You must be logged in to save recipes",
-    //     },
-    //   };
-    // }
-
-    // get the authenticated user from the db, by email
-    // maybe change to query by id instead?
-    // const user = await prisma.user.findUnique({
-    //   where: { email: userEmail },
-    // });
-
-    // if (!user) {
-    //   return {
-    //     success: false,
-    //     error: {
-    //       message: "User not found",
-    //     },
-    //   };
-    // }
-
     if (!recipe) {
       return {
         success: false,

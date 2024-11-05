@@ -50,7 +50,9 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
   const removeItem = (field: "ingredients" | "instructions", index: number) =>
     form.removeListItem(field, index);
 
-  async function handleSubmit(values: Recipe) {
+  async function handleSubmit(
+    values: Omit<UserRecipe, "id" | "slug" | "userId">
+  ) {
     if (!form.validate().hasErrors) {
       const updatedRecipe = {
         ...recipe,

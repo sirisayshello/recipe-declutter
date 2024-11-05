@@ -1,7 +1,7 @@
 "use server";
 import prisma from "./db";
 import { generateSlug } from "./utils";
-import { SaveRecipeResponse, UserRecipe } from "./jsonTypes";
+import { SaveRecipeResponse, UserRecipe } from "./types/jsonTypes";
 import { Prisma } from "@prisma/client";
 
 // Wrapper function to use when we want to fetch all recipes in a client component:

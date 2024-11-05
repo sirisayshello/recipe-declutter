@@ -197,6 +197,7 @@ export const getScrapedRecipe = async (
     return {
       success: true,
       recipe: {
+        url: url,
         title: recipeTitle,
         author: recipeAuthor,
         time: recipeTime,

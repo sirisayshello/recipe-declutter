@@ -116,7 +116,7 @@ export const updateRecipe = async (
         time: recipe.time,
         yield: recipe.yield,
         ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
+        instructions: recipe.instructions as Prisma.InputJsonArray,
       },
       create: {
         title: recipe.title,
@@ -125,7 +125,7 @@ export const updateRecipe = async (
         time: recipe.time,
         yield: recipe.yield,
         ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
+        instructions: recipe.instructions as Prisma.InputJsonArray,
         // userId: user.id,
       },
     });

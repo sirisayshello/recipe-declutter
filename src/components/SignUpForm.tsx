@@ -36,6 +36,8 @@ export default function SignUpForm() {
     setError(null); // Clear any previous error
     setLoading(true);
 
+    userData.email = userData.email.toLowerCase();
+
     try {
       const res = await fetch("/api/signup", {
         method: "POST",

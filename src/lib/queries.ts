@@ -65,6 +65,7 @@ export const saveRecipe = async (
 
     const newRecipe = await prisma.recipe.create({
       data: {
+        url: recipe.url,
         title: recipe.title,
         slug: generateSlug(recipe.title),
         author: recipe.author,
@@ -78,7 +79,10 @@ export const saveRecipe = async (
 
     return {
       success: true,
-      data: newRecipe,
+      data: {
+        ...newRecipe,
+        instructions: newRecipe.instructions as Prisma.InputJsonArray,
+      },
     };
   } catch (error) {
     console.error("Failed to save recipe:", error);
@@ -111,6 +115,7 @@ export const updateRecipe = async (
     const updatedRecipe = await prisma.recipe.upsert({
       where: { id: recipe.id },
       update: {
+        url: recipe.url,
         title: recipe.title,
         slug: generateSlug(recipe.title),
         time: recipe.time,
@@ -119,6 +124,7 @@ export const updateRecipe = async (
         instructions: recipe.instructions as Prisma.InputJsonArray,
       },
       create: {
+        url: recipe.url,
         title: recipe.title,
         slug: generateSlug(recipe.title),
         author: recipe.author,
@@ -132,7 +138,10 @@ export const updateRecipe = async (
 
     return {
       success: true,
-      data: updatedRecipe,
+      data: {
+        ...updatedRecipe,
+        instructions: updatedRecipe.instructions as Prisma.InputJsonArray,
+      },
     };
   } catch (error) {
     console.error("Failed to update recipe:", error);

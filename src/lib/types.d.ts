@@ -10,6 +10,7 @@ type SectionInstruction = {
 type Instructions = Instruction | SectionInstruction;
 
 type Recipe = {
+  url: string;
   title: string;
   author: string;
   time: string;
@@ -17,19 +18,6 @@ type Recipe = {
   ingredients: Ingredient[];
   instructions: Instructions[];
 };
-
-// type UserRecipe = {
-//   tags?: string[];
-//   id: number;
-//   title: string;
-//   slug: string;
-//   author: string;
-//   time: string;
-//   yield: string;
-//   ingredients: Ingredient[];
-//   instructions: JsonValue;
-//   userId: string | null;
-// };
 
 type Author = {
   "@type": "Person";
@@ -54,26 +42,10 @@ type GraphObject = {
   author?: ScrapedAuthor;
   totalTime?: string;
   recipeYield?: string | number;
+  url?: string;
 };
 
 type RawRecipeData = GraphObject | { "@graph": GraphObject[] } | GraphObject[];
-
-// type SaveRecipeResponse = {
-//   success: boolean;
-//   data?: {
-//     id: number;
-//     title: string;
-//     slug?: string;
-//     ingredients: string[];
-//     instructions: JsonValue;
-//     author: string;
-//     time: string;
-//     yield: string;
-//   };
-//   error?: {
-//     message: string;
-//   };
-// };
 
 type GetScrapedRecipeResponse = {
   success: boolean;

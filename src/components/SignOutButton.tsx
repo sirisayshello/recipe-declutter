@@ -3,7 +3,7 @@
 import { signOut } from "next-auth/react";
 import { Button } from "@mantine/core";
 
-export default function LogoutButton() {
+export default function SignOutButton() {
   const onSignOut = () => {
     signOut({ callbackUrl: "/" });
   };

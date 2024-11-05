@@ -37,6 +37,9 @@ export default function LoginForm() {
 
     values.email = values.email.toLowerCase();
 
+    // Half a second delay so that the loading spinner doesn't just flash
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     try {
       const result = await signIn("credentials", {
         redirect: false,
@@ -46,24 +49,24 @@ export default function LoginForm() {
 
       if (result?.error) {
         setError("Invalid email or password. Please try again.");
+        setLoading(false);
       } else {
         router.push("/welcome"); // Redirect to landing page
       }
     } catch (error: unknown) {
+      setLoading(false);
+
       if (error instanceof Error) {
         setError(error.message);
       } else {
         setError("An unknown error occurred.");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <>
       <Paper
-        radius="md"
         p={{ base: "md", sm: "xl" }}
         withBorder
         shadow="md"

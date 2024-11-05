@@ -7,6 +7,7 @@ import {
   generateStringArray,
   getErrorMessage,
 } from "@/lib/utils";
+import he from "he";
 
 import { Browser, chromium, Page } from "playwright";
 
@@ -91,8 +92,9 @@ export const getScrapedRecipe = async (
     }
 
     const ingredientsData = recipeData.recipeIngredient;
-    let instructionsArray: ScrapedInstruction[];
-    let instructionsData: string[] = [];
+    const decodedIngredients: Ingredient[] = decodeData(ingredientsData);
+    let instructionsArray: ScrapedInstruction[] = [];
+    let decodedInstructions: string[] | SectionInstruction[] = [];
 
     if (
       Array.isArray(recipeData.recipeInstructions) &&
@@ -112,7 +114,8 @@ export const getScrapedRecipe = async (
 
     // case string:
     if (typeof instructionsArray[0] === "string") {
-      instructionsData = instructionsArray as string[];
+      const instructions = instructionsArray as string[];
+      decodedInstructions = decodeData(instructions);
 
       // case HowToSection:
     } else if (
@@ -120,10 +123,10 @@ export const getScrapedRecipe = async (
       instructionsArray[0]["@type"] === "HowToSection"
     ) {
       const sections = instructionsArray as HowToSection[];
-      sections.forEach((section) => {
-        const items = generateStringArray(section.itemListElement);
-        instructionsData.push(...items);
-      });
+      decodedInstructions = sections.map((section) => ({
+        name: he.decode(section.name),
+        text: decodeData(section.itemListElement.map((item) => item.text)),
+      }));
 
       // case HowToStep:
     } else if (
@@ -131,7 +134,7 @@ export const getScrapedRecipe = async (
       instructionsArray[0]["@type"] === "HowToStep"
     ) {
       const steps = instructionsArray as HowToStep[];
-      instructionsData = generateStringArray(steps);
+      decodedInstructions = decodeData(generateStringArray(steps));
 
       // (case error:)
     } else {
@@ -140,9 +143,6 @@ export const getScrapedRecipe = async (
         "Oh no! The provided URL does not contain the necessary recipe data."
       );
     }
-
-    const decodedIngredients: Ingredient[] = decodeData(ingredientsData);
-    const decodedInstructions: Instruction[] = decodeData(instructionsData);
 
     console.log("decodedIngredients", decodedIngredients);
     console.log("decodedInstructions", decodedInstructions);
@@ -161,7 +161,9 @@ export const getScrapedRecipe = async (
     // Get author
     let recipeAuthor = "Unknown";
     if ("author" in recipeData) {
-      if (Array.isArray(recipeData.author)) {
+      if (recipeData.author === null) {
+        recipeAuthor = "Unknown";
+      } else if (Array.isArray(recipeData.author)) {
         recipeAuthor = recipeData.author[0].name;
       } else if (typeof recipeData.author === "object") {
         recipeAuthor = recipeData.author.name;

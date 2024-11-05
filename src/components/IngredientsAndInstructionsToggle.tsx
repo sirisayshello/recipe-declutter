@@ -1,6 +1,7 @@
 "use client";
 import { Button, Group, List, Stack, Text } from "@mantine/core";
 import { useState } from "react";
+import renderInstructions from "./RenderedInstructions";
 
 type IngAndInstToggleProps = {
   recipe: Recipe;
@@ -43,13 +44,7 @@ export const IngredientsAndInstructionsToggle = ({
           })}
         </List>
       )}
-      {view === "instructions" && (
-        <List type="ordered" spacing="xs">
-          {recipe.instructions.map((instruction, index) => {
-            return <List.Item key={index}>{instruction}</List.Item>;
-          })}
-        </List>
-      )}
+      {view === "instructions" && renderInstructions(recipe)}
     </Stack>
   );
 };

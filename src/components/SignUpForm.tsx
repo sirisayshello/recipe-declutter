@@ -11,6 +11,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { hasLength, isEmail, useForm } from "@mantine/form";
+import { signIn } from "next-auth/react";
 
 type UserData = {
   email: string;
@@ -51,33 +52,48 @@ export default function SignUpForm() {
 
     userData.email = userData.email.toLowerCase();
 
+    // Half a second delay so that the loading spinner doesn't just flash
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     try {
-      const res = await fetch("/api/signup", {
+      const signUpResponse = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
 
-      const data = await res.json();
+      const data = await signUpResponse.json();
 
-      if (!res.ok) {
+      if (!signUpResponse.ok) {
         throw new Error(data.message);
       }
-      router.push("/login"); // Redirect to login
+
+      const loginResponse = await signIn("credentials", {
+        redirect: false,
+        email: userData.email,
+        password: userData.password,
+      });
+
+      if (loginResponse?.error) {
+        setError("Something went wrong. Please try again.");
+        router.push("/login"); // Redirect to login if login fails
+      }
+
+      // redirect to welcome page as logged in user
+      router.push("/welcome");
     } catch (error: unknown) {
+      setLoading(false);
+
       if (error instanceof Error) {
         setError(error.message);
       } else {
         setError("An unknown error occurred.");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <Paper
-      radius="md"
       p={{ base: "md", sm: "xl" }}
       withBorder
       shadow="md"

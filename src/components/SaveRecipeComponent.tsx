@@ -67,7 +67,7 @@ export const SaveRecipeComponent = ({
 
       setSuccess(true);
       setTimeout(() => {
-        close();
+        handleClose();
       }, 1500);
     } catch (error) {
       console.error(error);

@@ -15,6 +15,7 @@ async function main() {
       recipes: {
         create: [
           {
+            url: "https://www.example.com/recipes/macka",
             title: "Macka",
             slug: "macka",
             ingredients: ["bröd", "ost", "smör"],
@@ -24,6 +25,7 @@ async function main() {
             yield: "1 serving",
           },
           {
+            url: "https://www.example.com/recipes/pasta-carbonara",
             title: "Pasta Carbonara",
             slug: "pasta-carbonara",
             ingredients: [
@@ -62,6 +64,7 @@ async function main() {
       recipes: {
         create: [
           {
+            url: "https://www.example.com/recipes/chocolate-cake",
             title: "Chocolate Cake",
             slug: "chocolate-cake",
             ingredients: [
@@ -86,6 +89,7 @@ async function main() {
             yield: "8 servings",
           },
           {
+            url: "https://www.example.com/recipes/caesar-salad",
             title: "Caesar Salad",
             slug: "caesar-salad",
             ingredients: [
@@ -122,6 +126,7 @@ async function main() {
       recipes: {
         create: [
           {
+            url: "https://www.example.com/recipes/tomato-soup",
             title: "Tomato Soup",
             slug: "tomato-soup",
             ingredients: [
@@ -147,6 +152,7 @@ async function main() {
             yield: "4 servings",
           },
           {
+            url: "https://www.example.com/recipes/grilled-cheese-sandwich",
             title: "Grilled Cheese Sandwich",
             slug: "grilled-cheese-sandwich",
             ingredients: ["bread", "cheese", "butter"],

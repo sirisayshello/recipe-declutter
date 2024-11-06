@@ -11,15 +11,52 @@ import {
   TagsInput,
   Textarea,
   TextInput,
+  Card,
+  Divider,
+  Alert,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Prisma } from "@prisma/client";
+import { UserRecipe } from "@/lib/types/jsonTypes";
 
 type EditRecipeProps = {
   recipe: UserRecipe;
 };
+
+type FormValues = {
+  title: string;
+  time: string;
+  yield: string;
+  ingredients: Ingredient[];
+  instructions: SimpleInstructions | SectionedInstructions;
+};
+
+// Function to check if the instructions are sectioned
+function isSectionedInstruction(
+  instructions: Prisma.JsonValue
+): instructions is SectionedInstructions {
+  return (
+    Array.isArray(instructions) &&
+    instructions.length > 0 &&
+    typeof instructions[0] === "object" &&
+    instructions[0] !== null &&
+    "name" in instructions[0] &&
+    "text" in instructions[0]
+  );
+}
+
+// Function to check if the instructions are simple string array
+function isSimpleInstruction(
+  instructions: Prisma.JsonValue
+): instructions is SimpleInstructions {
+  return (
+    Array.isArray(instructions) &&
+    (instructions.length === 0 || typeof instructions[0] === "string")
+  );
+}
 
 export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
   const [view, setView] = useState<"ingredients" | "instructions">(
@@ -30,37 +67,96 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
   const [success, setSuccess] = useState(false);
   const router = useRouter();
 
-  const form = useForm({
+  // Check if the instructions are sectioned or simple
+  const hasSections = isSectionedInstruction(recipe.instructions);
+  // Initialize the instructions based on the type
+  const initialInstructions = hasSections
+    ? (recipe.instructions as SectionedInstructions)
+    : isSimpleInstruction(recipe.instructions)
+    ? recipe.instructions
+    : ([] as SimpleInstructions);
+
+  const form = useForm<FormValues>({
     mode: "uncontrolled",
     initialValues: {
       title: recipe.title,
-      author: recipe.author,
       time: recipe.time,
       yield: recipe.yield,
       ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
+      instructions: initialInstructions,
     },
     validate: {
       title: (value) => (value ? null : "Title is required"),
     },
   });
 
-  const addItem = (field: "ingredients" | "instructions") =>
-    form.insertListItem(field, "");
-  const removeItem = (field: "ingredients" | "instructions", index: number) =>
-    form.removeListItem(field, index);
+  // Functions for sectioned instructions
+  const removeSection = (sectionIndex: number) => {
+    if (hasSections) {
+      form.removeListItem("instructions", sectionIndex);
+    }
+  };
 
-  async function handleSubmit(values: Recipe) {
+  const addInstruction = (sectionIndex: number) => {
+    if (hasSections) {
+      const instructions = [
+        ...form.values.instructions,
+      ] as SectionedInstructions;
+      instructions[sectionIndex].text.push("");
+      form.setFieldValue("instructions", instructions);
+    }
+  };
+
+  const removeInstruction = (
+    sectionIndex: number,
+    instructionIndex: number
+  ) => {
+    if (hasSections) {
+      const instructions = [
+        ...form.values.instructions,
+      ] as SectionedInstructions;
+      instructions[sectionIndex].text.splice(instructionIndex, 1);
+      form.setFieldValue("instructions", instructions);
+    }
+  };
+
+  // Functions for simple instructions
+  const addSimpleInstruction = () => {
+    if (!hasSections) {
+      form.insertListItem("instructions", "");
+    }
+  };
+
+  const removeSimpleInstruction = (index: number) => {
+    if (!hasSections) {
+      form.removeListItem("instructions", index);
+    }
+  };
+
+  // Functions for ingredients
+  const addIngredient = () => form.insertListItem("ingredients", "");
+  const removeIngredient = (index: number) =>
+    form.removeListItem("ingredients", index);
+
+  // Function to handle form submission
+  async function handleSubmit(values: FormValues) {
     if (!form.validate().hasErrors) {
       const updatedRecipe = {
         ...recipe,
         title: values.title,
-        ingredients: values.ingredients.filter(
-          (ingredient) => ingredient.trim() !== ""
+        ingredients: values.ingredients.filter((ingredient) =>
+          typeof ingredient === "string" ? ingredient.trim() !== "" : true
         ),
-        instructions: values.instructions.filter(
-          (instruction) => instruction.trim() !== ""
-        ),
+        instructions: hasSections
+          ? (values.instructions as SectionedInstructions).map((section) => ({
+              name: section.name,
+              text: section.text.filter(
+                (instruction: string) => instruction.trim() !== ""
+              ),
+            }))
+          : (values.instructions as SimpleInstructions).filter(
+              (instruction) => instruction.trim() !== ""
+            ),
         tags,
       };
 
@@ -71,12 +167,10 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
 
         setSuccess(true);
         console.log(success);
-
         setTimeout(() => router.push(`/dashboard/${recipe.id}`), 1500);
       } catch (err) {
         console.error(err);
         setError("An error occurred while saving. Please try again.");
-        console.log(error);
       }
     }
   }
@@ -84,6 +178,7 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
   return (
     <>
       <form onSubmit={form.onSubmit(handleSubmit)}>
+        {/* General info */}
         <Fieldset mb="md" legend="Recipe information">
           <TextInput
             label="Title"
@@ -102,7 +197,7 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
           />
         </Fieldset>
 
-        {/* Switch view buttons */}
+        {/* Ingredients / Instructions */}
         <Group justify="space-between" grow mt="md" mb="md">
           {["ingredients", "instructions"].map((section) => (
             <Button
@@ -116,42 +211,141 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
           ))}
         </Group>
 
-        {/* Ingredients or Instructions Section */}
-        <Fieldset mb="md" legend={view.charAt(0).toUpperCase() + view.slice(1)}>
-          {form.values[view].map((item, index) => (
-            <Group wrap="nowrap" key={index} mt="xs" align="flex-start">
-              {view === "ingredients" ? (
-                <TextInput
-                  style={{ width: "100%" }}
-                  placeholder={`Ingredient ${index + 1}`}
-                  {...form.getInputProps(`${view}.${index}`)}
-                />
-              ) : (
-                <Textarea
-                  style={{ width: "100%" }}
-                  placeholder={`Instruction ${index + 1}`}
-                  minRows={3}
-                  {...form.getInputProps(`${view}.${index}`)}
-                />
-              )}
-              <ActionIcon
-                onClick={() => removeItem(view, index)}
-                variant="transparent"
-                aria-label={`Delete ${view}`}
-              >
-                <IconTrash />
-              </ActionIcon>
-            </Group>
-          ))}
-          <Button
-            leftSection={<IconPlus size={14} />}
-            onClick={() => addItem(view)}
-            variant="light"
-            aria-label={`Add ${view}`}
-          >
-            Add {view.slice(0, -1)}
-          </Button>
-        </Fieldset>
+        {/* Ingredients*/}
+        {view === "ingredients" ? (
+          <Fieldset mb="md" legend="Ingredients">
+            {form.values.ingredients.map(
+              (_ingredient: string, index: number) => (
+                <Group wrap="nowrap" key={index} mt="xs" align="flex-start">
+                  <TextInput
+                    style={{ width: "100%" }}
+                    placeholder={`Ingredient ${index + 1}`}
+                    {...form.getInputProps(`ingredients.${index}`)}
+                  />
+                  <ActionIcon
+                    onClick={() => removeIngredient(index)}
+                    variant="transparent"
+                    aria-label="Delete ingredient"
+                  >
+                    <IconTrash />
+                  </ActionIcon>
+                </Group>
+              )
+            )}
+            <Button
+              leftSection={<IconPlus size={14} />}
+              onClick={addIngredient}
+              variant="light"
+              mt="md"
+              aria-label="Add ingredient"
+            >
+              Add ingredient
+            </Button>
+          </Fieldset>
+        ) : (
+          <Fieldset mb="md" legend="Instructions">
+            {/* If sectioned instructions */}
+            {hasSections ? (
+              <>
+                {(form.values.instructions as SectionInstruction[]).map(
+                  (section, sectionIndex) => (
+                    <Card key={sectionIndex} withBorder mb="md">
+                      <Group wrap="nowrap" align="flex-start">
+                        <TextInput
+                          label="Step"
+                          style={{ width: "100%" }}
+                          placeholder="Section name"
+                          {...form.getInputProps(
+                            `instructions.${sectionIndex}.name`
+                          )}
+                        />
+                        <ActionIcon
+                          onClick={() => removeSection(sectionIndex)}
+                          variant="transparent"
+                          aria-label="Delete section"
+                        >
+                          <IconTrash />
+                        </ActionIcon>
+                      </Group>
+
+                      <Divider my="sm" />
+
+                      {section.text.map((_instruction, instructionIndex) => (
+                        <Group
+                          wrap="nowrap"
+                          key={instructionIndex}
+                          mt="xs"
+                          align="flex-start"
+                        >
+                          <Textarea
+                            style={{ width: "100%" }}
+                            placeholder={`Step ${instructionIndex + 1}`}
+                            minRows={3}
+                            {...form.getInputProps(
+                              `instructions.${sectionIndex}.text.${instructionIndex}`
+                            )}
+                          />
+                          <ActionIcon
+                            onClick={() =>
+                              removeInstruction(sectionIndex, instructionIndex)
+                            }
+                            variant="transparent"
+                            aria-label="Delete instruction"
+                          >
+                            <IconTrash />
+                          </ActionIcon>
+                        </Group>
+                      ))}
+
+                      <Button
+                        leftSection={<IconPlus size={14} />}
+                        onClick={() => addInstruction(sectionIndex)}
+                        variant="light"
+                        size="sm"
+                        mt="md"
+                        aria-label="Add instruction"
+                      >
+                        Add step
+                      </Button>
+                    </Card>
+                  )
+                )}
+              </>
+            ) : (
+              <>
+                {/* If simple instructions list*/}
+                {(form.values.instructions as string[]).map(
+                  (instruction, index) => (
+                    <Group wrap="nowrap" key={index} mt="xs" align="flex-start">
+                      <Textarea
+                        style={{ width: "100%" }}
+                        placeholder={`Step ${index + 1}`}
+                        minRows={3}
+                        {...form.getInputProps(`instructions.${index}`)}
+                      />
+                      <ActionIcon
+                        onClick={() => removeSimpleInstruction(index)}
+                        variant="transparent"
+                        aria-label="Delete instruction"
+                      >
+                        <IconTrash />
+                      </ActionIcon>
+                    </Group>
+                  )
+                )}
+                <Button
+                  leftSection={<IconPlus size={14} />}
+                  onClick={addSimpleInstruction}
+                  variant="light"
+                  mt="md"
+                  aria-label="Add instruction"
+                >
+                  Add instruction
+                </Button>
+              </>
+            )}
+          </Fieldset>
+        )}
 
         <Fieldset mb="md" legend="Recipe tags">
           <TagsInput
@@ -163,6 +357,7 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
             mb="md"
           />
         </Fieldset>
+
         <Space h="xl" />
         <Space h="xl" />
 
@@ -175,6 +370,11 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
             width: "100%",
           }}
         >
+          {error && (
+            <Alert variant="light" color="red" title="Login failed" mt="md">
+              {error}
+            </Alert>
+          )}
           <Group justify="center" mt="md" mb="md">
             <Button size="md" type="submit">
               Save Changes
@@ -192,3 +392,5 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
     </>
   );
 };
+
+export default EditRecipeForm;

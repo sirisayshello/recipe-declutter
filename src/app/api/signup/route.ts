@@ -17,6 +17,8 @@ export async function POST(req: NextRequest) {
 
   const userData: UserData = await req.json();
 
+  userData.email = userData.email.toLowerCase();
+
   // Check if all fields are filled
   const requiredFields = [userData.email, userData.name, userData.password];
   if (requiredFields.some((field) => !field)) {
@@ -30,6 +32,7 @@ export async function POST(req: NextRequest) {
   const existingUser = await prisma.user.findUnique({
     where: { email: userData.email },
   });
+
   if (existingUser) {
     return NextResponse.json(
       { message: "User with this email already exists" },

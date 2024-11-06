@@ -7,7 +7,8 @@ import {
   Button,
   Alert,
   PasswordInput,
-  LoadingOverlay,
+  Stack,
+  Paper,
 } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 
@@ -34,6 +35,11 @@ export default function LoginForm() {
     setError(""); // Clear any previous error
     setLoading(true);
 
+    values.email = values.email.toLowerCase();
+
+    // Half a second delay so that the loading spinner doesn't just flash
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     try {
       const result = await signIn("credentials", {
         redirect: false,
@@ -43,59 +49,58 @@ export default function LoginForm() {
 
       if (result?.error) {
         setError("Invalid email or password. Please try again.");
+        setLoading(false);
       } else {
-        form.reset(); // Reset form only if submission was successful
         router.push("/welcome"); // Redirect to landing page
       }
     } catch (error: unknown) {
+      setLoading(false);
+
       if (error instanceof Error) {
         setError(error.message);
       } else {
         setError("An unknown error occurred.");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <>
-      <form onSubmit={form.onSubmit(submitCredentials)}>
-        <LoadingOverlay visible={loading} overlayProps={{ blur: 3 }} />
+      <Paper
+        p={{ base: "md", sm: "xl" }}
+        withBorder
+        shadow="md"
+        maw="30rem"
+        mx="auto"
+      >
+        <form onSubmit={form.onSubmit(submitCredentials)}>
+          <Stack>
+            {error && (
+              <Alert variant="light" color="red" title="Sign up failed">
+                {error}
+              </Alert>
+            )}
+            <TextInput
+              {...form.getInputProps("email")}
+              key={form.key("email")}
+              label="Email"
+              placeholder="your@email.com"
+              disabled={loading}
+            />
+            <PasswordInput
+              {...form.getInputProps("password")}
+              key={form.key("password")}
+              label="Password"
+              placeholder="Your password"
+              disabled={loading}
+            />
 
-        {error && (
-          <Alert variant="light" color="red" title="Login failed" mt="md">
-            {error}
-          </Alert>
-        )}
-        <TextInput
-          {...form.getInputProps("email")}
-          key={form.key("email")}
-          mt="md"
-          label="Email"
-          placeholder="your@email.com"
-          disabled={loading}
-        />
-        <PasswordInput
-          {...form.getInputProps("password")}
-          key={form.key("password")}
-          mt="md"
-          label="Password"
-          placeholder="••••••"
-          disabled={loading}
-        />
-        <Button
-          type="submit"
-          mt="xl"
-          mb="md"
-          fullWidth
-          variant="filled"
-          size="md"
-          disabled={loading}
-        >
-          Submit
-        </Button>
-      </form>
+            <Button type="submit" mt="md" variant="filled" loading={loading}>
+              Log in
+            </Button>
+          </Stack>
+        </form>
+      </Paper>
     </>
   );
 }

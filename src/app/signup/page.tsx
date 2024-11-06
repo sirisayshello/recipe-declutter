@@ -5,15 +5,17 @@ import Link from "next/link";
 export default function SignUp() {
   return (
     <>
-      <Container style={{ height: "90dvh", alignContent: "center" }}>
-        <Title ta="center" mb="md">
-          Create account
+      <Container my="4rem">
+        <Title ta="center" mb="xl" size={"2rem"}>
+          Welcome to Recipe Declutter!
         </Title>
+
         <SignUpForm />
-        <Text ta="center">
+
+        <Text ta="center" mt="md">
           Already have an account?{" "}
           <span>
-            <Anchor component={Link} href="/login" underline="never">
+            <Anchor component={Link} href="/login" fw="bold">
               Log in
             </Anchor>
           </span>

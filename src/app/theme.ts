@@ -1,5 +1,12 @@
 import { createTheme, rem } from "@mantine/core";
 
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
 export const theme = createTheme({
   colors: {
     // Add your color
@@ -27,6 +34,18 @@ export const theme = createTheme({
       "#9c7232",
       "#886226",
     ],
+    yellow: [
+      "#fff9e0",
+      "#fff0cc",
+      "#fce09c",
+      "#facf68",
+      "#f8c13c",
+      "#f7b820",
+      "#f7b30c",
+      "#dc9d00",
+      "#c48b00",
+      "#aa7700",
+    ],
   },
   primaryColor: "dustyRed",
   primaryShade: 7,
@@ -38,7 +57,7 @@ export const theme = createTheme({
   },
 
   headings: {
-    fontFamily: "Roboto, sans-serif",
+    fontFamily: `${poppins.style.fontFamily}, sans-serif`,
     sizes: {
       h1: { fontSize: rem(48) },
       h2: { fontSize: rem(24) },

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Transition } from "@mantine/core";
 import Link from "next/link";
 
-const CTABanner = () => {
+export const CTABanner = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -50,10 +50,11 @@ const CTABanner = () => {
 
           <Stack align="center" mt={8}>
             <Text size="lg" fw={500}>
-              Want to save your recipe for later?
+              Save, Edit & Organize Recipes
             </Text>
-            <Text c="dimmed" size="sm">
-              Create an account to unlock all features
+            <Text ta="center" c="dimmed" size="sm">
+              Unlock the full experience by creating an account. Keep your
+              recipes saved, customized, and perfectly organized.
             </Text>
             <Button
               component={Link}
@@ -66,7 +67,7 @@ const CTABanner = () => {
                 maxWidth: "300px",
               }}
             >
-              Create Account
+              Create Free Account
             </Button>
           </Stack>
         </Paper>
@@ -74,5 +75,3 @@ const CTABanner = () => {
     </Transition>
   );
 };
-
-export default CTABanner;

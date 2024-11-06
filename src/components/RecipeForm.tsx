@@ -16,8 +16,7 @@ import { useEffect, useState } from "react";
 import { IngredientsAndInstructionsToggle } from "./IngredientsAndInstructionsToggle";
 import { SaveRecipeComponent } from "./SaveRecipeComponent";
 import { Session } from "next-auth";
-import CreateAccountCTA from "./CTABanner";
-
+import { CTABanner } from "./CTABanner";
 
 type RecipeFormProps = {
   session?: Session | null;
@@ -114,7 +113,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
         </Button>
       </Flex>
 
-      <CreateAccountCTA />
+      {!session && <CTABanner />}
       {recipe?.ingredients && recipe.instructions.length > 0 && (
         <Box
           component="section"

@@ -1,6 +1,25 @@
 "use server";
+import { Prisma } from "@prisma/client";
 import prisma from "./db";
 import { generateSlug } from "./utils";
+
+type SaveRecipeResponse = {
+  success: boolean;
+  data?: {
+    id: number;
+    url: string;
+    title: string;
+    slug?: string;
+    ingredients: string[];
+    instructions: Instructions | Prisma.JsonValue;
+    author: string;
+    time: string;
+    yield: string;
+  };
+  error?: {
+    message: string;
+  };
+};
 
 // Wrapper function to use when we want to fetch all recipes in a client component:
 export const getRecipes = async () => {
@@ -63,6 +82,7 @@ export const saveRecipe = async (
 
     const newRecipe = await prisma.recipe.create({
       data: {
+        url: recipe.url,
         title: recipe.title,
         slug: generateSlug(recipe.title),
         author: recipe.author,
@@ -96,30 +116,6 @@ export const updateRecipe = async (
   recipe: UserRecipe | undefined
 ): Promise<SaveRecipeResponse> => {
   try {
-    // if (!userEmail) {
-    //   return {
-    //     success: false,
-    //     error: {
-    //       message: "You must be logged in to save recipes",
-    //     },
-    //   };
-    // }
-
-    // get the authenticated user from the db, by email
-    // maybe change to query by id instead?
-    // const user = await prisma.user.findUnique({
-    //   where: { email: userEmail },
-    // });
-
-    // if (!user) {
-    //   return {
-    //     success: false,
-    //     error: {
-    //       message: "User not found",
-    //     },
-    //   };
-    // }
-
     if (!recipe) {
       return {
         success: false,
@@ -133,21 +129,23 @@ export const updateRecipe = async (
     const updatedRecipe = await prisma.recipe.upsert({
       where: { id: recipe.id },
       update: {
+        url: recipe.url,
         title: recipe.title,
         slug: generateSlug(recipe.title),
         time: recipe.time,
         yield: recipe.yield,
         ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
+        instructions: recipe.instructions ?? [],
       },
       create: {
+        url: recipe.url,
         title: recipe.title,
         slug: generateSlug(recipe.title),
         author: recipe.author,
         time: recipe.time,
         yield: recipe.yield,
         ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
+        instructions: recipe.instructions ?? [],
         // userId: user.id,
       },
     });

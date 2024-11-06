@@ -69,7 +69,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
       const data = await getScrapedRecipe(url);
 
       if (data.recipe) {
-        setRecipe(data.recipe);
+        setRecipe({ ...data.recipe, url });
       } else if (data.error) {
         setRecipeError(data.error);
         console.log("RecipeError:", data.error);

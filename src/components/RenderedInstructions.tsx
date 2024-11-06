@@ -1,6 +1,10 @@
 import { List, Title } from "@mantine/core";
 
-export default function renderInstructions(recipe: Recipe) {
+type RenderProps = {
+  recipe: UserRecipe;
+};
+
+export default function RenderedInstructions({ recipe }: RenderProps) {
   if (typeof recipe.instructions[0] === "string") {
     return (
       <List type="ordered" spacing="xs">
@@ -18,7 +22,7 @@ export default function renderInstructions(recipe: Recipe) {
               <div key={sectionIndex}>
                 <Title order={3}>{section.name}</Title>
                 <List type="ordered" spacing="xs">
-                  {section.text.map((instruction, index) => (
+                  {section.text.map((instruction: string, index: number) => (
                     <List.Item key={index}>{instruction}</List.Item>
                   ))}
                 </List>

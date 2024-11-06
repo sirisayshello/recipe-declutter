@@ -1,10 +1,11 @@
 "use client";
 import { Button, Group, List, Stack, Text } from "@mantine/core";
 import { useState } from "react";
-import renderInstructions from "./RenderedInstructions";
+import RenderedInstructions from "./RenderedInstructions";
+import Link from "next/link";
 
 type IngAndInstToggleProps = {
-  recipe: Recipe;
+  recipe: UserRecipe;
 };
 
 export const IngredientsAndInstructionsToggle = ({
@@ -15,7 +16,9 @@ export const IngredientsAndInstructionsToggle = ({
   return (
     <Stack component="section" style={{ minHeight: "50dvh" }}>
       <Group justify="center" mb="md">
-        <Text size="xs">Author: {recipe.author}</Text>
+        <Text size="xs">
+          Author: <Link href={recipe.url}>{recipe.author}</Link>
+        </Text>
         <Text size="xs">Total time: {recipe.time}</Text>
         <Text size="xs">Servings: {recipe.yield}</Text>
       </Group>
@@ -44,7 +47,7 @@ export const IngredientsAndInstructionsToggle = ({
           })}
         </List>
       )}
-      {view === "instructions" && renderInstructions(recipe)}
+      {view === "instructions" && <RenderedInstructions recipe={recipe} />}
     </Stack>
   );
 };

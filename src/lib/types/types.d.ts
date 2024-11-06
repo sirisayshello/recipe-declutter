@@ -4,29 +4,63 @@ type Instruction = string;
 
 type SectionInstruction = {
   name: string;
-  text: string[];
+  text: Instruction[];
 };
 
+type Instructions = Instruction[] | SectionInstruction[];
+
+type SimpleInstructions = Instruction[];
+
+type SectionedInstructions = SectionInstruction[];
+
 type Recipe = {
+  url: string;
   title: string;
   author: string;
   time: string;
   yield: string;
   ingredients: Ingredient[];
-  instructions: (Instruction | SectionInstruction)[];
+  instructions: Instructions;
 };
 
 type UserRecipe = {
   tags?: string[];
-  id: number;
+  url: string;
   title: string;
-  slug: string;
+  slug?: string;
   author: string;
   time: string;
   yield: string;
   ingredients: Ingredient[];
-  instructions: Instruction[];
-  userId: string | null;
+  instructions: Instructions;
+  userId?: string | null;
+  id?: number;
+};
+
+// type SaveRecipeResponse = {
+//   success: boolean;
+//   data?: {
+//     id: number;
+//     url: string;
+//     title: string;
+//     slug?: string;
+//     ingredients: string[];
+//     instructions: Instructions;
+//     author: string;
+//     time: string;
+//     yield: string;
+//   };
+//   error?: {
+//     message: string;
+//   };
+// };
+
+type FormValues = {
+  title: string;
+  time: string;
+  yield: string;
+  ingredients: Ingredient[];
+  instructions: SimpleInstructions | SectionedInstructions;
 };
 
 type Author = {
@@ -52,26 +86,10 @@ type GraphObject = {
   author?: ScrapedAuthor;
   totalTime?: string;
   recipeYield?: string | number;
+  url?: string;
 };
 
 type RawRecipeData = GraphObject | { "@graph": GraphObject[] } | GraphObject[];
-
-type SaveRecipeResponse = {
-  success: boolean;
-  data?: {
-    id: number;
-    title: string;
-    slug?: string;
-    ingredients: string[];
-    instructions: string[];
-    author: string;
-    time: string;
-    yield: string;
-  };
-  error?: {
-    message: string;
-  };
-};
 
 type GetScrapedRecipeResponse = {
   success: boolean;

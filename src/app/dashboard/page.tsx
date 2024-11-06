@@ -27,6 +27,7 @@ export default async function Dashboard() {
   }
 
   const recipes = await getUserRecipes();
+  const convertedRecipes = recipes as UserRecipe[];
 
   return (
     <>
@@ -36,7 +37,7 @@ export default async function Dashboard() {
 
       <Stack component="section">
         <CategoryFilter categories={categories} />
-        <RecentRecipes recipes={recipes} />
+        <RecentRecipes recipes={convertedRecipes} />
       </Stack>
       <SignOutButton />
     </>

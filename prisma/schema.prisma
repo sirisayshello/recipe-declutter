@@ -10,13 +10,14 @@ datasource db {
 
 model Recipe {
   id           Int      @id @default(autoincrement())
+  url          String
   title        String
   slug         String
   author       String
   time         String
   yield        String
   ingredients  String[]
-  instructions String[]
+  instructions Json // Json is needed in order to be able to store an array of strings OR objects.
   User         User?    @relation(fields: [userId], references: [id])
   userId       String?
 }

@@ -7,6 +7,8 @@ type SectionInstruction = {
   text: Instruction[];
 };
 
+type Instructions = Instruction[] | SectionInstruction[];
+
 type SimpleInstructions = Instruction[];
 
 type SectionedInstructions = SectionInstruction[];
@@ -18,7 +20,47 @@ type Recipe = {
   time: string;
   yield: string;
   ingredients: Ingredient[];
-  instructions: Instructions[];
+  instructions: Instructions;
+};
+
+type UserRecipe = {
+  tags?: string[];
+  url: string;
+  title: string;
+  slug?: string;
+  author: string;
+  time: string;
+  yield: string;
+  ingredients: Ingredient[];
+  instructions: Instructions;
+  userId?: string | null;
+  id?: number;
+};
+
+// type SaveRecipeResponse = {
+//   success: boolean;
+//   data?: {
+//     id: number;
+//     url: string;
+//     title: string;
+//     slug?: string;
+//     ingredients: string[];
+//     instructions: Instructions;
+//     author: string;
+//     time: string;
+//     yield: string;
+//   };
+//   error?: {
+//     message: string;
+//   };
+// };
+
+type FormValues = {
+  title: string;
+  time: string;
+  yield: string;
+  ingredients: Ingredient[];
+  instructions: SimpleInstructions | SectionedInstructions;
 };
 
 type Author = {

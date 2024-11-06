@@ -20,6 +20,8 @@ export default async function EditRecipePage({
     return <div>something went wrong</div>;
   }
 
+  const convertedRecipe = recipe as UserRecipe;
+
   return (
     <>
       <Group justify="space-between" mt="md" mb="md">
@@ -27,7 +29,7 @@ export default async function EditRecipePage({
         <DeleteRecipeButton id={recipe.id} />
       </Group>
 
-      <EditRecipeForm recipe={recipe} />
+      <EditRecipeForm recipe={convertedRecipe} />
     </>
   );
 }

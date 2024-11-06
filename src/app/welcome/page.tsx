@@ -7,6 +7,7 @@ import { RecipeForm } from "@/components/RecipeForm";
 export default async function Welcome() {
   const session = await getAuth();
   const recipes = await getUserRecipes();
+  const convertedRecipes = recipes as UserRecipe[];
 
   return (
     <>
@@ -21,7 +22,7 @@ export default async function Welcome() {
         <Space h="xl" />
       </Box>
       <RecipeForm session={session} />
-      <RecentRecipes recipes={recipes} />
+      <RecentRecipes recipes={convertedRecipes} />
       <Space h="xl" />
     </>
   );

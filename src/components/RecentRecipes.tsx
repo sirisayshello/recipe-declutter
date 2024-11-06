@@ -1,4 +1,3 @@
-import { UserRecipe } from "@/lib/types/jsonTypes";
 import { Anchor, Box, List, Title } from "@mantine/core";
 import Link from "next/link";
 

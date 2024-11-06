@@ -18,6 +18,7 @@ export default async function RecipePage({
   if (!recipe) {
     return <div>Something went wrong</div>;
   }
+  const convertedRecipe = recipe as UserRecipe;
 
   return (
     <>
@@ -35,7 +36,7 @@ export default async function RecipePage({
         </Title>
       </Stack>
 
-      <IngredientsAndInstructionsToggle recipe={recipe} />
+      <IngredientsAndInstructionsToggle recipe={convertedRecipe} />
       <Group mt="md" mb="md">
         <Pill size="md">Lunch</Pill>
       </Group>

@@ -19,24 +19,14 @@ import { useForm } from "@mantine/form";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Prisma } from "@prisma/client";
-import { UserRecipe } from "@/lib/types/jsonTypes";
 
 type EditRecipeProps = {
   recipe: UserRecipe;
 };
 
-type FormValues = {
-  title: string;
-  time: string;
-  yield: string;
-  ingredients: Ingredient[];
-  instructions: SimpleInstructions | SectionedInstructions;
-};
-
 // Function to check if the instructions are sectioned
 function isSectionedInstruction(
-  instructions: Prisma.JsonValue
+  instructions: Instructions
 ): instructions is SectionedInstructions {
   return (
     Array.isArray(instructions) &&
@@ -50,7 +40,7 @@ function isSectionedInstruction(
 
 // Function to check if the instructions are simple string array
 function isSimpleInstruction(
-  instructions: Prisma.JsonValue
+  instructions: Instructions
 ): instructions is SimpleInstructions {
   return (
     Array.isArray(instructions) &&

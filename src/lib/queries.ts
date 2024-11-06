@@ -1,8 +1,25 @@
 "use server";
+import { Prisma } from "@prisma/client";
 import prisma from "./db";
 import { generateSlug } from "./utils";
-import { SaveRecipeResponse, UserRecipe } from "./types/jsonTypes";
-import { Prisma } from "@prisma/client";
+
+type SaveRecipeResponse = {
+  success: boolean;
+  data?: {
+    id: number;
+    url: string;
+    title: string;
+    slug?: string;
+    ingredients: string[];
+    instructions: Instructions | Prisma.JsonValue;
+    author: string;
+    time: string;
+    yield: string;
+  };
+  error?: {
+    message: string;
+  };
+};
 
 // Wrapper function to use when we want to fetch all recipes in a client component:
 export const getRecipes = async () => {
@@ -72,7 +89,7 @@ export const saveRecipe = async (
         time: recipe.time,
         yield: recipe.yield,
         ingredients: recipe.ingredients,
-        instructions: recipe.instructions as Prisma.InputJsonValue,
+        instructions: recipe.instructions,
         userId: user.id,
       },
     });

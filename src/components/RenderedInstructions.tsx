@@ -1,6 +1,10 @@
 import { List, Title } from "@mantine/core";
 
-export default function renderInstructions(recipe: Recipe) {
+type RenderProps = {
+  recipe: UserRecipe;
+};
+
+export default function RenderedInstructions({ recipe }: RenderProps) {
   if (typeof recipe.instructions[0] === "string") {
     return (
       <List type="ordered" spacing="xs">

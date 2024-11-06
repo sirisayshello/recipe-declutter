@@ -72,17 +72,14 @@ export const saveRecipe = async (
         time: recipe.time,
         yield: recipe.yield,
         ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
+        instructions: recipe.instructions as Prisma.InputJsonValue,
         userId: user.id,
       },
     });
 
     return {
       success: true,
-      data: {
-        ...newRecipe,
-        instructions: newRecipe.instructions as Prisma.InputJsonArray,
-      },
+      data: newRecipe,
     };
   } catch (error) {
     console.error("Failed to save recipe:", error);
@@ -121,7 +118,7 @@ export const updateRecipe = async (
         time: recipe.time,
         yield: recipe.yield,
         ingredients: recipe.ingredients,
-        instructions: recipe.instructions as Prisma.InputJsonArray,
+        instructions: recipe.instructions ?? [],
       },
       create: {
         url: recipe.url,
@@ -131,17 +128,14 @@ export const updateRecipe = async (
         time: recipe.time,
         yield: recipe.yield,
         ingredients: recipe.ingredients,
-        instructions: recipe.instructions as Prisma.InputJsonArray,
+        instructions: recipe.instructions ?? [],
         // userId: user.id,
       },
     });
 
     return {
       success: true,
-      data: {
-        ...updatedRecipe,
-        instructions: updatedRecipe.instructions as Prisma.InputJsonArray,
-      },
+      data: updatedRecipe,
     };
   } catch (error) {
     console.error("Failed to update recipe:", error);

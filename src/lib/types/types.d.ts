@@ -4,10 +4,12 @@ type Instruction = string;
 
 type SectionInstruction = {
   name: string;
-  text: string[];
+  text: Instruction[];
 };
 
-type Instructions = Instruction | SectionInstruction;
+type SimpleInstructions = Instruction[];
+
+type SectionedInstructions = SectionInstruction[];
 
 type Recipe = {
   url: string;

@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
 
+//Recipe before saving to the database
 export type UserRecipe = {
   tags?: string[];
-  id: number;
   url: string;
   title: string;
   slug: string;
@@ -10,8 +10,9 @@ export type UserRecipe = {
   time: string;
   yield: string;
   ingredients: Ingredient[];
-  instructions: Prisma.InputJsonArray;
+  instructions: Prisma.JsonValue;
   userId: string | null;
+  id: number;
 };
 
 export type SaveRecipeResponse = {
@@ -22,7 +23,7 @@ export type SaveRecipeResponse = {
     title: string;
     slug?: string;
     ingredients: string[];
-    instructions: Prisma.InputJsonArray;
+    instructions: Prisma.JsonValue;
     author: string;
     time: string;
     yield: string;

@@ -18,7 +18,7 @@ export default function renderInstructions(recipe: Recipe) {
               <div key={sectionIndex}>
                 <Title order={3}>{section.name}</Title>
                 <List type="ordered" spacing="xs">
-                  {section.text.map((instruction, index) => (
+                  {section.text.map((instruction: string, index: number) => (
                     <List.Item key={index}>{instruction}</List.Item>
                   ))}
                 </List>

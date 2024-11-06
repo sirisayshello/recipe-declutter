@@ -37,6 +37,9 @@ jobs:
           DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
           DIRECT_URL: ${{ secrets.TEST_DIRECT_URL }}
 
+      - name: Build the application
+        run: npm run build
+
       # Add tests to run
       #- name: Run tests
       #  run: npm test

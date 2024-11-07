@@ -1,4 +1,4 @@
-import { createTheme, rem } from "@mantine/core";
+import { createTheme } from "@mantine/core";
 
 import { Poppins } from "next/font/google";
 
@@ -9,7 +9,6 @@ const poppins = Poppins({
 
 export const theme = createTheme({
   colors: {
-    // Add your color
     dustyRed: [
       "#ffeeed",
       "#f5dedc",
@@ -58,10 +57,5 @@ export const theme = createTheme({
 
   headings: {
     fontFamily: `${poppins.style.fontFamily}, sans-serif`,
-    sizes: {
-      h1: { fontSize: rem(48) },
-      h2: { fontSize: rem(24) },
-      h3: { fontSize: rem(18) },
-    },
   },
 });

@@ -133,3 +133,26 @@ export const isValidUrl = (urlToCheck: string): boolean => {
     return false;
   }
 };
+
+export function isSectionedInstruction(
+  instructions: Instructions
+): instructions is SectionedInstructions {
+  return (
+    Array.isArray(instructions) &&
+    instructions.length > 0 &&
+    typeof instructions[0] === "object" &&
+    instructions[0] !== null &&
+    "name" in instructions[0] &&
+    "text" in instructions[0]
+  );
+}
+
+export function isSimpleInstruction(
+  instructions: Instructions
+): instructions is SimpleInstructions {
+  return (
+    Array.isArray(instructions) &&
+    (instructions.length === 0 || typeof instructions[0] === "string")
+  );
+}
+

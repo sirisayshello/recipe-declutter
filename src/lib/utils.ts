@@ -24,7 +24,8 @@ export function decodeData(data: string[]): string[] {
   return data.map((item: string) => he.decode(item));
 }
 
-// function to use in catch blocks
+// Function to see all potential errors,
+// regardless of whether they are instances of Error or something else
 export function getErrorMessage(error: unknown) {
   if (error instanceof Error) return error.message;
   return String(error);
@@ -77,6 +78,62 @@ export function convertTime(duration: string) {
   );
 }
 
+// Function to check if the input is a valid url
+export const isValidUrl = (urlToCheck: string): boolean => {
+  try {
+    // Handle empty or non-string input
+    if (!urlToCheck || typeof urlToCheck !== "string") {
+      return false;
+    }
+
+    // Add https:// prefix if needed
+    if (urlToCheck.startsWith("www.")) {
+      urlToCheck = "https://" + urlToCheck;
+    } else if (
+      !urlToCheck.includes("://") &&
+      /^[a-zA-Z0-9-]+\.[a-zA-Z0-9.]/.test(urlToCheck)
+    ) {
+      urlToCheck = "https://" + urlToCheck;
+    }
+
+    // Try creating a URL object - validates basic URL structure
+    const url = new URL(urlToCheck);
+
+    // Check for supported protocols
+    const supportedProtocols = ["http:", "https:"];
+    if (!supportedProtocols.includes(url.protocol)) {
+      return false;
+    }
+
+    // Validate hostname (must have at least one dot and valid characters)
+    const hostname = url.hostname;
+    if (
+      !hostname ||
+      !hostname.includes(".") ||
+      /[^a-zA-Z0-9-._]/.test(hostname)
+    ) {
+      return false;
+    }
+
+    // Additional checks for common URL patterns
+    // - Must have a TLD of at least 2 characters
+    // - Hostname must be at least 1 character before the dot
+    const hostnameParts = hostname.split(".");
+    if (
+      hostnameParts.length < 2 ||
+      hostnameParts[0].length < 1 ||
+      hostnameParts[hostnameParts.length - 1].length < 2
+    ) {
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
 export function isSectionedInstruction(
   instructions: Instructions
 ): instructions is SectionedInstructions {
@@ -98,3 +155,4 @@ export function isSimpleInstruction(
     (instructions.length === 0 || typeof instructions[0] === "string")
   );
 }
+

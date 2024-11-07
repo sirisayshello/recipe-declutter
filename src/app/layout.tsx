@@ -4,6 +4,8 @@ import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import { theme } from "./theme";
 import SessionWrapper from "@/components/SessionWrapper";
+import { Notifications } from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
 
 export const metadata: Metadata = {
   title: "Recipe Declutter",
@@ -25,6 +27,7 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider defaultColorScheme="auto" theme={theme}>
+          <Notifications />
           <SessionWrapper>
             <Navbar />
           </SessionWrapper>

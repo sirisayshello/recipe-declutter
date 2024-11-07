@@ -32,7 +32,7 @@ const clearPendingRecipe = () => {
 
 export const RecipeForm = ({ session }: RecipeFormProps) => {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
-  const [setRecipeError] = useState<RecipeError | undefined>();
+  const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
   const [loading, setLoading] = useState(false);
   const [shouldOpenModal, setShouldOpenModal] = useState(false);
 
@@ -112,6 +112,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
     } catch (error) {
       console.error("Error fetching recipe:", error);
       setRecipeError({ message: "Failed to fetch recipe" });
+      console.log(recipeError);
     } finally {
       field.reset();
       setLoading(false);

@@ -32,7 +32,7 @@ const clearPendingRecipe = () => {
 
 export const RecipeForm = ({ session }: RecipeFormProps) => {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
-  const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
+  const [setRecipeError] = useState<RecipeError | undefined>();
   const [loading, setLoading] = useState(false);
   const [shouldOpenModal, setShouldOpenModal] = useState(false);
 

@@ -49,30 +49,32 @@ export const Navbar = () => {
             shadow="md"
             radius={0}
           >
-            <Stack pl={6}>
-              <Anchor
-                component={Link}
-                href="/about"
-                data-active={active === "/about" ? "true" : undefined}
-                onClick={() => {
-                  setActive("/about");
-                }}
-              >
-                About
-              </Anchor>
-              <Anchor
-                component={Link}
-                href="https://github.com/sirisayshello/recipe-declutter"
-                target="_blank"
-                onClick={() => {
-                  setActive(
-                    "https://github.com/sirisayshello/recipe-declutter"
-                  );
-                }}
-              >
-                Github
-              </Anchor>
-            </Stack>
+            <Container>
+              <Stack pl={6}>
+                <Anchor
+                  component={Link}
+                  href="/about"
+                  data-active={active === "/about" ? "true" : undefined}
+                  onClick={() => {
+                    setActive("/about");
+                  }}
+                >
+                  About
+                </Anchor>
+                <Anchor
+                  component={Link}
+                  href="https://github.com/sirisayshello/recipe-declutter"
+                  target="_blank"
+                  onClick={() => {
+                    setActive(
+                      "https://github.com/sirisayshello/recipe-declutter"
+                    );
+                  }}
+                >
+                  Github
+                </Anchor>
+              </Stack>
+            </Container>
           </Paper>
         )}
       </Container>

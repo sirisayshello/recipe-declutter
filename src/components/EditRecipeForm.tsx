@@ -15,7 +15,7 @@ import {
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { IngredientAndInstructionList } from "./EditIngredientsAndInstructionsLists";
+import { EditIngredientAndInstructionList } from "./EditIngredientsAndInstructionsLists";
 
 type EditRecipeProps = {
   recipe: UserRecipe;
@@ -129,7 +129,7 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
         </Group>
 
         {/* Ingredients and Instructions */}
-        <IngredientAndInstructionList
+        <EditIngredientAndInstructionList
           form={form}
           hasSections={hasSections}
           view={view}

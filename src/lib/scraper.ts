@@ -24,11 +24,11 @@ export const getScrapedRecipe = async (
     url = url.trim();
 
     if (url == "") {
-      throw new Error("Oh no! The Input field is empty. Please provide a URL.");
+      throw new Error("The input field is empty. Please provide a URL.");
     }
 
     if (!isValidUrl(url)) {
-      throw new Error("Oh no! Invalid URL. Please provide a valid URL.");
+      throw new Error("Invalid URL. Please provide a valid URL.");
     }
 
     const page: Page = await browser.newPage();
@@ -70,7 +70,7 @@ export const getScrapedRecipe = async (
     if (!scriptWithRecipeData) {
       console.log("No application/ld+json scripts");
       throw new Error(
-        "Oh no! The provided URL does not contain the necessary recipe data."
+        "The provided URL does not contain the necessary recipe data."
       );
     }
 
@@ -92,14 +92,14 @@ export const getScrapedRecipe = async (
     if (!recipeData) {
       console.log("recipeData not found");
       throw new Error(
-        "Oh no! The provided URL does not contain the necessary recipe data."
+        "The provided URL does not contain the necessary recipe data."
       );
     }
 
     if (!recipeData.recipeIngredient) {
       console.log("Ingredients array not found");
       throw new Error(
-        "Oh no! The provided URL does not contain the necessary recipe data."
+        "The provided URL does not contain the necessary recipe data."
       );
     }
 
@@ -116,7 +116,7 @@ export const getScrapedRecipe = async (
     } else {
       console.log("Instructions is either not an array, or it is empty");
       throw new Error(
-        "Oh no! The provided URL does not contain the necessary recipe data."
+        "The provided URL does not contain the necessary recipe data."
       );
     }
 
@@ -152,7 +152,7 @@ export const getScrapedRecipe = async (
     } else {
       console.log("Instructions must be of either type objects or strings");
       throw new Error(
-        "Oh no! The provided URL does not contain the necessary recipe data."
+        "The provided URL does not contain the necessary recipe data."
       );
     }
 
@@ -231,7 +231,7 @@ export const getScrapedRecipe = async (
         success: false,
         error: {
           message:
-            "Oh no! Couldn't navigate to this URL. Are you sure you provided a valid URL?",
+            "Could not navigate to the provided URL. Are you sure it is a valid URL?",
         },
       };
     }

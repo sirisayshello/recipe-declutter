@@ -84,12 +84,12 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
         notifications.update({
           id,
           loading: false,
-          autoClose: 1000,
+          autoClose: 1000, // show success for 1 second
           withCloseButton: true,
           closeButtonProps: { "aria-label": "Hide notification" },
           color: "teal",
           title: "Success!",
-          message: "Recipe was fetched successfully.",
+          message: "Recipe successfully fetched.",
           icon: <IconCheck style={{ width: rem(20), height: rem(20) }} />,
         });
       } else if (data.error) {
@@ -100,7 +100,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
         notifications.update({
           id,
           loading: false,
-          autoClose: 3000,
+          autoClose: 5000, // show error for 5 seconds
           withCloseButton: true,
           closeButtonProps: { "aria-label": "Hide notification" },
           color: "red",

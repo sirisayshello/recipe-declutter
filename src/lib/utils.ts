@@ -156,3 +156,16 @@ export function isSimpleInstruction(
   );
 }
 
+export const getTimeOfDay = () => {
+  const currentHour = new Date().getHours();
+
+  if (currentHour >= 5 && currentHour < 12) {
+    return "morning";
+  } else if (currentHour >= 12 && currentHour < 18) {
+    return "afternoon";
+  } else if (currentHour >= 18 && currentHour < 22) {
+    return "evening";
+  } else {
+    return "night";
+  }
+};

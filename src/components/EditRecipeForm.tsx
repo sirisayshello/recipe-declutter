@@ -4,13 +4,13 @@ import { updateRecipe } from "@/lib/queries";
 import { isSectionedInstruction, isSimpleInstruction } from "@/lib/utils";
 import {
   Button,
-  Container,
   Fieldset,
   Group,
   Space,
   TagsInput,
   TextInput,
   Alert,
+  Paper,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
@@ -148,27 +148,32 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
 
         <Space h="xl" />
         <Space h="xl" />
+        <Space h="xl" />
 
-        <Container
-          pos="fixed"
+        {error && (
+          <Alert
+            variant="light"
+            color="red"
+            title="Recipe failed to save"
+            mt="md"
+          >
+            {error}
+          </Alert>
+        )}
+
+        <Paper
+          shadow="md"
+          p={16}
           style={{
-            backgroundColor: "white",
+            position: "fixed",
             bottom: 0,
-            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-            width: "100%",
+            left: 0,
+            right: 0,
+            zIndex: 1000,
+            borderRadius: "0 0 0 0",
           }}
         >
-          {error && (
-            <Alert
-              variant="light"
-              color="red"
-              title="Recipe failed to save"
-              mt="md"
-            >
-              {error}
-            </Alert>
-          )}
-          <Group justify="center" mt="md" mb="md">
+          <Group justify="center" mt={"xs"} mb={"xs"}>
             <Button size="md" type="submit">
               Save Changes
             </Button>
@@ -180,7 +185,7 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
               Cancel
             </Button>
           </Group>
-        </Container>
+        </Paper>
       </form>
     </>
   );

@@ -12,17 +12,17 @@ import {
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
 
-type IngredientAndInstructionListProps = {
+type EditIngredientAndInstructionListProps = {
   form: UseFormReturnType<FormValues>;
   hasSections: boolean;
   view: "ingredients" | "instructions";
 };
 
-export const IngredientAndInstructionList = ({
+export const EditIngredientAndInstructionList = ({
   form,
   hasSections,
   view,
-}: IngredientAndInstructionListProps) => {
+}: EditIngredientAndInstructionListProps) => {
   // Add/remove functions for ingredients
   const addIngredient = () => form.insertListItem("ingredients", "");
   const removeIngredient = (index: number) =>

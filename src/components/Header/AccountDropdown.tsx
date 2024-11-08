@@ -10,13 +10,6 @@ type AccountDropdownProps = {
 };
 
 export default function AccountDropdown({ session }: AccountDropdownProps) {
-  if (!session) {
-    return (
-      <Link href="/login" passHref>
-        <LoginButton session={session} />
-      </Link>
-    );
-  }
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>

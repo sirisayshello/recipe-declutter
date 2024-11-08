@@ -6,6 +6,7 @@ import { useClickOutside, useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import AccountDropdown from "./AccountDropdown";
+import { LoginButton } from "../LogInButton";
 
 export const Navbar = () => {
   const { data: session } = useSession();
@@ -31,12 +32,20 @@ export const Navbar = () => {
     >
       <Container {...containerProps} size="md">
         <Burger color="cream.0" opened={opened} onClick={toggle} size="sm" />
+
         <Anchor component={Link} href="/" underline="never">
           <Text c="cream.0" fw={500}>
             Recipe Declutter
           </Text>
         </Anchor>
-        <AccountDropdown session={session} />
+        {/* Different button depending on whether the user is logged in or not */}
+        {!session ? (
+          <Link href="/login" passHref>
+            <LoginButton session={session} />
+          </Link>
+        ) : (
+          <AccountDropdown session={session} />
+        )}
 
         {opened && (
           <Paper

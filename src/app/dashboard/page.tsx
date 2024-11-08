@@ -1,23 +1,10 @@
-import CategoryFilter from "@/components/CategoryFilter";
+import TagsFilter from "@/components/TagsFilter";
 import { Center, Stack, Title } from "@mantine/core";
 import RecentRecipes from "@/components/RecentRecipes";
 import { getUserRecipes } from "@/lib/actions";
 import { getAuth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import SignOutButton from "@/components/SignOutButton";
-
-// categories hardcoded for now
-const categories = [
-  "Breakfast",
-  "Lunch",
-  "Dinner",
-  "Zucchini",
-  "Snacks",
-  "Chocolate",
-  "Oats",
-  "Potatoes",
-  "Carrots",
-];
 
 export default async function Dashboard() {
   const session = await getAuth();
@@ -27,7 +14,15 @@ export default async function Dashboard() {
   }
 
   const recipes = await getUserRecipes();
-  const convertedRecipes = recipes as UserRecipe[];
+  const convertedRecipes = recipes as unknown as UserRecipe[];
+
+  const allTags = Array.from(
+    new Set(
+      convertedRecipes
+        .flatMap((recipe) => recipe.tags)
+        .filter((tag): tag is string => tag !== undefined)
+    )
+  );
 
   return (
     <>
@@ -36,7 +31,7 @@ export default async function Dashboard() {
       </Center>
 
       <Stack component="section">
-        <CategoryFilter categories={categories} />
+        <TagsFilter tags={allTags} />
         <RecentRecipes recipes={convertedRecipes} />
       </Stack>
       <SignOutButton />

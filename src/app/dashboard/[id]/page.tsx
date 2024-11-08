@@ -13,12 +13,20 @@ export default async function RecipePage({
     where: {
       id: parseInt(params.id),
     },
+    include: {
+      tags: {
+        select: {
+          tag: true,
+        },
+      },
+    },
   });
 
   if (!recipe) {
     return <div>Something went wrong</div>;
   }
-  const convertedRecipe = recipe as UserRecipe;
+  const convertedRecipe = recipe as unknown as UserRecipe;
+  console.log(convertedRecipe.tags);
 
   return (
     <>
@@ -37,8 +45,13 @@ export default async function RecipePage({
       </Stack>
 
       <IngredientsAndInstructionsToggle recipe={convertedRecipe} />
+
       <Group mt="md" mb="md">
-        <Pill size="md">Lunch</Pill>
+        {recipe.tags?.map((tagRelation, index) => (
+          <Pill key={index} size="md">
+            {tagRelation.tag.name}
+          </Pill>
+        ))}
       </Group>
     </>
   );

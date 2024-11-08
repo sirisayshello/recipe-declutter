@@ -1,6 +1,6 @@
 import prisma from "@/lib/db";
 import Link from "next/link";
-import { Group, Pill, Stack, Title } from "@mantine/core";
+import { Anchor, Group, Pill, Stack, Title } from "@mantine/core";
 import { IconArrowNarrowLeft, IconPencil } from "@tabler/icons-react";
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 import { getAuth } from "@/lib/auth";
@@ -28,12 +28,15 @@ export default async function RecipePage({
   return (
     <>
       <Group justify="space-between" mt="md">
-        <Link href="/dashboard">
+        <Anchor component={Link} href="/dashboard">
           <IconArrowNarrowLeft />
-        </Link>
-        <Link href={`/dashboard/${recipe.slug}/edit?id=${recipe.id}`}>
+        </Anchor>
+        <Anchor
+          component={Link}
+          href={`/dashboard/${recipe.slug}/edit?id=${recipe.id}`}
+        >
           <IconPencil />
-        </Link>
+        </Anchor>
       </Group>
       <Stack component="section">
         <Title ta="center" mt="md" mb="md">

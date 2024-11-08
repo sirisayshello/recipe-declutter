@@ -43,7 +43,18 @@ export const IngredientsAndInstructionsToggle = ({
       {view === "ingredients" && (
         <List>
           {recipe.ingredients.map((ingredient, index) => {
-            return <List.Item key={index}>{ingredient}</List.Item>;
+            return (
+              <List.Item
+                styles={{
+                  itemWrapper: {
+                    display: "inline",
+                  },
+                }}
+                key={index}
+              >
+                {ingredient}
+              </List.Item>
+            );
           })}
         </List>
       )}

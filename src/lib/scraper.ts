@@ -32,7 +32,9 @@ export const getScrapedRecipe = async (
     }
 
     const page: Page = await browser.newPage();
-    await page.goto(url);
+
+    // don't catch errors thrown by page.goto, since they aren't formatted as user-friendly error messages
+    await page.goto(url).catch(() => {});
 
     // Sometimes the scripts are loaded after the initial page load - wait 500ms
     await page
@@ -220,21 +222,6 @@ export const getScrapedRecipe = async (
     };
   } catch (error) {
     console.error(getErrorMessage(error));
-
-    // This if block handles errors that occur when `await page.goto(url)` fails and throws an error
-    // (The error it outputs is not formatted as a user-friendly error message)
-    if (
-      error instanceof Error &&
-      error.message.includes("Cannot navigate to invalid URL")
-    ) {
-      return {
-        success: false,
-        error: {
-          message:
-            "Could not navigate to the provided URL. Are you sure it is a valid URL?",
-        },
-      };
-    }
 
     return {
       success: false,

@@ -58,7 +58,12 @@ export const SaveRecipeComponent = ({
       setError(null);
       console.log(tags);
 
-      const result = await saveRecipe(session?.user?.email, recipe);
+      const recipeWithTags = {
+        ...recipe,
+        tags: tags.map((tag) => tag),
+      };
+
+      const result = await saveRecipe(session?.user?.email, recipeWithTags);
 
       if (!result.success) {
         setError(result.error?.message || "Failed to save recipe");

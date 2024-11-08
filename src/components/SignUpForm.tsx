@@ -146,6 +146,7 @@ export default function SignUpForm() {
             label="Email"
             placeholder="your@email.com"
             disabled={loading}
+            type="email"
           />
           <PasswordInput
             {...form.getInputProps("password")}
@@ -153,6 +154,7 @@ export default function SignUpForm() {
             label="Password"
             placeholder="Your password"
             disabled={loading}
+            type="password"
           />
           <PasswordInput
             {...form.getInputProps("confirmPassword")}
@@ -160,6 +162,7 @@ export default function SignUpForm() {
             label="Confirm Password"
             placeholder="Confirm your password"
             disabled={loading}
+            type="password"
           />
           {/* add popup with some simple t&c */}
           <Checkbox

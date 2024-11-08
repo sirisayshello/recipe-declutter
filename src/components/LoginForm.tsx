@@ -86,6 +86,7 @@ export default function LoginForm() {
               label="Email"
               placeholder="your@email.com"
               disabled={loading}
+              type="email"
             />
             <PasswordInput
               {...form.getInputProps("password")}
@@ -93,6 +94,7 @@ export default function LoginForm() {
               label="Password"
               placeholder="Your password"
               disabled={loading}
+              type="password"
             />
 
             <Button type="submit" mt="md" variant="filled" loading={loading}>

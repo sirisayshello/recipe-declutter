@@ -23,7 +23,7 @@ export default async function RecentRecipes({
                 >
                   <Anchor
                     component={Link}
-                    href={`/dashboard/${recipe.id}`}
+                    href={`/dashboard/${recipe.slug}?id=${recipe.id}`}
                     underline="never"
                   >
                     {recipe.title}

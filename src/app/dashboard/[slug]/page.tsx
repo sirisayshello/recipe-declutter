@@ -3,30 +3,35 @@ import Link from "next/link";
 import { Group, Pill, Stack, Title } from "@mantine/core";
 import { IconArrowNarrowLeft, IconPencil } from "@tabler/icons-react";
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
+import { getAuth } from "@/lib/auth";
+import { notFound } from "next/navigation";
 
 export default async function RecipePage({
-  params,
+  searchParams,
 }: {
-  params: { id: string };
+  searchParams: { id: string };
 }) {
+  const session = await getAuth();
+  const user = session?.user;
+
   const recipe = await prisma.recipe.findUnique({
     where: {
-      id: parseInt(params.id),
+      id: parseInt(searchParams.id),
+      userId: user?.id,
     },
   });
-
-  if (!recipe) {
-    return <div>Something went wrong</div>;
-  }
   const convertedRecipe = recipe as UserRecipe;
 
+  if (!recipe) {
+    notFound();
+  }
   return (
     <>
       <Group justify="space-between" mt="md">
         <Link href="/dashboard">
           <IconArrowNarrowLeft />
         </Link>
-        <Link href={`/dashboard/${recipe.id}/edit`}>
+        <Link href={`/dashboard/${recipe.slug}/edit?id=${recipe.id}`}>
           <IconPencil />
         </Link>
       </Group>

@@ -84,7 +84,10 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
 
         setSuccess(true);
         console.log(success);
-        setTimeout(() => router.push(`/dashboard/${recipe.id}`), 1500);
+        setTimeout(
+          () => router.push(`/dashboard/${recipe.slug}?id=${recipe.id}`),
+          1500
+        );
       } catch (err) {
         console.error(err);
         setError("An error occurred while saving. Please try again.");
@@ -180,7 +183,9 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
             <Button
               component="a"
               size="md"
-              onClick={() => router.push(`/dashboard/${recipe.id}`)}
+              onClick={() =>
+                router.push(`/dashboard/${recipe.slug}?id=${recipe.id}`)
+              }
             >
               Cancel
             </Button>

@@ -32,7 +32,6 @@ const clearPendingRecipe = () => {
 
 export const RecipeForm = ({ session }: RecipeFormProps) => {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
-  const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
   const [loading, setLoading] = useState(false);
   const [shouldOpenModal, setShouldOpenModal] = useState(false);
 
@@ -57,9 +56,8 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
 
     setLoading(true);
     setRecipe(undefined);
-    setRecipeError(undefined);
 
-    // Notification for each request
+    // Notification for each form submit. Initially as a loading notification.
     const id = notifications.show({
       loading: true,
       title: "Just a moment",
@@ -93,8 +91,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           icon: <IconCheck style={{ width: rem(20), height: rem(20) }} />,
         });
       } else if (data.error) {
-        setRecipeError(data.error);
-        console.log("RecipeError:", data.error);
+        console.error("Error:", data.error);
 
         // Update notification to show error message
         notifications.update({
@@ -110,9 +107,24 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
         });
       }
     } catch (error) {
-      console.error("Error fetching recipe:", error);
-      setRecipeError({ message: "Failed to fetch recipe" });
-      console.log(recipeError);
+      // Update notification to show error message
+      notifications.update({
+        id,
+        loading: false,
+        autoClose: 5000, // show error for 5 seconds
+        withCloseButton: true,
+        closeButtonProps: { "aria-label": "Hide notification" },
+        color: "red",
+        title: "Oh no!",
+        message: "Failed to fetch recipe",
+        icon: <IconX style={{ width: rem(20), height: rem(20) }} />,
+      });
+
+      if (error instanceof Error) {
+        console.error(error);
+      } else {
+        console.error("An unknown error occurred.");
+      }
     } finally {
       field.reset();
       setLoading(false);

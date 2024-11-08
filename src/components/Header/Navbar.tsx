@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Container, Burger, Anchor, Text, Paper, Stack } from "@mantine/core";
 import { useClickOutside, useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
-import { LoginButton } from "../LogInButton";
 import { useSession } from "next-auth/react";
+import AccountDropdown from "./AccountDropdown";
 
 export const Navbar = () => {
   const { data: session } = useSession();
@@ -36,7 +36,7 @@ export const Navbar = () => {
             Recipe Declutter
           </Text>
         </Anchor>
-        <LoginButton session={session} />
+        <AccountDropdown session={session} />
 
         {opened && (
           <Paper

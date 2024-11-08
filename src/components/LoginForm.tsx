@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 import {
   TextInput,
   Button,
-  Alert,
   PasswordInput,
   Stack,
   Paper,
+  rem,
 } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { IconX } from "@tabler/icons-react";
 
 type Credentials = {
   email: string;
@@ -18,7 +20,6 @@ type Credentials = {
 };
 
 export default function LoginForm() {
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -32,7 +33,6 @@ export default function LoginForm() {
   });
 
   const submitCredentials = async (values: Credentials) => {
-    setError(""); // Clear any previous error
     setLoading(true);
 
     values.email = values.email.toLowerCase();
@@ -48,18 +48,35 @@ export default function LoginForm() {
       });
 
       if (result?.error) {
-        setError("Invalid email or password. Please try again.");
-        setLoading(false);
-      } else {
-        router.push("/welcome"); // Redirect to landing page
+        throw new Error(result.error);
       }
+
+      // Clear potential notification errors still on the screen before redirecting
+      notifications.clean();
+
+      // Redirect to landing page
+      router.push("/welcome");
     } catch (error: unknown) {
       setLoading(false);
 
+      // show a notification error
+      notifications.show({
+        px: "lg",
+        withBorder: true,
+        loading: false,
+        autoClose: 5000, // show error for 5 seconds
+        withCloseButton: true,
+        closeButtonProps: { "aria-label": "Hide notification" },
+        color: "red",
+        title: "Oh no!",
+        message: "Invalid email or password. Please try again.",
+        icon: <IconX style={{ width: rem(20), height: rem(20) }} />,
+      });
+
       if (error instanceof Error) {
-        setError(error.message);
+        console.error(error);
       } else {
-        setError("An unknown error occurred.");
+        console.error("An unknown error occurred.");
       }
     }
   };
@@ -75,11 +92,6 @@ export default function LoginForm() {
       >
         <form onSubmit={form.onSubmit(submitCredentials)}>
           <Stack>
-            {error && (
-              <Alert variant="light" color="red" title="Sign up failed">
-                {error}
-              </Alert>
-            )}
             <TextInput
               {...form.getInputProps("email")}
               key={form.key("email")}

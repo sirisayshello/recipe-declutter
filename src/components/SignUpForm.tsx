@@ -2,16 +2,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Alert,
   Button,
   Checkbox,
   Paper,
   PasswordInput,
+  rem,
   Stack,
   TextInput,
 } from "@mantine/core";
 import { hasLength, isEmail, useForm } from "@mantine/form";
 import { signIn } from "next-auth/react";
+import { notifications } from "@mantine/notifications";
+import { IconX } from "@tabler/icons-react";
 
 type UserData = {
   email: string;
@@ -21,7 +23,6 @@ type UserData = {
 };
 
 export default function SignUpForm() {
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -47,7 +48,6 @@ export default function SignUpForm() {
   });
 
   const submitUserData = async (userData: UserData) => {
-    setError(null); // Clear any previous error
     setLoading(true);
 
     userData.email = userData.email.toLowerCase();
@@ -74,9 +74,12 @@ export default function SignUpForm() {
         password: userData.password,
       });
 
+      // Clear potential notification errors still on the screen before redirecting
+      notifications.clean();
+
       if (loginResponse?.error) {
-        setError("Something went wrong. Please try again.");
-        router.push("/login"); // Redirect to login if login fails
+        // Redirect to login page if login fails
+        router.push("/login");
       }
 
       // redirect to welcome page as logged in user
@@ -85,9 +88,37 @@ export default function SignUpForm() {
       setLoading(false);
 
       if (error instanceof Error) {
-        setError(error.message);
+        console.error(error);
+
+        // show a notification error
+        notifications.show({
+          px: "lg",
+          withBorder: true,
+          loading: false,
+          autoClose: 5000, // show error for 5 seconds
+          withCloseButton: true,
+          closeButtonProps: { "aria-label": "Hide notification" },
+          color: "red",
+          title: "Oh no!",
+          message: error.message, // probably: User with this email already exists
+          icon: <IconX style={{ width: rem(20), height: rem(20) }} />,
+        });
       } else {
-        setError("An unknown error occurred.");
+        console.error("An unknown error occurred.");
+
+        // show a notification error
+        notifications.show({
+          px: "lg",
+          withBorder: true,
+          loading: false,
+          autoClose: 5000, // show error for 5 seconds
+          withCloseButton: true,
+          closeButtonProps: { "aria-label": "Hide notification" },
+          color: "red",
+          title: "Oh no!",
+          message: "Something went wrong. Please try again.",
+          icon: <IconX style={{ width: rem(20), height: rem(20) }} />,
+        });
       }
     }
   };
@@ -102,11 +133,6 @@ export default function SignUpForm() {
     >
       <form onSubmit={form.onSubmit(submitUserData)}>
         <Stack>
-          {error && (
-            <Alert variant="light" color="red" title="Sign up failed">
-              {error}
-            </Alert>
-          )}
           <TextInput
             {...form.getInputProps("name")}
             key={form.key("name")}

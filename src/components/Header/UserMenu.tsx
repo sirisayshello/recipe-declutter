@@ -1,19 +1,18 @@
-import { Anchor, Menu, rem } from "@mantine/core";
+import { Menu, rem } from "@mantine/core";
 import { IconSettings, IconLogout2, IconNotebook } from "@tabler/icons-react";
 import { LoginButton } from "../LogInButton";
-import { Session } from "next-auth";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
-type AccountDropdownProps = {
-  session: Session | null;
+type UserMenuProps = {
+  displayName: string;
 };
 
-export default function AccountDropdown({ session }: AccountDropdownProps) {
+export default function UserMenu({ displayName }: UserMenuProps) {
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
-        <LoginButton session={session} />
+        <LoginButton displayName={displayName} isLoggedIn={true} />
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>My Account</Menu.Label>

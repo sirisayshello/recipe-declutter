@@ -144,7 +144,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
                 />
               ),
             });
-          }, 2000);
+          }, 3000);
       } else if (data.error) {
         console.error("Error:", data.error);
 

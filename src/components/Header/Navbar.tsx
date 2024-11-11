@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Container, Burger, Anchor, Text, Paper, Stack } from "@mantine/core";
 import { useClickOutside, useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
-import { LoginButton } from "../LogInButton";
 import { useSession } from "next-auth/react";
+import { UserButton } from "../LogInButton";
+import UserMenu from "./UserMenu";
 
 export const Navbar = () => {
   const { data: session } = useSession();
@@ -31,12 +32,22 @@ export const Navbar = () => {
     >
       <Container {...containerProps} size="md">
         <Burger color="cream.0" opened={opened} onClick={toggle} size="sm" />
+
         <Anchor component={Link} href="/" underline="never">
           <Text c="cream.0" fw={500}>
             Recipe Declutter
           </Text>
         </Anchor>
-        <LoginButton session={session} />
+        {/* Different button depending on whether the user is logged in or not */}
+        {!session ? (
+          <Link href="/login" passHref>
+            <UserButton displayName="Log in" />
+          </Link>
+        ) : (
+          <UserMenu
+            displayName={session.user.name?.charAt(0).toUpperCase() || "U"}
+          />
+        )}
 
         {opened && (
           <Paper

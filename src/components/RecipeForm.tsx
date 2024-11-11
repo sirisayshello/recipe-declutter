@@ -1,16 +1,23 @@
 "use client";
 
-import { useEffect, useState, FormEvent } from "react";
+import { useEffect, useState, FormEvent, useRef } from "react";
 import { getScrapedRecipe } from "@/lib/scraper";
-import { Flex, TextInput, Button, Box, Title, Space, rem } from "@mantine/core";
+import {
+  Flex,
+  TextInput,
+  Button,
+  Box,
+  Title,
+  rem,
+  useMantineTheme,
+} from "@mantine/core";
 import { useField } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 
 import { IngredientsAndInstructionsToggle } from "./IngredientsAndInstructionsToggle";
-import { SaveRecipeComponent } from "./SaveRecipeComponent";
+import { SaveRecipeModal } from "./SaveRecipeComponent";
 import { Session } from "next-auth";
-import { CTABanner } from "./CTABanner";
-import { IconCheck, IconX } from "@tabler/icons-react";
+import { IconCheck, IconX, IconReceiptFilled } from "@tabler/icons-react";
 
 type RecipeFormProps = {
   session?: Session | null;
@@ -31,6 +38,8 @@ const clearPendingRecipe = () => {
 };
 
 export const RecipeForm = ({ session }: RecipeFormProps) => {
+  const theme = useMantineTheme();
+
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [loading, setLoading] = useState(false);
   const [shouldOpenModal, setShouldOpenModal] = useState(false);
@@ -51,6 +60,20 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
     }
   }, [session]);
 
+  // Scroll to the title of the recipe when it is fetched
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  const scrollToElement = () => {
+    const { current } = titleRef;
+    if (current) {
+      current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    scrollToElement();
+  }, [recipe]);
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
@@ -58,7 +81,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
     setRecipe(undefined);
 
     // Notification for each form submit. Initially as a loading notification.
-    const id = notifications.show({
+    const loadingNotification = notifications.show({
       loading: true,
       title: "Just a moment",
       message: "Fetching recipe from URL",
@@ -90,6 +113,37 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           message: "Recipe successfully fetched.",
           icon: <IconCheck style={{ width: rem(20), height: rem(20) }} />,
         });
+
+        if (!session)
+          //  Display a sign up notification 5 seconds after success
+          setTimeout(() => {
+            notifications.show({
+              id: "signUpNotification",
+              loading: false,
+              title: "Save this recipe?",
+              message: (
+                <>
+                  <Box pb={"0.5rem"}>
+                    Unlock the full experience by creating an account. Keep your
+                    recipes saved, customized, and perfectly organized.
+                  </Box>
+                  <Button onClick={() => setShouldOpenModal(true)}>
+                    Create Free Account
+                  </Button>
+                </>
+              ),
+              autoClose: false,
+              withCloseButton: true,
+              withBorder: true,
+              px: "lg",
+              color: theme.primaryColor,
+              icon: (
+                <IconReceiptFilled
+                  style={{ width: rem(20), height: rem(20) }}
+                />
+              ),
+            });
+          }, 2000);
       } else if (data.error) {
         console.error("Error:", data.error);
 
@@ -160,35 +214,30 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
         </Button>
       </Flex>
 
-      {!session && <CTABanner />}
-
       {recipe?.ingredients && recipe.instructions.length > 0 && (
         <Box
           component="section"
-          pt="md"
           mt="xl"
           style={{
             borderTop: "1px solid var(--mantine-color-gray-3)",
           }}
         >
-          <Title order={2} ta="center">
+          <Title order={2} ta="center" id="test" pt="xl" ref={titleRef}>
             {recipe.title}
           </Title>
+
           <IngredientsAndInstructionsToggle recipe={recipe} />
 
-          <Box component="section" mb="md">
-            {recipe && (
-              <SaveRecipeComponent
-                recipe={recipe}
-                session={session}
-                isOpen={shouldOpenModal}
-                onClose={() => setShouldOpenModal(false)}
-              />
-            )}
-          </Box>
+          {shouldOpenModal && (
+            <SaveRecipeModal
+              recipe={recipe}
+              session={session}
+              isOpen={shouldOpenModal}
+              onClose={() => setShouldOpenModal(false)}
+            />
+          )}
         </Box>
       )}
-      <Space h="xl" />
     </>
   );
 };

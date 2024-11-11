@@ -27,7 +27,7 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider defaultColorScheme="auto" theme={theme}>
-          <Notifications />
+          <Notifications position="bottom-center" />
           <SessionWrapper>
             <Navbar />
           </SessionWrapper>

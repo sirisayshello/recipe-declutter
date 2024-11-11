@@ -80,7 +80,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
 
         // Update notification to show success message
         notifications.update({
-          id,
+          id: loadingNotification,
           loading: false,
           autoClose: 1000, // show success for 1 second
           withCloseButton: true,
@@ -95,7 +95,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
 
         // Update notification to show error message
         notifications.update({
-          id,
+          id: loadingNotification,
           loading: false,
           autoClose: 5000, // show error for 5 seconds
           withCloseButton: true,
@@ -109,7 +109,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
     } catch (error) {
       // Update notification to show error message
       notifications.update({
-        id,
+        id: loadingNotification,
         loading: false,
         autoClose: 5000, // show error for 5 seconds
         withCloseButton: true,

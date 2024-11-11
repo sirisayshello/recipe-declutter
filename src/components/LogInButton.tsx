@@ -2,12 +2,12 @@ import { Button } from "@mantine/core";
 import { IconUser } from "@tabler/icons-react";
 import React, { forwardRef } from "react";
 
-type LoginButtonProps = {
+type UserButtonProps = {
   displayName: string;
   isLoggedIn?: boolean;
 } & React.ComponentPropsWithoutRef<"button">;
 
-export const LoginButton = forwardRef<HTMLButtonElement, LoginButtonProps>(
+export const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
   ({ displayName, isLoggedIn = false, ...props }, ref) => {
     return (
       <Button
@@ -29,4 +29,4 @@ export const LoginButton = forwardRef<HTMLButtonElement, LoginButtonProps>(
     );
   }
 );
-LoginButton.displayName = "LoginButton";
+UserButton.displayName = "LoginButton";

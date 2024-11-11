@@ -1,6 +1,6 @@
 import { Menu, rem } from "@mantine/core";
 import { IconSettings, IconLogout2, IconNotebook } from "@tabler/icons-react";
-import { LoginButton } from "../LogInButton";
+import { UserButton } from "../LogInButton";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
@@ -12,7 +12,7 @@ export default function UserMenu({ displayName }: UserMenuProps) {
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
-        <LoginButton displayName={displayName} isLoggedIn={true} />
+        <UserButton displayName={displayName} isLoggedIn={true} />
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>My Account</Menu.Label>

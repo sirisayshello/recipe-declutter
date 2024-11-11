@@ -15,7 +15,7 @@ import { useField } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 
 import { IngredientsAndInstructionsToggle } from "./IngredientsAndInstructionsToggle";
-import { SaveRecipeModal } from "./SaveRecipeComponent";
+import { SaveRecipeModal } from "./SaveRecipeModal";
 import { Session } from "next-auth";
 import { IconCheck, IconX, IconReceiptFilled } from "@tabler/icons-react";
 

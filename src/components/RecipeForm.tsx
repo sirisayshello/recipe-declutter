@@ -10,6 +10,7 @@ import {
   Title,
   rem,
   useMantineTheme,
+  Divider,
 } from "@mantine/core";
 import { useField } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
@@ -215,18 +216,19 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
       </Flex>
 
       {recipe?.ingredients && recipe.instructions.length > 0 && (
-        <Box
-          component="section"
-          mt="xl"
-          style={{
-            borderTop: "1px solid var(--mantine-color-gray-3)",
-          }}
-        >
+        <Box component="section" mt="xl">
+          <Divider variant="dotted" size="md" />
           <Title order={2} ta="center" id="test" pt="xl" ref={titleRef}>
             {recipe.title}
           </Title>
-
           <IngredientsAndInstructionsToggle recipe={recipe} />
+
+          {/* Save Recipe button for logged in user */}
+          {session && (
+            <Button mt={"md"} onClick={() => setShouldOpenModal(true)}>
+              Save Recipe
+            </Button>
+          )}
 
           {shouldOpenModal && (
             <SaveRecipeModal

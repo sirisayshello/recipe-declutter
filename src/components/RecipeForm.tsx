@@ -9,9 +9,9 @@ import {
   Box,
   Title,
   rem,
-  useMantineTheme,
   Divider,
   Alert,
+  Stack,
   Transition,
 } from "@mantine/core";
 import { useField } from "@mantine/form";
@@ -158,7 +158,15 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
   }
 
   return (
-    <>
+    <Stack
+      // Styling dependent on whether banner should be displayed on the bottom (space-between),
+      // or if a should follow directly under the form (flex-start)
+      h={!recipe?.ingredients && !session ? "100%" : ""}
+      {...(!recipe?.ingredients && !session
+        ? { justify: "space-between" }
+        : { justify: "flex-start" })}
+    >
+      {/* form section */}
       <Flex
         onSubmit={(e) => handleSubmit(e)}
         component="form"
@@ -186,8 +194,9 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
         </Button>
       </Flex>
 
+      {/* recipe section */}
       {recipe?.ingredients && recipe.instructions.length > 0 && (
-        <Box component="section" mt="xl">
+        <Box component="section" style={{ justifySelf: "flex-start" }}>
           <Divider variant="dotted" size="md" />
           <Title order={2} ta="center" pt="xl" ref={titleRef}>
             {recipe.title}
@@ -239,5 +248,6 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           </Box>
         )}
       </Transition>
+    </Stack>
   );
 };

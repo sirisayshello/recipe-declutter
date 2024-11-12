@@ -3,8 +3,8 @@ import { Box, Flex, Space, Text, Title } from "@mantine/core";
 
 export default function Home() {
   return (
-    <>
-      <Box component="section" mt="md">
+    <Flex direction="column" h="100%">
+      <Box mt="md">
         <Flex gap="md" justify="center" align="center" direction="column">
           <Title ta="center">Welcome to Recipe Declutter!</Title>
           <Text ta="center">
@@ -14,9 +14,10 @@ export default function Home() {
         </Flex>
         <Space h="xl" />
       </Box>
-      <RecipeForm />
-
+      <Box style={{ flex: 1 }}>
+        <RecipeForm />
+      </Box>
       <Space h="xl" />
-    </>
+    </Flex>
   );
 }

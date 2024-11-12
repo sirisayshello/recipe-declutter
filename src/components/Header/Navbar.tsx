@@ -47,7 +47,12 @@ export const Navbar = () => {
           size="md"
         />
         <Drawer opened={opened} onClose={close} withCloseButton={false}>
-          <Drawer.CloseButton />
+          <Group>
+            <Drawer.CloseButton m={0} />
+            <Text size="xl" fw={700}>
+              Recipe Declutter
+            </Text>
+          </Group>
           <Divider mt={16} mb={16} />
           <Stack gap={24}>
             <Anchor component={Link} href="/about">

@@ -194,12 +194,9 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           </Title>
           <IngredientsAndInstructionsToggle recipe={recipe} />
 
-          {/* Save Recipe button for logged in user */}
-          {session && (
-            <Button mt={"md"} onClick={() => setShouldOpenModal(true)}>
-              Save Recipe
-            </Button>
-          )}
+          <Button mt="md" onClick={() => setShouldOpenModal(true)}>
+            Save This Recipe
+          </Button>
 
           {shouldOpenModal && (
             <SaveRecipeModal

@@ -11,14 +11,17 @@ import {
   rem,
   useMantineTheme,
   Divider,
+  Alert,
+  Transition,
 } from "@mantine/core";
 import { useField } from "@mantine/form";
-import { notifications } from "@mantine/notifications";
+import { notifications, useNotifications } from "@mantine/notifications";
 
 import { IngredientsAndInstructionsToggle } from "./IngredientsAndInstructionsToggle";
 import { SaveRecipeModal } from "./SaveRecipeModal";
 import { Session } from "next-auth";
-import { IconCheck, IconX, IconReceiptFilled } from "@tabler/icons-react";
+import { IconCheck, IconChefHat, IconX } from "@tabler/icons-react";
+import Link from "next/link";
 
 type RecipeFormProps = {
   session?: Session | null;
@@ -39,11 +42,10 @@ const clearPendingRecipe = () => {
 };
 
 export const RecipeForm = ({ session }: RecipeFormProps) => {
-  const theme = useMantineTheme();
-
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [loading, setLoading] = useState(false);
   const [shouldOpenModal, setShouldOpenModal] = useState(false);
+  const notificationsStore = useNotifications();
 
   const field = useField({
     initialValue: "",
@@ -114,37 +116,6 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           message: "Recipe successfully fetched.",
           icon: <IconCheck style={{ width: rem(20), height: rem(20) }} />,
         });
-
-        if (!session)
-          //  Display a sign up notification 3 seconds after success
-          setTimeout(() => {
-            notifications.show({
-              id: "signUpNotification",
-              loading: false,
-              title: "Save this recipe?",
-              message: (
-                <>
-                  <Box pb={"0.5rem"}>
-                    Unlock the full experience by creating an account. Keep your
-                    recipes saved, customized, and perfectly organized.
-                  </Box>
-                  <Button onClick={() => setShouldOpenModal(true)}>
-                    Create Free Account
-                  </Button>
-                </>
-              ),
-              autoClose: false,
-              withCloseButton: true,
-              withBorder: true,
-              px: "lg",
-              color: theme.primaryColor,
-              icon: (
-                <IconReceiptFilled
-                  style={{ width: rem(20), height: rem(20) }}
-                />
-              ),
-            });
-          }, 3000);
       } else if (data.error) {
         console.error("Error:", data.error);
 
@@ -240,6 +211,36 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           )}
         </Box>
       )}
-    </>
+
+      {/* sign up banner */}
+      {/* Only shown when there is no scraped recipe, user is not logged in and no notifications are on screen */}
+      <Transition
+        mounted={
+          !recipe?.ingredients &&
+          !session &&
+          notificationsStore.notifications.length === 0
+        }
+        transition="slide-down"
+        duration={300}
+        timingFunction="ease"
+      >
+        {(styles) => (
+          <Box mt="auto" style={styles}>
+            <Alert
+              variant="light"
+              title="Save, Edit & Organize Recipes"
+              icon={<IconChefHat />}
+            >
+              <Box>
+                Unlock the full experience by creating an account. Keep your
+                recipes saved, customized, and perfectly organized.
+              </Box>
+              <Button component={Link} href={"/signup"} mt={"md"}>
+                Create Free Account
+              </Button>
+            </Alert>
+          </Box>
+        )}
+      </Transition>
   );
 };

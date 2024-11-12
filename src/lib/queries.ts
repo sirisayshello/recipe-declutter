@@ -83,7 +83,6 @@ export const saveRecipe = async (
     }
 
     const result = await prisma.$transaction(async (tx) => {
-      // Create the recipe
       const createdRecipe = await tx.recipe.create({
         data: {
           url: recipe.url,

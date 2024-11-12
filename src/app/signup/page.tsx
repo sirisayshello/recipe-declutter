@@ -1,12 +1,12 @@
 import SignUpForm from "@/components/SignUpForm";
-import { Anchor, Container, Title, Text } from "@mantine/core";
+import { Anchor, Title, Text, Box } from "@mantine/core";
 import Link from "next/link";
 
 export default function SignUp() {
   return (
     <>
-      <Container my="4rem">
-        <Title ta="center" mb="xl" size={"2rem"}>
+      <Box py="4rem">
+        <Title ta="center" mb="xl">
           Welcome to Recipe Declutter!
         </Title>
 
@@ -20,7 +20,7 @@ export default function SignUp() {
             </Anchor>
           </span>
         </Text>
-      </Container>
+      </Box>
     </>
   );
 }

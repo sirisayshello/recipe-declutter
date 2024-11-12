@@ -4,15 +4,16 @@ import React, { useState } from "react";
 import { ActionIcon, Group, MultiSelect } from "@mantine/core";
 import { IconCirclePlus } from "@tabler/icons-react";
 
-export default function TagsFilter({ tags }: { tags: string[] }) {
+export default function TagsFilter({ tags }: { tags: Tag[] }) {
   const [filteredTags, setFilteredTags] = useState<string[]>([]);
+  const stringTags = tags.map((tag) => tag.name);
 
   return (
     <Group justify="center" align="center" wrap="nowrap">
       <MultiSelect
         label="Filter recipes"
         placeholder="Pick tags"
-        data={tags}
+        data={stringTags}
         value={filteredTags}
         onChange={setFilteredTags}
         searchable

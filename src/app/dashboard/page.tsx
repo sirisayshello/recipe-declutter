@@ -5,6 +5,7 @@ import { getUserRecipes } from "@/lib/actions";
 import { getAuth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import SignOutButton from "@/components/SignOutButton";
+import { getUserTags } from "@/lib/queries";
 
 export default async function Dashboard() {
   const session = await getAuth();
@@ -14,15 +15,8 @@ export default async function Dashboard() {
   }
 
   const recipes = await getUserRecipes();
-  const convertedRecipes = recipes as unknown as UserRecipe[];
-
-  const allTags = Array.from(
-    new Set(
-      convertedRecipes
-        .flatMap((recipe) => recipe.tags)
-        .filter((tag): tag is string => tag !== undefined)
-    )
-  );
+  const convertedRecipes = recipes as UserRecipe[];
+  const tags = await getUserTags(session.user.id);
 
   return (
     <>
@@ -31,7 +25,7 @@ export default async function Dashboard() {
       </Center>
 
       <Stack component="section">
-        <TagsFilter tags={allTags} />
+        <TagsFilter tags={tags} />
         <RecentRecipes recipes={convertedRecipes} />
       </Stack>
       <SignOutButton />

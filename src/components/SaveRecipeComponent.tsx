@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 type SaveRecipeComponentProps = {
   session?: Session | null;
   recipe: Recipe;
+  userTags?: Tag[];
   isOpen?: boolean;
   onClose?: () => void;
 };
@@ -31,6 +32,7 @@ const storePendingRecipe = (recipe: Recipe) => {
 export const SaveRecipeComponent = ({
   session,
   recipe,
+  userTags,
   isOpen,
   onClose,
 }: SaveRecipeComponentProps) => {
@@ -39,7 +41,7 @@ export const SaveRecipeComponent = ({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<{ name: string }[]>([]);
 
   useEffect(() => {
     if (isOpen) {
@@ -51,6 +53,9 @@ export const SaveRecipeComponent = ({
     close();
     onClose?.();
   };
+  console.log(userTags);
+
+  const existingTags = userTags?.map((tag) => tag.name);
 
   async function handleSaveRecipe() {
     try {
@@ -60,7 +65,7 @@ export const SaveRecipeComponent = ({
 
       const recipeWithTags = {
         ...recipe,
-        tags: tags.map((tag) => tag),
+        tags: tags.map((tag) => ({ tag })),
       };
 
       const result = await saveRecipe(session?.user?.email, recipeWithTags);
@@ -131,9 +136,9 @@ export const SaveRecipeComponent = ({
               <TagsInput
                 label="Recipe tags"
                 placeholder="Press Enter to submit a tag"
-                data={[]}
-                value={tags}
-                onChange={setTags}
+                data={existingTags}
+                value={tags.map((tag) => tag.name)}
+                onChange={(value) => setTags(value.map((name) => ({ name })))}
                 mb="md"
               />
               <Button

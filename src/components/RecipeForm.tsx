@@ -14,6 +14,7 @@ import { IconCheck, IconX } from "@tabler/icons-react";
 
 type RecipeFormProps = {
   session?: Session | null;
+  userTags?: Tag[];
 };
 
 const PENDING_RECIPE_KEY = "pendingRecipeToSave";
@@ -30,7 +31,7 @@ const clearPendingRecipe = () => {
   }
 };
 
-export const RecipeForm = ({ session }: RecipeFormProps) => {
+export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [recipeError, setRecipeError] = useState<RecipeError | undefined>();
   const [loading, setLoading] = useState(false);
@@ -168,6 +169,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
             {recipe && (
               <SaveRecipeComponent
                 recipe={recipe}
+                userTags={userTags}
                 session={session}
                 isOpen={shouldOpenModal}
                 onClose={() => setShouldOpenModal(false)}

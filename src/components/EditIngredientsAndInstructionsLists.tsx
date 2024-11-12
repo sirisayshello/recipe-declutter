@@ -7,11 +7,14 @@ import {
   Button,
   Textarea,
   TextInput,
-  Card,
-  Divider,
   Center,
 } from "@mantine/core";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "@hello-pangea/dnd";
 import { IconPlus, IconTrash, IconGripVertical } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
 
@@ -31,110 +34,86 @@ export const EditIngredientAndInstructionList = ({
   hasSections,
   view,
 }: EditIngredientAndInstructionListProps) => {
-  // Function to transform string array to object array with id and text = EditableItem array
-  const transformItems = (items: string[], type: string) => {
-    return items.map((text, index) => ({
-      id: `${type}-${index}`,
-      text,
-    }));
-  };
-
-  // When data loads, transform list items to EditableItem objects
   const [ingredients, setIngredients] = useState<EditableItem[]>([]);
   const [instructions, setInstructions] = useState<EditableItem[]>([]);
-  const [sectionedInstructions, setSectionedInstructions] = useState<
-    { name: string; text: EditableItem[] }[]
-  >([]);
 
   useEffect(() => {
-    const transformedIngredients = transformItems(
-      form.values.ingredients,
-      "ing"
+    // Transform the list items into EditableItem objects (with an id)
+    const transformedIngredients = form.values.ingredients.map(
+      (text, index) => ({
+        id: `ing-${index}`,
+        text,
+      })
     );
     setIngredients(transformedIngredients);
 
-    const transformedInstructions = transformItems(
-      form.values.instructions as SimpleInstructions,
-      "ins"
-    );
+    const currentInstructions = form.values.instructions as SimpleInstructions;
+    const transformedInstructions = currentInstructions.map((text, index) => ({
+      id: `ins-${index}`,
+      text,
+    }));
     setInstructions(transformedInstructions);
     console.log(transformedIngredients);
     console.log(transformedInstructions);
   }, [form.values.ingredients, form.values.instructions]);
 
-  // Function to add an item to the list
-  const addItem = (
-    listType: string,
-    list: EditableItem[],
-    setList: React.Dispatch<React.SetStateAction<EditableItem[]>>
-  ) => {
-    // Create a new empty item and add it to the list
-    const newList = [...list, { id: `${listType}-${list.length}`, text: "" }];
-
-    // Update the state with the new list
-    setList(newList);
-
-    // Update the form field with the new list values
-    form.setFieldValue(
-      listType,
-      newList.map((item) => item.text)
-    );
+  const addItem = (listType: string) => {
+    // Add a new item with a default text value (e.g., "New Ingredient")
+    const newItem = { id: `${listType}-${Date.now()}`, text: "" };
+    form.insertListItem(listType, newItem);
   };
 
-  // Function to delete an item from the list
+  // const deleteItem = (index: number, listType) =>
+  //   form.removeListItem(listType, index);
+
+  // // Function to delete an item from the list
   const deleteItem = (
     index: number,
     list: EditableItem[],
     setList: React.Dispatch<React.SetStateAction<EditableItem[]>>,
-    form: any,
-    fieldName: string
+    listType: string
   ) => {
+    // Create a new list without the item at the specified index
     const updatedList = list.filter((_, i) => i !== index);
     setList(updatedList);
     form.setFieldValue(
-      fieldName,
+      listType,
       updatedList.map((item) => item.text)
     );
+    console.log(updatedList);
   };
 
-  const removeSection = (sectionIndex: number) => {
-    if (hasSections) {
-      form.removeListItem("instructions", sectionIndex);
-    }
-  };
-  const addInstruction = (sectionIndex: number) => {
-    if (hasSections) {
-      form.insertListItem(`instructions.${sectionIndex}.text`, "");
-    }
-  };
-  const removeInstruction = (
-    sectionIndex: number,
-    instructionIndex: number
-  ) => {
-    if (hasSections) {
-      form.removeListItem(
-        `instructions.${sectionIndex}.text`,
-        instructionIndex
+  // Function to handle the drag-and-drop reordering of list
+  const handleDragEnd =
+    (
+      listType: string,
+      list: EditableItem[],
+      setList: React.Dispatch<React.SetStateAction<EditableItem[]>>
+    ) =>
+    (result: DropResult) => {
+      const { destination, source } = result;
+      if (!destination) return;
+      const newList = [...list];
+      const [removed] = newList.splice(source.index, 1);
+      newList.splice(destination.index, 0, removed);
+      setList(newList);
+      form.setFieldValue(
+        listType,
+        newList.map((item) => item.text)
       );
-    }
-  };
+      console.log(newList);
+    };
 
   return (
     <>
       {view === "ingredients" && (
         <Fieldset mb="md" legend="Ingredients">
           <DragDropContext
-            onDragEnd={({ destination, source }) => {
-              if (!destination) return;
-              const newIngredients = [...ingredients];
-              const [removed] = newIngredients.splice(source.index, 1);
-              newIngredients.splice(destination.index, 0, removed);
-              setIngredients(newIngredients);
-              form.setFieldValue(
-                "ingredients",
-                newIngredients.map((item) => item.text)
-              );
-            }}
+            onDragEnd={handleDragEnd(
+              "ingredients",
+              ingredients,
+              setIngredients
+            )}
           >
             <Droppable droppableId="ingredients-list">
               {(provided) => (
@@ -168,7 +147,6 @@ export const EditIngredientAndInstructionList = ({
                                 index,
                                 ingredients,
                                 setIngredients,
-                                form,
                                 "ingredients"
                               )
                             }
@@ -188,7 +166,7 @@ export const EditIngredientAndInstructionList = ({
           </DragDropContext>
           <Button
             leftSection={<IconPlus size={14} />}
-            onClick={() => addItem("ingredients", ingredients, setIngredients)}
+            onClick={() => addItem("ingredients")}
             variant="light"
             mt="md"
             aria-label="Add ingredient"
@@ -204,17 +182,11 @@ export const EditIngredientAndInstructionList = ({
           <>
             {/* If simple instructions list*/}
             <DragDropContext
-              onDragEnd={({ destination, source }) => {
-                if (!destination) return;
-                const newInstructions = [...instructions];
-                const [removed] = newInstructions.splice(source.index, 1);
-                newInstructions.splice(destination.index, 0, removed);
-                setInstructions(newInstructions);
-                form.setFieldValue(
-                  "instructions",
-                  newInstructions.map((item) => item.text)
-                );
-              }}
+              onDragEnd={handleDragEnd(
+                "instructions",
+                instructions,
+                setInstructions
+              )}
             >
               <Droppable droppableId="instructions-list">
                 {(provided) => (
@@ -248,7 +220,6 @@ export const EditIngredientAndInstructionList = ({
                                   index,
                                   instructions,
                                   setInstructions,
-                                  form,
                                   "instructions"
                                 )
                               }
@@ -268,9 +239,7 @@ export const EditIngredientAndInstructionList = ({
             </DragDropContext>
             <Button
               leftSection={<IconPlus size={14} />}
-              onClick={() =>
-                addItem("instructions", instructions, setInstructions)
-              }
+              onClick={() => addItem("instructions")}
               variant="light"
               mt="md"
               aria-label="Add instruction"

@@ -1,5 +1,5 @@
 "use client";
-import { Button, Group, List, Stack, Text } from "@mantine/core";
+import { Anchor, Button, Group, List, Stack, Text } from "@mantine/core";
 import { useState } from "react";
 import RenderedInstructions from "./RenderedInstructions";
 import Link from "next/link";
@@ -17,7 +17,10 @@ export const IngredientsAndInstructionsToggle = ({
     <Stack component="section" style={{ minHeight: "50dvh" }}>
       <Group justify="center" mb="md" mt="md">
         <Text size="xs">
-          Author: <Link href={recipe.url}>{recipe.author}</Link>
+          Author:{" "}
+          <Anchor component={Link} href={recipe.url}>
+            {recipe.author}
+          </Anchor>
         </Text>
         <Text size="xs">Total time: {recipe.time}</Text>
         <Text size="xs">Servings: {recipe.yield}</Text>
@@ -43,7 +46,18 @@ export const IngredientsAndInstructionsToggle = ({
       {view === "ingredients" && (
         <List>
           {recipe.ingredients.map((ingredient, index) => {
-            return <List.Item key={index}>{ingredient}</List.Item>;
+            return (
+              <List.Item
+                styles={{
+                  itemWrapper: {
+                    display: "inline",
+                  },
+                }}
+                key={index}
+              >
+                {ingredient}
+              </List.Item>
+            );
           })}
         </List>
       )}

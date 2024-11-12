@@ -1,27 +1,31 @@
 import DeleteRecipeButton from "@/components/DeleteRecipeButton";
 import { EditRecipeForm } from "@/components/EditRecipeForm";
+import { getAuth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { getUserTags } from "@/lib/queries";
 import { Group, Title } from "@mantine/core";
+import { notFound } from "next/navigation";
 
 export default async function EditRecipePage({
-  params,
+  searchParams,
 }: {
-  params: { id: string };
+  searchParams: { id: string };
 }) {
-  const { id } = params;
+  const session = await getAuth();
+  const user = session?.user;
 
   const recipe = await prisma.recipe.findUnique({
     where: {
-      id: parseInt(id),
+      id: parseInt(searchParams.id),
+      userId: user?.id,
     },
     include: {
       tags: { include: { tag: true } },
     },
   });
 
-  if (recipe === null) {
-    return <div>something went wrong</div>;
+  if (!recipe) {
+    notFound();
   }
 
   const convertedRecipe = recipe as UserRecipe;

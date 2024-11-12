@@ -1,17 +1,23 @@
 import prisma from "@/lib/db";
 import Link from "next/link";
-import { Group, Pill, Stack, Title } from "@mantine/core";
+import { Anchor, Group, Pill, Stack, Title } from "@mantine/core";
 import { IconArrowNarrowLeft, IconPencil } from "@tabler/icons-react";
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
+import { getAuth } from "@/lib/auth";
+import { notFound } from "next/navigation";
 
 export default async function RecipePage({
-  params,
+  searchParams,
 }: {
-  params: { id: string };
+  searchParams: { id: string };
 }) {
+  const session = await getAuth();
+  const user = session?.user;
+
   const recipe = await prisma.recipe.findUnique({
     where: {
-      id: parseInt(params.id),
+      id: parseInt(searchParams.id),
+      userId: user?.id,
     },
     include: {
       tags: {
@@ -21,22 +27,23 @@ export default async function RecipePage({
       },
     },
   });
+  const convertedRecipe = recipe as UserRecipe;
 
   if (!recipe) {
-    return <div>Something went wrong</div>;
+    notFound();
   }
-  const convertedRecipe = recipe as unknown as UserRecipe;
-  console.log(convertedRecipe.tags);
-
   return (
     <>
       <Group justify="space-between" mt="md">
-        <Link href="/dashboard">
+        <Anchor component={Link} href="/dashboard">
           <IconArrowNarrowLeft />
-        </Link>
-        <Link href={`/dashboard/${recipe.id}/edit`}>
+        </Anchor>
+        <Anchor
+          component={Link}
+          href={`/dashboard/${recipe.slug}/edit?id=${recipe.id}`}
+        >
           <IconPencil />
-        </Link>
+        </Anchor>
       </Group>
       <Stack component="section">
         <Title ta="center" mt="md" mb="md">

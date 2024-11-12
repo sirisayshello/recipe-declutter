@@ -203,17 +203,14 @@ export const updateRecipe = async (
       const incomingTags = recipe.tags?.map((incomingTag) => incomingTag) || [];
       const incomingTagNames = incomingTags.map((tag) => tag.tag.name);
 
-      // Find tags to remove (tags that exist but aren't in the new list)
       const tagsToRemove = existingTags.filter(
         (et) => !incomingTagNames.includes(et.tag.name)
       );
 
-      // Find tag names to add (tags that are in the new list but don't exist yet)
       const tagNamesToAdd = incomingTags.filter(
         (tn) => !existingTagNames.includes(tn.tag.name)
       );
 
-      // Update or create the recipe
       const updatedRecipe = await tx.recipe.upsert({
         where: { id: recipe.id },
         update: {
@@ -237,7 +234,7 @@ export const updateRecipe = async (
         },
       });
 
-      // Remove only the tags that aren't in the new list
+      // Remove tags that aren't in the new list
       if (tagsToRemove.length > 0) {
         await tx.recipeTag.deleteMany({
           where: {
@@ -339,7 +336,6 @@ export const updateRecipe = async (
   }
 };
 
-// Get recipes by user id
 export const getRecipeByUserId = async (userId: string) => {
   try {
     const userRecipes = await prisma.recipe.findMany({

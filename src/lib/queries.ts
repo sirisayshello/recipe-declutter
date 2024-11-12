@@ -102,9 +102,9 @@ export const saveRecipe = async (
         // Find existing tags or create new ones
         const tagPromises = recipe.tags.map(async (tagName) => {
           return await tx.tag.upsert({
-            where: { name: tagName.toLowerCase() },
+            where: { name: tagName.tag.name.toLowerCase() },
             update: {},
-            create: { name: tagName.toLowerCase() },
+            create: { name: tagName.tag.name.toLowerCase() },
           });
         });
 
@@ -197,17 +197,20 @@ export const updateRecipe = async (
         },
       });
 
-      const existingTagNames = existingTags.map((rt) => rt.tag.name);
-      const newTagNames = recipe.tags?.map((t) => t.toLowerCase()) || [];
+      const existingTagNames = existingTags.map(
+        (recipeTag) => recipeTag.tag.name
+      );
+      const incomingTags = recipe.tags?.map((incomingTag) => incomingTag) || [];
+      const incomingTagNames = incomingTags.map((tag) => tag.tag.name);
 
       // Find tags to remove (tags that exist but aren't in the new list)
       const tagsToRemove = existingTags.filter(
-        (et) => !newTagNames.includes(et.tag.name)
+        (et) => !incomingTagNames.includes(et.tag.name)
       );
 
       // Find tag names to add (tags that are in the new list but don't exist yet)
-      const tagNamesToAdd = newTagNames.filter(
-        (tn) => !existingTagNames.includes(tn)
+      const tagNamesToAdd = incomingTags.filter(
+        (tn) => !existingTagNames.includes(tn.tag.name)
       );
 
       // Update or create the recipe
@@ -249,11 +252,11 @@ export const updateRecipe = async (
       // Add only new tags
       if (tagNamesToAdd.length > 0) {
         // Upsert new tags
-        const newTagPromises = tagNamesToAdd.map(async (tagName) => {
+        const newTagPromises = tagNamesToAdd.map(async (tag) => {
           return await tx.tag.upsert({
-            where: { name: tagName },
+            where: { name: tag.tag.name.toLowerCase() },
             update: {},
-            create: { name: tagName },
+            create: { name: tag.tag.name.toLowerCase() },
           });
         });
 
@@ -353,5 +356,20 @@ export const getRecipeByUserId = async (userId: string) => {
   } catch (error) {
     console.log("Error fetching user recipes", error);
     throw new Error("Failed to fetch recipes. Please try again later.");
+  }
+};
+
+export const getUserTags = async (userId?: string | null) => {
+  if (!userId) {
+    return [];
+  }
+  try {
+    const userTags = await prisma.tag.findMany({
+      where: { recipes: { some: { recipe: { userId } } } },
+    });
+    return userTags;
+  } catch (error) {
+    console.log("Error fetching user tags", error);
+    throw new Error("Failed to fetch tags. Please try again later.");
   }
 };

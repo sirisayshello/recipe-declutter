@@ -116,7 +116,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
         });
 
         if (!session)
-          //  Display a sign up notification 5 seconds after success
+          //  Display a sign up notification 3 seconds after success
           setTimeout(() => {
             notifications.show({
               id: "signUpNotification",
@@ -218,7 +218,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
       {recipe?.ingredients && recipe.instructions.length > 0 && (
         <Box component="section" mt="xl">
           <Divider variant="dotted" size="md" />
-          <Title order={2} ta="center" id="test" pt="xl" ref={titleRef}>
+          <Title order={2} ta="center" pt="xl" ref={titleRef}>
             {recipe.title}
           </Title>
           <IngredientsAndInstructionsToggle recipe={recipe} />

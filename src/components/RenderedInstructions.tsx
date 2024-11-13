@@ -1,13 +1,16 @@
-import { List, Title } from "@mantine/core";
+import { Checkbox, List, Title } from "@mantine/core";
+import { useRef } from "react";
 
 type RenderProps = {
   recipe: UserRecipe;
 };
 
 export default function RenderedInstructions({ recipe }: RenderProps) {
+  const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
+
   if (typeof recipe.instructions[0] === "string") {
     return (
-      <List type="ordered" spacing="xs">
+      <List listStyleType="none" spacing="xs">
         {recipe.instructions.map((instruction, index) => (
           <List.Item
             styles={{
@@ -17,7 +20,26 @@ export default function RenderedInstructions({ recipe }: RenderProps) {
             }}
             key={index}
           >
-            {instruction as string}
+            <Checkbox
+              size="md"
+              onChange={(event) => {
+                if (labelRefs.current[index]) {
+                  labelRefs.current[index].style.opacity = event.currentTarget
+                    .checked
+                    ? "0.4"
+                    : "1";
+                }
+              }}
+              label={
+                <span
+                  ref={(el) => {
+                    labelRefs.current[index] = el;
+                  }}
+                >
+                  {`${index + 1}. ${instruction}`}
+                </span>
+              }
+            />
           </List.Item>
         ))}
       </List>

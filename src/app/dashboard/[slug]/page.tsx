@@ -5,6 +5,7 @@ import { IconArrowNarrowLeft, IconPencil } from "@tabler/icons-react";
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 import { getAuth } from "@/lib/auth";
 import { notFound } from "next/navigation";
+import ScreenAwakeToggle from "@/components/ScreenAwakeToggle";
 
 export default async function RecipePage({
   searchParams,
@@ -50,7 +51,7 @@ export default async function RecipePage({
           {recipe.title}
         </Title>
       </Stack>
-
+      <ScreenAwakeToggle />
       <IngredientsAndInstructionsToggle recipe={convertedRecipe} />
 
       <Group mt="md" mb="md">

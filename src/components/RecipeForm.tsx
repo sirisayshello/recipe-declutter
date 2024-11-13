@@ -22,6 +22,7 @@ import { SaveRecipeModal } from "./SaveRecipeModal";
 import { Session } from "next-auth";
 import { IconCheck, IconChefHat, IconX } from "@tabler/icons-react";
 import Link from "next/link";
+import ScreenAwakeToggle from "./ScreenAwakeToggle";
 
 type RecipeFormProps = {
   session?: Session | null;
@@ -202,6 +203,7 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
           <Title order={2} ta="center" pt="xl" ref={titleRef}>
             {recipe.title}
           </Title>
+          <ScreenAwakeToggle />
           <IngredientsAndInstructionsToggle recipe={recipe} />
 
           <Button mt="md" onClick={() => setShouldOpenModal(true)}>

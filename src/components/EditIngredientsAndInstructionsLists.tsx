@@ -42,7 +42,7 @@ export const EditIngredientAndInstructionList = ({
     const transformedIngredients = form.values.ingredients.map(
       (text, index) => ({
         id: `ing-${index}`,
-        text,
+        text: text || "",
       })
     );
     setIngredients(transformedIngredients);
@@ -50,7 +50,7 @@ export const EditIngredientAndInstructionList = ({
     const currentInstructions = form.values.instructions as SimpleInstructions;
     const transformedInstructions = currentInstructions.map((text, index) => ({
       id: `ins-${index}`,
-      text,
+      text: text || "",
     }));
     setInstructions(transformedInstructions);
     console.log(transformedIngredients);
@@ -58,9 +58,7 @@ export const EditIngredientAndInstructionList = ({
   }, [form.values.ingredients, form.values.instructions]);
 
   const addItem = (listType: string) => {
-    // Add a new item with a default text value (e.g., "New Ingredient")
-    const newItem = { id: `${listType}-${Date.now()}`, text: "" };
-    form.insertListItem(listType, newItem);
+    form.insertListItem(listType, "");
   };
 
   // const deleteItem = (index: number, listType) =>
@@ -104,6 +102,27 @@ export const EditIngredientAndInstructionList = ({
       console.log(newList);
     };
 
+  const handleTextChange = (
+    index: number,
+    value: string,
+    listType: "ingredients" | "instructions"
+  ) => {
+    // Update form value
+    form.setFieldValue(`${listType}.${index}`, value);
+
+    // Update local state
+    const list = listType === "ingredients" ? ingredients : instructions;
+    const setList =
+      listType === "ingredients" ? setIngredients : setInstructions;
+
+    const newList = [...list];
+    newList[index] = {
+      ...newList[index],
+      text: value,
+    };
+    setList(newList);
+  };
+
   return (
     <>
       {view === "ingredients" && (
@@ -139,7 +158,14 @@ export const EditIngredientAndInstructionList = ({
                           <TextInput
                             style={{ width: "100%" }}
                             placeholder={`Ingredient ${index + 1}`}
-                            {...form.getInputProps(`ingredients.${index}`)}
+                            value={ingredient.text}
+                            onChange={(event) =>
+                              handleTextChange(
+                                index,
+                                event.currentTarget.value,
+                                "ingredients"
+                              )
+                            }
                           />
                           <ActionIcon
                             onClick={() =>
@@ -212,7 +238,14 @@ export const EditIngredientAndInstructionList = ({
                               style={{ width: "100%" }}
                               placeholder={`Step ${index + 1}`}
                               minRows={3}
-                              {...form.getInputProps(`instructions.${index}`)}
+                              value={instruction.text}
+                              onChange={(event) =>
+                                handleTextChange(
+                                  index,
+                                  event.currentTarget.value,
+                                  "instructions"
+                                )
+                              }
                             />
                             <ActionIcon
                               onClick={() =>

@@ -1,11 +1,11 @@
 import LoginForm from "@/components/LoginForm";
-import { Title, Text, Anchor, Container } from "@mantine/core";
+import { Title, Text, Anchor, Box } from "@mantine/core";
 import Link from "next/link";
 
 export default function Login() {
   return (
-    <Container my="4rem">
-      <Title ta="center" mb="xl" size={"2rem"}>
+    <Box py="4rem">
+      <Title ta="center" mb="xl">
         Welcome back!
       </Title>
 
@@ -19,6 +19,6 @@ export default function Login() {
           </Anchor>
         </span>
       </Text>
-    </Container>
+    </Box>
   );
 }

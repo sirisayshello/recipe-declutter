@@ -14,7 +14,7 @@ export const IngredientsAndInstructionsToggle = ({
   const [view, setView] = useState("ingredients");
 
   return (
-    <Stack component="section" style={{ minHeight: "50dvh" }}>
+    <Stack component="section">
       <Group justify="center" mb="md" mt="md">
         <Text size="xs">
           Author:{" "}

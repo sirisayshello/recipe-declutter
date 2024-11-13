@@ -9,6 +9,7 @@ const ScreenAwakeToggle = () => {
   useEffect(() => {
     const requestWakeLock = async () => {
       try {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         wakeLock = await navigator.wakeLock.request("screen");
         console.log("Screen Wake Lock is active");
       } catch (err) {

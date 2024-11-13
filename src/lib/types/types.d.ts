@@ -42,6 +42,8 @@ type UserRecipe = {
   instructions: Instructions;
   userId?: string | null;
   id?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 // type SaveRecipeResponse = {

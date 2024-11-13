@@ -7,6 +7,8 @@ type SaveRecipeResponse = {
   success: boolean;
   data?: {
     id: number;
+    createdAt: Date;
+    updatedAt: Date;
     url: string;
     title: string;
     slug?: string;
@@ -127,6 +129,8 @@ export const saveRecipe = async (
         where: { id: createdRecipe.id },
         select: {
           id: true,
+          createdAt: true,
+          updatedAt: true,
           url: true,
           title: true,
           slug: true,
@@ -154,6 +158,8 @@ export const saveRecipe = async (
 
       return {
         id: finalRecipe.id,
+        createdAt: finalRecipe.createdAt,
+        updatedAt: finalRecipe.updatedAt,
         url: finalRecipe.url,
         title: finalRecipe.title,
         slug: finalRecipe.slug,
@@ -276,6 +282,8 @@ export const updateRecipe = async (
         where: { id: updatedRecipe.id },
         select: {
           id: true,
+          createdAt: true,
+          updatedAt: true,
           url: true,
           title: true,
           slug: true,
@@ -303,6 +311,8 @@ export const updateRecipe = async (
 
       return {
         id: finalRecipe.id,
+        createdAt: finalRecipe.createdAt,
+        updatedAt: finalRecipe.updatedAt,
         url: finalRecipe.url,
         title: finalRecipe.title,
         slug: finalRecipe.slug,

@@ -9,6 +9,8 @@ import {
   Drawer,
   Divider,
   Group,
+  useMantineTheme,
+  Box,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
@@ -20,6 +22,8 @@ import UserMenu from "./UserMenu";
 export const Navbar = () => {
   const { data: session } = useSession();
   const [opened, { open, close }] = useDisclosure(false);
+  const theme = useMantineTheme();
+  // usePathname if we want highlighted links
   // const active = usePathname();
 
   const containerProps = {
@@ -32,12 +36,7 @@ export const Navbar = () => {
   };
 
   return (
-    <header
-      style={{
-        height: "56px",
-        backgroundColor: "var(--mantine-color-dustyRed-7)",
-      }}
-    >
+    <Box component="header" bg={theme.primaryColor} h={"56px"}>
       <Container {...containerProps} size="md">
         <Burger
           hiddenFrom="xs"
@@ -98,6 +97,6 @@ export const Navbar = () => {
           />
         )}
       </Container>
-    </header>
+    </Box>
   );
 };

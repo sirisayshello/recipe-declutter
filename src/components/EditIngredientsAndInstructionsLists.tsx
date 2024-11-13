@@ -31,7 +31,6 @@ type EditableItem = {
 
 export const EditIngredientAndInstructionList = ({
   form,
-  hasSections,
   view,
 }: EditIngredientAndInstructionListProps) => {
   const [ingredients, setIngredients] = useState<EditableItem[]>([]);

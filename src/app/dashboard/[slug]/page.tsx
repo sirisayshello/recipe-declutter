@@ -19,6 +19,13 @@ export default async function RecipePage({
       id: parseInt(searchParams.id),
       userId: user?.id,
     },
+    include: {
+      tags: {
+        select: {
+          tag: true,
+        },
+      },
+    },
   });
   const convertedRecipe = recipe as UserRecipe;
 
@@ -45,8 +52,13 @@ export default async function RecipePage({
       </Stack>
 
       <IngredientsAndInstructionsToggle recipe={convertedRecipe} />
+
       <Group mt="md" mb="md">
-        <Pill size="md">Lunch</Pill>
+        {recipe.tags?.map((tagRelation, index) => (
+          <Pill key={index} size="md">
+            {tagRelation.tag.name}
+          </Pill>
+        ))}
       </Group>
     </>
   );

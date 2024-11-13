@@ -19,13 +19,16 @@ import { EditIngredientAndInstructionList } from "./EditIngredientsAndInstructio
 
 type EditRecipeProps = {
   recipe: UserRecipe;
+  userTags?: Tag[];
 };
 
-export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
+export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
   const [view, setView] = useState<"ingredients" | "instructions">(
     "ingredients"
   );
-  const [tags, setTags] = useState<string[]>(recipe.tags || []);
+  const allUserTags = userTags?.map((tag) => tag.name);
+  const existingTags = recipe.tags?.map((tag) => tag.tag.name);
+  const [tags, setTags] = useState<string[]>(existingTags || []);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
@@ -74,7 +77,7 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
           : (values.instructions as SimpleInstructions).filter(
               (instruction) => instruction.trim() !== ""
             ),
-        tags,
+        tags: tags.map((tagName) => ({ tag: { name: tagName } })),
       };
 
       try {
@@ -131,7 +134,6 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
           ))}
         </Group>
 
-        {/* Ingredients and Instructions */}
         <EditIngredientAndInstructionList
           form={form}
           hasSections={hasSections}
@@ -142,8 +144,9 @@ export const EditRecipeForm = ({ recipe }: EditRecipeProps) => {
           <TagsInput
             label="Recipe tags"
             placeholder="Press Enter to submit a tag"
-            data={[]}
             value={tags}
+            defaultValue={existingTags}
+            data={allUserTags}
             onChange={setTags}
             mb="md"
           />

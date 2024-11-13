@@ -13,6 +13,11 @@ type SimpleInstructions = Instruction[];
 
 type SectionedInstructions = SectionInstruction[];
 
+type Tag = {
+  id?: number;
+  name: string;
+};
+
 type Recipe = {
   url: string;
   title: string;
@@ -24,7 +29,9 @@ type Recipe = {
 };
 
 type UserRecipe = {
-  tags?: string[];
+  tags?: {
+    tag: Tag;
+  }[];
   url: string;
   title: string;
   slug?: string;

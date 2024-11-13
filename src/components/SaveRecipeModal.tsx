@@ -18,6 +18,7 @@ import { notifications } from "@mantine/notifications";
 type SaveRecipeComponentProps = {
   session?: Session | null;
   recipe: Recipe;
+  userTags?: Tag[];
   isOpen?: boolean;
   onClose?: () => void;
 };
@@ -32,6 +33,7 @@ const storePendingRecipe = (recipe: Recipe) => {
 export const SaveRecipeModal = ({
   session,
   recipe,
+  userTags,
   isOpen,
   onClose,
 }: SaveRecipeComponentProps) => {
@@ -40,7 +42,7 @@ export const SaveRecipeModal = ({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<{ name: string }[]>([]);
 
   // Remove potential notifications when modal is mounted
   useEffect(() => {
@@ -57,6 +59,9 @@ export const SaveRecipeModal = ({
     close();
     onClose?.();
   };
+  console.log(userTags);
+
+  const existingTags = userTags?.map((tag) => tag.name);
 
   async function handleSaveRecipe() {
     try {
@@ -64,7 +69,12 @@ export const SaveRecipeModal = ({
       setError(null);
       console.log(tags);
 
-      const result = await saveRecipe(session?.user?.email, recipe);
+      const recipeWithTags = {
+        ...recipe,
+        tags: tags.map((tag) => ({ tag })),
+      };
+
+      const result = await saveRecipe(session?.user?.email, recipeWithTags);
 
       if (!result.success) {
         setError(result.error?.message || "Failed to save recipe");
@@ -121,9 +131,9 @@ export const SaveRecipeModal = ({
               <TagsInput
                 label="Recipe tags"
                 placeholder="Press Enter to submit a tag"
-                data={[]}
-                value={tags}
-                onChange={setTags}
+                data={existingTags}
+                value={tags.map((tag) => tag.name)}
+                onChange={(value) => setTags(value.map((name) => ({ name })))}
                 mb="md"
               />
               <Button

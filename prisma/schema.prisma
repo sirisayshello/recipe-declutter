@@ -20,6 +20,7 @@ model Recipe {
   instructions Json // Json is needed in order to be able to store an array of strings OR objects.
   User         User?    @relation(fields: [userId], references: [id])
   userId       String?
+  tags      RecipeTag[]
 }
 
 model User {
@@ -28,4 +29,20 @@ model User {
   name     String
   password String
   recipes  Recipe[]
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  recipes   RecipeTag[]
+}
+
+model RecipeTag {
+  recipe    Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId  Int
+  tag       Tag      @relation(fields: [tagId], references: [id])
+  tagId     Int
+  assignedAt DateTime @default(now())
+
+  @@id([recipeId, tagId])
 }

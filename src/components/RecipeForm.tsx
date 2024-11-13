@@ -25,6 +25,7 @@ import Link from "next/link";
 
 type RecipeFormProps = {
   session?: Session | null;
+  userTags?: Tag[];
 };
 
 const PENDING_RECIPE_KEY = "pendingRecipeToSave";
@@ -41,7 +42,7 @@ const clearPendingRecipe = () => {
   }
 };
 
-export const RecipeForm = ({ session }: RecipeFormProps) => {
+export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
   const [recipe, setRecipe] = useState<Recipe | undefined>();
   const [loading, setLoading] = useState(false);
   const [shouldOpenModal, setShouldOpenModal] = useState(false);
@@ -210,6 +211,7 @@ export const RecipeForm = ({ session }: RecipeFormProps) => {
           {shouldOpenModal && (
             <SaveRecipeModal
               recipe={recipe}
+              userTags={userTags}
               session={session}
               isOpen={shouldOpenModal}
               onClose={() => setShouldOpenModal(false)}

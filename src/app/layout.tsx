@@ -25,13 +25,14 @@ export default function RootLayout({
           defaultColorScheme="auto"
         />
       </head>
-      <body>
+      <body style={{ height: "100dvh" }}>
         <MantineProvider defaultColorScheme="auto" theme={theme}>
-          <Notifications />
+          <Notifications position="bottom-center" />
           <SessionWrapper>
             <Navbar />
           </SessionWrapper>
-          <Container>{children}</Container>
+          {/* 56px current height of navbar. Update if it changes */}
+          <Container h="calc(100dvh - 56px)">{children}</Container>
         </MantineProvider>
       </body>
     </html>

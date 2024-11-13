@@ -14,8 +14,8 @@ export default async function Welcome() {
   const userTags = await getUserTags(session?.user.id);
 
   return (
-    <>
-      <Box component="section" mt="md">
+    <Flex direction="column" h="100%">
+      <Box mt="md">
         <Flex gap="md" justify="center" align="center" direction="column">
           <WelcomeMessage userName={userName ?? "you"} />
         </Flex>
@@ -24,6 +24,6 @@ export default async function Welcome() {
       <RecipeForm session={session} userTags={userTags} />
       <RecentRecipes recipes={convertedRecipes} />
       <Space h="xl" />
-    </>
+    </Flex>
   );
 }

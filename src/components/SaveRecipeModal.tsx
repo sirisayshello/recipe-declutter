@@ -13,6 +13,7 @@ import { Session } from "next-auth";
 import { useDisclosure } from "@mantine/hooks";
 import { IconCheck } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { notifications } from "@mantine/notifications";
 
 type SaveRecipeComponentProps = {
   session?: Session | null;
@@ -29,7 +30,7 @@ const storePendingRecipe = (recipe: Recipe) => {
   localStorage.setItem(PENDING_RECIPE_KEY, JSON.stringify(recipe));
 };
 
-export const SaveRecipeComponent = ({
+export const SaveRecipeModal = ({
   session,
   recipe,
   userTags,
@@ -42,6 +43,11 @@ export const SaveRecipeComponent = ({
   const [success, setSuccess] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
   const [tags, setTags] = useState<{ name: string }[]>([]);
+
+  // Remove potential notifications when modal is mounted
+  useEffect(() => {
+    notifications.clean();
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -94,17 +100,6 @@ export const SaveRecipeComponent = ({
 
   return (
     <>
-      <Button
-        mt="md"
-        onClick={open}
-        disabled={isLoading}
-        variant="filled"
-        size="md"
-        color="yellow.6"
-      >
-        {isLoading ? <Loader size="sm" color="white" /> : "Save Recipe"}
-      </Button>
-
       <Modal
         opened={opened}
         onClose={handleClose}

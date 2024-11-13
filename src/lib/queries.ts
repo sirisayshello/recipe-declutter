@@ -355,7 +355,7 @@ type SortOption =
 
 export const getRecipesByUserId = async (
   userId: string,
-  limit: number | "noLimit",
+  limit: number | "noLimit" = "noLimit",
   orderBy: SortOption = "createdAt",
   descending: boolean = true
 ) => {

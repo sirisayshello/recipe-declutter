@@ -40,26 +40,6 @@ export default function RenderedInstructions({ recipe }: RenderProps) {
                 </span>
               }
             />
-            {/* <Checkbox
-              size="md"
-              onChange={(event) => {
-                if (labelRefs.current[index]) {
-                  labelRefs.current[index].style.color = event.currentTarget
-                    .checked
-                    ? "lightgrey"
-                    : "black";
-                }
-              }}
-              label={
-                <span
-                  ref={(el) => {
-                    labelRefs.current[index] = el;
-                  }}
-                >
-                  {`${index + 1}. ${instruction}`}
-                </span>
-              }
-            /> */}
           </List.Item>
         ))}
       </List>

@@ -345,9 +345,26 @@ export const updateRecipe = async (
   }
 };
 
-export const getRecipeByUserId = async (userId: string) => {
+type SortOption =
+  | "title"
+  | "author"
+  | "createdAt"
+  | "updatedAt"
+  | "time"
+  | "yield";
+
+export const getRecipesByUserId = async (
+  userId: string,
+  limit: number | "noLimit" = "noLimit",
+  orderBy: SortOption = "createdAt",
+  descending: boolean = true
+) => {
+  const orderSettings = {
+    [orderBy]: descending ? "desc" : "asc",
+  };
+
   try {
-    const userRecipes = await prisma.recipe.findMany({
+    const queryOptions: Prisma.RecipeFindManyArgs = {
       where: { userId: userId },
       include: {
         tags: {
@@ -356,7 +373,15 @@ export const getRecipeByUserId = async (userId: string) => {
           },
         },
       },
-    });
+      orderBy: orderSettings,
+    };
+
+    if (limit !== "noLimit") {
+      queryOptions.take = limit;
+    }
+
+    const userRecipes = await prisma.recipe.findMany(queryOptions);
+
     return userRecipes;
   } catch (error) {
     console.log("Error fetching user recipes", error);

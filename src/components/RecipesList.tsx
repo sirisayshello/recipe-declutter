@@ -1,17 +1,19 @@
 import { Anchor, Box, Divider, List, Title } from "@mantine/core";
 import Link from "next/link";
 
-export default async function RecentRecipes({
+export default async function RecipesList({
   recipes,
+  title,
 }: {
   recipes: UserRecipe[];
+  title: string;
 }) {
   return (
     <>
       {recipes.length > 0 && (
         <Box component="section" pt={"xl"}>
           <Divider variant="dotted" size="md" pb={"xl"} />
-          <Title order={2}>Recent recipes</Title>
+          <Title order={2}>{title}</Title>
           <List listStyleType="none">
             {recipes.map((recipe) => {
               return (

@@ -37,7 +37,7 @@ export const SaveRecipeModal = ({
   isOpen,
   onClose,
 }: SaveRecipeComponentProps) => {
-  const Router = useRouter();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -90,12 +90,13 @@ export const SaveRecipeModal = ({
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
+      router.refresh();
     }
   }
 
   const storeRecipeAndRedirect = (path: string) => {
     storePendingRecipe(recipe);
-    Router.push(path);
+    router.push(path);
   };
 
   return (

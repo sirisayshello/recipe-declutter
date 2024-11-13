@@ -1,7 +1,6 @@
 import { getAuth } from "@/lib/auth";
 import { Box, Flex, Space } from "@mantine/core";
-import RecentRecipes from "@/components/RecentRecipes";
-// import { getUserRecipes } from "@/lib/actions";
+import RecipesList from "@/components/RecipesList";
 import { RecipeForm } from "@/components/RecipeForm";
 import WelcomeMessage from "@/components/WelcomeMessage";
 import { getRecipesByUserId, getUserTags } from "@/lib/queries";
@@ -16,7 +15,7 @@ export default async function Welcome() {
 
   const userId = session.user.id;
 
-  // Fetch recipes based on user id
+  // fetch 10 recipes for the "Recent Recipes" list
   const recipes = await getRecipesByUserId(userId, 10);
 
   const convertedRecipes = recipes as UserRecipe[];
@@ -32,7 +31,7 @@ export default async function Welcome() {
         <Space h="xl" />
       </Box>
       <RecipeForm session={session} userTags={userTags} />
-      <RecentRecipes recipes={convertedRecipes} />
+      <RecipesList recipes={convertedRecipes} title="Recent Recipes" />
       <Space h="xl" />
     </Flex>
   );

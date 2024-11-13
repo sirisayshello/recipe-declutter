@@ -1,3 +1,5 @@
+"use client";
+
 import { getTimeOfDay } from "../lib/utils";
 import { Box, Title, Text } from "@mantine/core";
 

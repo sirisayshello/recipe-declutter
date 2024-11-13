@@ -13,10 +13,12 @@ import { Session } from "next-auth";
 import { useDisclosure } from "@mantine/hooks";
 import { IconCheck } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { notifications } from "@mantine/notifications";
 
 type SaveRecipeComponentProps = {
   session?: Session | null;
   recipe: Recipe;
+  userTags?: Tag[];
   isOpen?: boolean;
   onClose?: () => void;
 };
@@ -28,9 +30,10 @@ const storePendingRecipe = (recipe: Recipe) => {
   localStorage.setItem(PENDING_RECIPE_KEY, JSON.stringify(recipe));
 };
 
-export const SaveRecipeComponent = ({
+export const SaveRecipeModal = ({
   session,
   recipe,
+  userTags,
   isOpen,
   onClose,
 }: SaveRecipeComponentProps) => {
@@ -39,7 +42,12 @@ export const SaveRecipeComponent = ({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<{ name: string }[]>([]);
+
+  // Remove potential notifications when modal is mounted
+  useEffect(() => {
+    notifications.clean();
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -51,6 +59,9 @@ export const SaveRecipeComponent = ({
     close();
     onClose?.();
   };
+  console.log(userTags);
+
+  const existingTags = userTags?.map((tag) => tag.name);
 
   async function handleSaveRecipe() {
     try {
@@ -58,7 +69,12 @@ export const SaveRecipeComponent = ({
       setError(null);
       console.log(tags);
 
-      const result = await saveRecipe(session?.user?.email, recipe);
+      const recipeWithTags = {
+        ...recipe,
+        tags: tags.map((tag) => ({ tag })),
+      };
+
+      const result = await saveRecipe(session?.user?.email, recipeWithTags);
 
       if (!result.success) {
         setError(result.error?.message || "Failed to save recipe");
@@ -84,17 +100,6 @@ export const SaveRecipeComponent = ({
 
   return (
     <>
-      <Button
-        mt="md"
-        onClick={open}
-        disabled={isLoading}
-        variant="filled"
-        size="md"
-        color="yellow.6"
-      >
-        {isLoading ? <Loader size="sm" color="white" /> : "Save Recipe"}
-      </Button>
-
       <Modal
         opened={opened}
         onClose={handleClose}
@@ -126,9 +131,9 @@ export const SaveRecipeComponent = ({
               <TagsInput
                 label="Recipe tags"
                 placeholder="Press Enter to submit a tag"
-                data={[]}
-                value={tags}
-                onChange={setTags}
+                data={existingTags}
+                value={tags.map((tag) => tag.name)}
+                onChange={(value) => setTags(value.map((name) => ({ name })))}
                 mb="md"
               />
               <Button

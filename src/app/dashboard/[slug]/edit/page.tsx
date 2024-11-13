@@ -2,6 +2,7 @@ import DeleteRecipeButton from "@/components/DeleteRecipeButton";
 import { EditRecipeForm } from "@/components/EditRecipeForm";
 import { getAuth } from "@/lib/auth";
 import prisma from "@/lib/db";
+import { getUserTags } from "@/lib/queries";
 import { Group, Title } from "@mantine/core";
 import { notFound } from "next/navigation";
 
@@ -18,6 +19,9 @@ export default async function EditRecipePage({
       id: parseInt(searchParams.id),
       userId: user?.id,
     },
+    include: {
+      tags: { include: { tag: true } },
+    },
   });
 
   if (!recipe) {
@@ -26,6 +30,8 @@ export default async function EditRecipePage({
 
   const convertedRecipe = recipe as UserRecipe;
 
+  const userTags = await getUserTags(recipe.userId);
+
   return (
     <>
       <Group justify="space-between" mt="md" mb="md">
@@ -33,7 +39,7 @@ export default async function EditRecipePage({
         <DeleteRecipeButton id={recipe.id} />
       </Group>
 
-      <EditRecipeForm recipe={convertedRecipe} />
+      <EditRecipeForm recipe={convertedRecipe} userTags={userTags} />
     </>
   );
 }

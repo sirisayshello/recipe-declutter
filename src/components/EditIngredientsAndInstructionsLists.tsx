@@ -38,15 +38,17 @@ export const EditIngredientAndInstructionList = ({
       transformItems(form.values.instructions as SimpleInstructions, "ins")
     );
     // If the instructions are sectioned, transform them differently
-    setSectionedInstructions(
-      (form.values.instructions as SectionedInstructions).map((section) => ({
-        name: section.name,
-        text: section.text.map((instructionText, index) => ({
-          id: `ins-${section.name}-${index}`,
-          text: instructionText || "",
-        })),
-      }))
-    );
+    if (hasSections) {
+      setSectionedInstructions(
+        (form.values.instructions as SectionedInstructions).map((section) => ({
+          name: section.name,
+          text: section.text.map((instructionText, index) => ({
+            id: `ins-${section.name}-${index}`,
+            text: instructionText || "",
+          })),
+        }))
+      );
+    }
   }, [form.values.ingredients, form.values.instructions]);
 
   // Function to add an item to a list

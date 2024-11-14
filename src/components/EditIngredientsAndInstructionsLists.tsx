@@ -1,39 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  Fieldset,
-  Group,
-  ActionIcon,
-  Button,
-  Textarea,
-  TextInput,
-  Center,
-  Card,
-  Divider,
-} from "@mantine/core";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "@hello-pangea/dnd";
-import { IconPlus, IconTrash, IconGripVertical } from "@tabler/icons-react";
+import { DropResult } from "@hello-pangea/dnd";
 import { UseFormReturnType } from "@mantine/form";
+import { EditIngredientsList } from "./EditIngredientsList";
+import { EditInstructionsList } from "./EditInstructionsList";
 
 type EditIngredientAndInstructionListProps = {
   form: UseFormReturnType<FormValues>;
   hasSections: boolean;
   view: "ingredients" | "instructions";
 };
-
-type EditableItem = {
-  id: string;
-  text: string;
-};
-
-type SetListFunction =
-  | React.Dispatch<React.SetStateAction<EditableItem[]>>
-  | React.Dispatch<React.SetStateAction<{ text: EditableItem[] }[]>>;
 
 export const EditIngredientAndInstructionList = ({
   form,
@@ -90,40 +66,35 @@ export const EditIngredientAndInstructionList = ({
   ) => {
     let updatedList: EditableItem[];
 
-    // Handle the form value update differently based on whether it's sectioned
+    // Handle the form value update differently based on whether it's sectioned or not
     if (sectionIndex !== undefined) {
       // For sectioned instructions, update the specific section
-      (
-        setList as React.Dispatch<
-          React.SetStateAction<{ text: EditableItem[] }[]>
-        >
-      )((prevSections: { text: EditableItem[] }[]) => {
-        const updatedSections = [...prevSections];
-        // Ensure we're working with an array
-        const sectionText = Array.isArray(updatedSections[sectionIndex].text)
-          ? updatedSections[sectionIndex].text
-          : [];
-        console.log(updatedSections[sectionIndex]);
-        const updatedList = sectionText.filter((_, i) => i !== index);
-        updatedSections[sectionIndex] = {
-          ...updatedSections[sectionIndex],
-          text: updatedList,
-        };
+      (setList as SetListSection)(
+        (prevSections: { text: EditableItem[] }[]) => {
+          const updatedSections = [...prevSections];
+          // Ensure it's an array
+          const sectionText = Array.isArray(updatedSections[sectionIndex].text)
+            ? updatedSections[sectionIndex].text
+            : [];
+          const updatedList = sectionText.filter((_, i) => i !== index);
+          updatedSections[sectionIndex] = {
+            ...updatedSections[sectionIndex],
+            text: updatedList,
+          };
 
-        // Update form
-        form.setFieldValue(
-          `${listType}.${sectionIndex}.text`,
-          updatedList.map((item) => item.text)
-        );
+          // Update form
+          form.setFieldValue(
+            `${listType}.${sectionIndex}.text`,
+            updatedList.map((item) => item.text)
+          );
 
-        return updatedSections;
-      });
+          return updatedSections;
+        }
+      );
     } else {
       // For regular lists, update the entire list
       updatedList = (list as EditableItem[]).filter((_, i) => i !== index);
-      (setList as React.Dispatch<React.SetStateAction<EditableItem[]>>)(
-        updatedList
-      );
+      (setList as SetListItem)(updatedList);
       form.setFieldValue(
         listType,
         updatedList.map((item) => item.text)
@@ -145,42 +116,40 @@ export const EditIngredientAndInstructionList = ({
 
       if (sectionIndex !== undefined) {
         // Handle sectioned instructions
-        (
-          setList as React.Dispatch<
-            React.SetStateAction<{ text: EditableItem[] }[]>
-          >
-        )((prevSections: { text: EditableItem[] }[]) => {
-          const updatedSections = [...prevSections];
-          const sectionText = Array.isArray(updatedSections[sectionIndex].text)
-            ? updatedSections[sectionIndex].text
-            : [];
+        (setList as SetListSection)(
+          (prevSections: { text: EditableItem[] }[]) => {
+            const updatedSections = [...prevSections];
+            const sectionText = Array.isArray(
+              updatedSections[sectionIndex].text
+            )
+              ? updatedSections[sectionIndex].text
+              : [];
 
-          const newList = [...sectionText];
-          const [removed] = newList.splice(source.index, 1);
-          newList.splice(destination.index, 0, removed);
+            const newList = [...sectionText];
+            const [removed] = newList.splice(source.index, 1);
+            newList.splice(destination.index, 0, removed);
 
-          updatedSections[sectionIndex] = {
-            ...updatedSections[sectionIndex],
-            text: newList,
-          };
+            updatedSections[sectionIndex] = {
+              ...updatedSections[sectionIndex],
+              text: newList,
+            };
 
-          // Update form
-          form.setFieldValue(
-            `${listType}.${sectionIndex}.text`,
-            newList.map((item) => item.text)
-          );
+            // Update form
+            form.setFieldValue(
+              `${listType}.${sectionIndex}.text`,
+              newList.map((item) => item.text)
+            );
 
-          return updatedSections;
-        });
+            return updatedSections;
+          }
+        );
       } else {
         // Handle simple instructions
         const newList = [...(listOrSections as EditableItem[])];
         const [removed] = newList.splice(source.index, 1);
         newList.splice(destination.index, 0, removed);
 
-        (setList as React.Dispatch<React.SetStateAction<EditableItem[]>>)(
-          newList
-        );
+        setList as SetListItem;
         form.setFieldValue(
           listType,
           newList.map((item) => item.text)
@@ -242,263 +211,29 @@ export const EditIngredientAndInstructionList = ({
   return (
     <>
       {view === "ingredients" && (
-        <Fieldset mb="md" legend="Ingredients">
-          <DragDropContext
-            onDragEnd={handleDragEnd(
-              "ingredients",
-              ingredients,
-              setIngredients
-            )}
-          >
-            <Droppable droppableId="ingredients-list">
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  {ingredients.map((ingredient, index) => (
-                    <Draggable
-                      key={ingredient.id}
-                      index={index}
-                      draggableId={ingredient.id}
-                    >
-                      {(provided) => (
-                        <Group
-                          wrap="nowrap"
-                          // key={index}
-                          mt="xs"
-                          align="flex-start"
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                        >
-                          <Center {...provided.dragHandleProps}>
-                            <IconGripVertical size="1.2rem" />
-                          </Center>
-                          <TextInput
-                            style={{ width: "100%" }}
-                            placeholder={`Ingredient ${index + 1}`}
-                            value={ingredient.text}
-                            onChange={(event) =>
-                              handleTextChange(
-                                index,
-                                event.currentTarget.value,
-                                "ingredients"
-                              )
-                            }
-                          />
-                          <ActionIcon
-                            onClick={() =>
-                              deleteItem(
-                                index,
-                                ingredients,
-                                setIngredients,
-                                "ingredients"
-                              )
-                            }
-                            variant="transparent"
-                            aria-label="Delete ingredient"
-                          >
-                            <IconTrash />
-                          </ActionIcon>
-                        </Group>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-          <Button
-            leftSection={<IconPlus size={14} />}
-            onClick={() => addItem("ingredients")}
-            variant="light"
-            mt="md"
-            aria-label="Add ingredient"
-          >
-            Add ingredient
-          </Button>
-        </Fieldset>
+        <EditIngredientsList
+          form={form}
+          ingredients={ingredients}
+          setIngredients={setIngredients}
+          handleDragEnd={handleDragEnd}
+          handleTextChange={handleTextChange}
+          deleteItem={deleteItem}
+          addItem={addItem}
+        />
       )}
       {view === "instructions" && (
-        <Fieldset mb="md" legend="Instructions">
-          {/* If sectioned instructions */}
-          {hasSections ? (
-            <>
-              {sectionedInstructions.map((section, sectionIndex) => (
-                <Card key={sectionIndex} withBorder mb="md">
-                  <Group wrap="nowrap" align="flex-start">
-                    <TextInput
-                      label="Section title"
-                      style={{ width: "100%" }}
-                      placeholder="Section title"
-                      {...form.getInputProps(
-                        `instructions.${sectionIndex}.name`
-                      )}
-                    />
-                  </Group>
-
-                  <Divider my="sm" />
-
-                  <DragDropContext
-                    onDragEnd={handleDragEnd(
-                      "instructions",
-                      sectionedInstructions,
-                      setSectionedInstructions,
-                      sectionIndex
-                    )}
-                  >
-                    <Droppable droppableId="instructions-list">
-                      {(provided) => (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                        >
-                          {section.text.map((instruction, index) => (
-                            <Draggable
-                              key={instruction.id}
-                              index={index}
-                              draggableId={instruction.id}
-                            >
-                              {(provided) => (
-                                <Group
-                                  wrap="nowrap"
-                                  mt="xs"
-                                  align="flex-start"
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                >
-                                  <Center {...provided.dragHandleProps}>
-                                    <IconGripVertical size="1.2rem" />
-                                  </Center>
-                                  <Textarea
-                                    style={{ width: "100%" }}
-                                    placeholder={`Step ${index + 1}`}
-                                    minRows={3}
-                                    value={instruction.text}
-                                    onChange={(event) =>
-                                      handleTextChange(
-                                        index,
-                                        event.currentTarget.value,
-                                        "instructions",
-                                        sectionIndex
-                                      )
-                                    }
-                                  />
-                                  <ActionIcon
-                                    onClick={() =>
-                                      deleteItem(
-                                        index,
-                                        sectionedInstructions[sectionIndex]
-                                          .text,
-                                        setSectionedInstructions,
-                                        "instructions",
-                                        sectionIndex
-                                      )
-                                    }
-                                    variant="transparent"
-                                    aria-label="Delete instruction"
-                                  >
-                                    <IconTrash />
-                                  </ActionIcon>
-                                </Group>
-                              )}
-                            </Draggable>
-                          ))}
-                          {provided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
-                  </DragDropContext>
-
-                  <Button
-                    leftSection={<IconPlus size={14} />}
-                    onClick={() => addItem("instructions", sectionIndex)}
-                    variant="light"
-                    size="sm"
-                    mt="md"
-                    aria-label="Add instruction"
-                  >
-                    Add step
-                  </Button>
-                </Card>
-              ))}
-            </>
-          ) : (
-            <>
-              {/* If simple instructions list*/}
-              <DragDropContext
-                onDragEnd={handleDragEnd(
-                  "instructions",
-                  instructions,
-                  setInstructions
-                )}
-              >
-                <Droppable droppableId="instructions-list">
-                  {(provided) => (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                      {instructions.map((instruction, index) => (
-                        <Draggable
-                          key={instruction.id}
-                          index={index}
-                          draggableId={instruction.id}
-                        >
-                          {(provided) => (
-                            <Group
-                              wrap="nowrap"
-                              mt="xs"
-                              align="flex-start"
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                            >
-                              <Center {...provided.dragHandleProps}>
-                                <IconGripVertical size="1.2rem" />
-                              </Center>
-                              <Textarea
-                                style={{ width: "100%" }}
-                                placeholder={`Step ${index + 1}`}
-                                minRows={3}
-                                value={instruction.text}
-                                onChange={(event) =>
-                                  handleTextChange(
-                                    index,
-                                    event.currentTarget.value,
-                                    "instructions"
-                                  )
-                                }
-                              />
-                              <ActionIcon
-                                onClick={() =>
-                                  deleteItem(
-                                    index,
-                                    instructions,
-                                    setInstructions,
-                                    "instructions"
-                                  )
-                                }
-                                variant="transparent"
-                                aria-label="Delete instruction"
-                              >
-                                <IconTrash />
-                              </ActionIcon>
-                            </Group>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-              <Button
-                leftSection={<IconPlus size={14} />}
-                onClick={() => addItem("instructions")}
-                variant="light"
-                mt="md"
-                aria-label="Add instruction"
-              >
-                Add instruction
-              </Button>
-            </>
-          )}
-        </Fieldset>
+        <EditInstructionsList
+          form={form}
+          instructions={instructions}
+          setInstructions={setInstructions}
+          sectionedInstructions={sectionedInstructions}
+          setSectionedInstructions={setSectionedInstructions}
+          hasSections={hasSections}
+          handleDragEnd={handleDragEnd}
+          handleTextChange={handleTextChange}
+          deleteItem={deleteItem}
+          addItem={addItem}
+        />
       )}
     </>
   );

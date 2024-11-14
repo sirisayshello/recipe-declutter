@@ -1,33 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
-import { ActionIcon, Group, MultiSelect } from "@mantine/core";
-import { IconCirclePlus } from "@tabler/icons-react";
+import { Box, MultiSelect } from "@mantine/core";
 
-export default function TagsFilter({ tags }: { tags: Tag[] }) {
-  const [filteredTags, setFilteredTags] = useState<string[]>([]);
-  const stringTags = tags.map((tag) => tag.name);
+export default function TagsFilter({
+  allUserTags,
+  onTagsChange,
+  filteredTags,
+}: {
+  allUserTags: Tag[];
+  onTagsChange: (tags: string[]) => void;
+  filteredTags: string[];
+}) {
+  const stringTags = allUserTags.map((tag) => tag.name);
 
   return (
-    <Group justify="center" align="center" wrap="nowrap">
+    <Box mt="xl">
       <MultiSelect
         label="Filter recipes"
         placeholder="Pick tags"
         data={stringTags}
         value={filteredTags}
-        onChange={setFilteredTags}
+        onChange={onTagsChange}
         searchable
         clearable
         style={{ width: "100%" }}
       />
-      <ActionIcon
-        variant="transparent"
-        aria-label="Add recipe"
-        size="xl"
-        style={{ alignSelf: "end" }}
-      >
-        <IconCirclePlus style={{ width: "100%", height: "100%" }} stroke={1} />
-      </ActionIcon>
-    </Group>
+    </Box>
   );
 }

@@ -206,7 +206,7 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
           <ScreenAwakeToggle />
           <IngredientsAndInstructionsToggle recipe={recipe} />
 
-          <Button mt="md" onClick={() => setShouldOpenModal(true)}>
+          <Button mt="md" mb="xl" onClick={() => setShouldOpenModal(true)}>
             Save This Recipe
           </Button>
 
@@ -219,6 +219,7 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
               onClose={() => setShouldOpenModal(false)}
             />
           )}
+          <Divider variant="dotted" size="md" />
         </Box>
       )}
 

@@ -169,7 +169,7 @@ export const getScrapedRecipe = async (
 
     // if the recipeData object has a name property, use that as the title
     if ("name" in recipeData && typeof recipeData.name === "string") {
-      recipeTitle = recipeData.name;
+      recipeTitle = he.decode(recipeData.name);
     }
 
     // Get author

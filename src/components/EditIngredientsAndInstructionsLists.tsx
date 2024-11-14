@@ -149,7 +149,7 @@ export const EditIngredientAndInstructionList = ({
         const [removed] = newList.splice(source.index, 1);
         newList.splice(destination.index, 0, removed);
 
-        setList as SetListItem;
+        (setList as SetListItem)(newList);
         form.setFieldValue(
           listType,
           newList.map((item) => item.text)

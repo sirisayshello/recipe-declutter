@@ -43,7 +43,6 @@ type EditIngredientsListProps = {
 };
 
 export const EditIngredientsList = ({
-  form,
   ingredients,
   setIngredients,
   handleDragEnd,

@@ -24,6 +24,10 @@ export default function RootLayout({
           nonce="8IBTHwOdqNKAWeKl7plt8g=="
           defaultColorScheme="auto"
         />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+        />
       </head>
       <body style={{ height: "100dvh" }}>
         <MantineProvider defaultColorScheme="auto" theme={theme}>

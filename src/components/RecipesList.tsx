@@ -1,4 +1,4 @@
-import { Anchor, Box, Divider, List, Title } from "@mantine/core";
+import { Anchor, Box, List, Title } from "@mantine/core";
 import Link from "next/link";
 
 export default async function RecipesList({
@@ -6,14 +6,20 @@ export default async function RecipesList({
   title,
 }: {
   recipes: UserRecipe[];
-  title: string;
+  title?: string;
 }) {
   return (
     <>
       {recipes.length > 0 && (
         <Box component="section" pt={"xl"}>
-          <Divider variant="dotted" size="md" pb={"xl"} />
           <Title order={2}>{title}</Title>
+          {!recipes && (
+            <p>
+              Ready to start your collection? Click the + button to add your
+              first recipe!
+            </p>
+          )}
+
           <List listStyleType="none">
             {recipes.map((recipe) => {
               return (

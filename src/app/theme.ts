@@ -57,31 +57,4 @@ export const theme = createTheme({
   headings: {
     fontFamily: `${poppins.style.fontFamily}, sans-serif`,
   },
-  components: {
-    Input: {
-      defaultProps: {
-        size: "md",
-      },
-    },
-    TextInput: {
-      defaultProps: {
-        size: "md",
-      },
-    },
-    PasswordInput: {
-      defaultProps: {
-        size: "md",
-      },
-    },
-    MultiSelect: {
-      defaultProps: {
-        size: "md",
-      },
-    },
-    Button: {
-      defaultProps: {
-        size: "md",
-      },
-    },
-  },
 });

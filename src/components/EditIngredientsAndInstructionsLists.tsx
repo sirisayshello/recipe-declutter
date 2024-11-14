@@ -31,6 +31,10 @@ type EditableItem = {
   text: string;
 };
 
+type SetListFunction =
+  | React.Dispatch<React.SetStateAction<EditableItem[]>>
+  | React.Dispatch<React.SetStateAction<{ text: EditableItem[] }[]>>;
+
 export const EditIngredientAndInstructionList = ({
   form,
   hasSections,
@@ -42,34 +46,31 @@ export const EditIngredientAndInstructionList = ({
     { text: EditableItem[] }[]
   >([]);
 
-  // Transform the list items into EditableItem objects (with an id)
-  useEffect(() => {
-    const transformedIngredients = form.values.ingredients.map(
-      (text, index) => ({
-        id: `ing-${index}`,
-        text: text || "",
-      })
-    );
-    const transformedInstructions = (
-      form.values.instructions as SimpleInstructions
-    ).map((text, index) => ({
-      id: `ins-${index}`,
+  // Function to transform list items into EditableItem objects (with an id)
+  const transformItems = (itemList: string[], prefix: string) => {
+    return itemList.map((text, index) => ({
+      id: `${prefix}-${index}`,
       text: text || "",
     }));
+  };
 
-    const transformedSectionedInstructions = (
-      form.values.instructions as SectionedInstructions
-    ).map((section) => ({
-      name: section.name,
-      text: section.text.map((instructionText, index) => ({
-        id: `ins-${section.name}-${index}`,
-        text: instructionText || "",
-      })),
-    }));
-
-    setIngredients(transformedIngredients);
-    setInstructions(transformedInstructions);
-    setSectionedInstructions(transformedSectionedInstructions);
+  // Generate unique id's and update local state when form values change
+  useEffect(() => {
+    // Transform simple list items
+    setIngredients(transformItems(form.values.ingredients, "ing"));
+    setInstructions(
+      transformItems(form.values.instructions as SimpleInstructions, "ins")
+    );
+    // If the instructions are sectioned, transform them differently
+    setSectionedInstructions(
+      (form.values.instructions as SectionedInstructions).map((section) => ({
+        name: section.name,
+        text: section.text.map((instructionText, index) => ({
+          id: `ins-${section.name}-${index}`,
+          text: instructionText || "",
+        })),
+      }))
+    );
   }, [form.values.ingredients, form.values.instructions]);
 
   // Function to add an item to a list
@@ -83,7 +84,7 @@ export const EditIngredientAndInstructionList = ({
   const deleteItem = (
     index: number,
     list: EditableItem[] | { text: EditableItem[] }[],
-    setList: React.Dispatch<React.SetStateAction<any>>,
+    setList: SetListFunction,
     listType: string,
     sectionIndex?: number
   ) => {
@@ -92,7 +93,11 @@ export const EditIngredientAndInstructionList = ({
     // Handle the form value update differently based on whether it's sectioned
     if (sectionIndex !== undefined) {
       // For sectioned instructions, update the specific section
-      setList((prevSections: { text: EditableItem[] }[]) => {
+      (
+        setList as React.Dispatch<
+          React.SetStateAction<{ text: EditableItem[] }[]>
+        >
+      )((prevSections: { text: EditableItem[] }[]) => {
         const updatedSections = [...prevSections];
         // Ensure we're working with an array
         const sectionText = Array.isArray(updatedSections[sectionIndex].text)
@@ -116,7 +121,9 @@ export const EditIngredientAndInstructionList = ({
     } else {
       // For regular lists, update the entire list
       updatedList = (list as EditableItem[]).filter((_, i) => i !== index);
-      setList(updatedList);
+      (setList as React.Dispatch<React.SetStateAction<EditableItem[]>>)(
+        updatedList
+      );
       form.setFieldValue(
         listType,
         updatedList.map((item) => item.text)
@@ -124,20 +131,12 @@ export const EditIngredientAndInstructionList = ({
     }
   };
 
-  // Is this needed?
-  // Function to remove a section from sectioned instructions
-  // const removeSection = (sectionIndex: number) => {
-  //   if (hasSections) {
-  //     form.removeListItem("instructions", sectionIndex);
-  //   }
-  // };
-
   // Function to handle drag and drop reordering of list items
   const handleDragEnd =
     (
       listType: string,
       listOrSections: EditableItem[] | { text: EditableItem[] }[],
-      setListOrSections: React.Dispatch<React.SetStateAction<any>>,
+      setList: SetListFunction,
       sectionIndex?: number
     ) =>
     (result: DropResult) => {
@@ -146,7 +145,11 @@ export const EditIngredientAndInstructionList = ({
 
       if (sectionIndex !== undefined) {
         // Handle sectioned instructions
-        setListOrSections((prevSections: { text: EditableItem[] }[]) => {
+        (
+          setList as React.Dispatch<
+            React.SetStateAction<{ text: EditableItem[] }[]>
+          >
+        )((prevSections: { text: EditableItem[] }[]) => {
           const updatedSections = [...prevSections];
           const sectionText = Array.isArray(updatedSections[sectionIndex].text)
             ? updatedSections[sectionIndex].text
@@ -175,7 +178,9 @@ export const EditIngredientAndInstructionList = ({
         const [removed] = newList.splice(source.index, 1);
         newList.splice(destination.index, 0, removed);
 
-        setListOrSections(newList);
+        (setList as React.Dispatch<React.SetStateAction<EditableItem[]>>)(
+          newList
+        );
         form.setFieldValue(
           listType,
           newList.map((item) => item.text)
@@ -328,13 +333,6 @@ export const EditIngredientAndInstructionList = ({
                         `instructions.${sectionIndex}.name`
                       )}
                     />
-                    {/* <ActionIcon
-                      onClick={() => removeSection(sectionIndex)}
-                      variant="transparent"
-                      aria-label="Delete section"
-                    >
-                      <IconTrash />
-                    </ActionIcon> */}
                   </Group>
 
                   <Divider my="sm" />

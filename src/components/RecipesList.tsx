@@ -17,7 +17,7 @@ import TagsFilter from "./TagsFilter";
 type RecipeListProps = {
   recipes: UserRecipe[];
   title?: string;
-  tags: Tag[];
+  tags?: Tag[];
 };
 
 export default function RecipesList({ recipes, title, tags }: RecipeListProps) {
@@ -38,7 +38,7 @@ export default function RecipesList({ recipes, title, tags }: RecipeListProps) {
               <Title order={2}>{title}</Title>
             ) : (
               <TagsFilter
-                allUserTags={tags}
+                allUserTags={tags || []}
                 filteredTags={filteredTags}
                 onTagsChange={setFilteredTags}
               />

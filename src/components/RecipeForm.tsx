@@ -8,21 +8,25 @@ import {
   Button,
   Box,
   Title,
-  rem,
   Divider,
   Alert,
   Stack,
   Transition,
 } from "@mantine/core";
 import { useField } from "@mantine/form";
-import { notifications, useNotifications } from "@mantine/notifications";
+import { useNotifications } from "@mantine/notifications";
 
 import { IngredientsAndInstructionsToggle } from "./IngredientsAndInstructionsToggle";
 import { SaveRecipeModal } from "./SaveRecipeModal";
 import { Session } from "next-auth";
-import { IconCheck, IconChefHat, IconX } from "@tabler/icons-react";
+import { IconChefHat } from "@tabler/icons-react";
 import Link from "next/link";
 import ScreenAwakeToggle from "./ScreenAwakeToggle";
+import {
+  showLoadingNotification,
+  updateNotificationAsError,
+  updateNotificationAsSuccess,
+} from "@/lib/notifications";
 
 type RecipeFormProps = {
   session?: Session | null;
@@ -86,15 +90,9 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
     setRecipe(undefined);
 
     // Notification for each form submit. Initially as a loading notification.
-    const loadingNotification = notifications.show({
-      loading: true,
-      title: "Just a moment",
-      message: "Fetching recipe from URL",
-      autoClose: false,
-      withCloseButton: false,
-      withBorder: true,
-      px: "lg",
-    });
+    const loadingNotification = showLoadingNotification(
+      "Fetching recipe from URL"
+    );
 
     try {
       const url = field.getValue();
@@ -107,46 +105,19 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
         setRecipe({ ...data.recipe, url });
 
         // Update notification to show success message
-        notifications.update({
-          id: loadingNotification,
-          loading: false,
-          autoClose: 1000, // show success for 1 second
-          withCloseButton: true,
-          closeButtonProps: { "aria-label": "Hide notification" },
-          color: "teal",
-          title: "Success!",
-          message: "Recipe successfully fetched.",
-          icon: <IconCheck style={{ width: rem(20), height: rem(20) }} />,
-        });
+        updateNotificationAsSuccess(
+          loadingNotification,
+          "Recipe successfully fetched."
+        );
       } else if (data.error) {
         console.error("Error:", data.error);
 
         // Update notification to show error message
-        notifications.update({
-          id: loadingNotification,
-          loading: false,
-          autoClose: 5000, // show error for 5 seconds
-          withCloseButton: true,
-          closeButtonProps: { "aria-label": "Hide notification" },
-          color: "red",
-          title: "Oh no!",
-          message: data.error.message,
-          icon: <IconX style={{ width: rem(20), height: rem(20) }} />,
-        });
+        updateNotificationAsError(loadingNotification, data.error.message);
       }
     } catch (error) {
       // Update notification to show error message
-      notifications.update({
-        id: loadingNotification,
-        loading: false,
-        autoClose: 5000, // show error for 5 seconds
-        withCloseButton: true,
-        closeButtonProps: { "aria-label": "Hide notification" },
-        color: "red",
-        title: "Oh no!",
-        message: "Failed to fetch recipe",
-        icon: <IconX style={{ width: rem(20), height: rem(20) }} />,
-      });
+      updateNotificationAsError(loadingNotification, "Failed to fetch recipe");
 
       if (error instanceof Error) {
         console.error(error);

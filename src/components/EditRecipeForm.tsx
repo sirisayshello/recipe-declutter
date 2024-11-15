@@ -10,15 +10,17 @@ import {
   TagsInput,
   TextInput,
   Paper,
-  rem,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { EditIngredientAndInstructionList } from "./EditIngredientsAndInstructionsLists";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
 import Link from "next/link";
+import {
+  showLoadingNotification,
+  updateNotificationAsError,
+  updateNotificationAsSuccess,
+} from "@/lib/notifications";
 
 type EditRecipeProps = {
   recipe: UserRecipe;
@@ -60,15 +62,9 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
   // Function to handle form submission
   async function handleSubmit(values: FormValues) {
     // Notification for each form submit. Initially as a loading notification.
-    const loadingNotification = notifications.show({
-      loading: true,
-      title: "Just a moment",
-      message: "Saving your changes...",
-      autoClose: false,
-      withCloseButton: false,
-      withBorder: true,
-      px: "lg",
-    });
+    const loadingNotification = showLoadingNotification(
+      "Saving your changes..."
+    );
 
     if (!form.validate().hasErrors) {
       const updatedRecipe = {
@@ -99,17 +95,10 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
         }
 
         // Update notification to show success message
-        notifications.update({
-          id: loadingNotification,
-          loading: false,
-          autoClose: 1000, // show success for 1 second
-          withCloseButton: true,
-          closeButtonProps: { "aria-label": "Hide notification" },
-          color: "teal",
-          title: "Success!",
-          message: "Recipe successfully updated.",
-          icon: <IconCheck style={{ width: rem(20), height: rem(20) }} />,
-        });
+        updateNotificationAsSuccess(
+          loadingNotification,
+          "Recipe successfully updated."
+        );
 
         router.refresh();
 
@@ -121,17 +110,10 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
         console.error(err);
 
         // Update notification to show an error message
-        notifications.update({
-          id: loadingNotification,
-          loading: false,
-          autoClose: 5000, // show error for 5 seconds
-          withCloseButton: true,
-          closeButtonProps: { "aria-label": "Hide notification" },
-          color: "red",
-          title: "Oh no!",
-          message: "An error occurred while saving. Please try again.",
-          icon: <IconX style={{ width: rem(20), height: rem(20) }} />,
-        });
+        updateNotificationAsError(
+          loadingNotification,
+          "An error occurred while saving. Please try again."
+        );
       }
     }
   }

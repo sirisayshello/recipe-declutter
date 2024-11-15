@@ -12,22 +12,37 @@ import { IconLayoutGrid, IconList } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
 import { RecipeCard } from "./RecipeCard";
+import TagsFilter from "./TagsFilter";
 
-export default function RecipesList({
-  recipes,
-  title,
-}: {
+type RecipeListProps = {
   recipes: UserRecipe[];
   title?: string;
-}) {
+  tags: Tag[];
+};
+
+export default function RecipesList({ recipes, title, tags }: RecipeListProps) {
   const [view, setView] = useState("list");
+  const [filteredTags, setFilteredTags] = useState<string[]>([]);
 
   return (
     <>
       {recipes.length > 0 && (
         <Box component="section" pt={"xl"}>
-          <Group justify="space-between" mb={"md"}>
-            <Title order={2}>{title}</Title>
+          <Group
+            justify="space-between"
+            align="flex-end"
+            mb={"md"}
+            wrap="nowrap"
+          >
+            {title ? (
+              <Title order={2}>{title}</Title>
+            ) : (
+              <TagsFilter
+                allUserTags={tags}
+                filteredTags={filteredTags}
+                onTagsChange={setFilteredTags}
+              />
+            )}
             {!recipes && (
               <p>
                 Ready to start your collection? Click the + button to add your
@@ -35,7 +50,7 @@ export default function RecipesList({
               </p>
             )}
 
-            <Group>
+            <Group maw={80} mb={8} wrap="nowrap">
               <ActionIcon
                 variant={view === "list" ? "filled" : "light"}
                 aria-label="List view"

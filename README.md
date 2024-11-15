@@ -63,9 +63,13 @@ To build and start the application for production:
    npm run build
    ```
 
-2. Start the app
+2. Install required dependencies for Playwright (used for scraping):
 
    ```bash
+   npm run postbuild
+   ```
+3. Start the app
+    ```bash
    npm start
    ```
 
@@ -73,6 +77,7 @@ To build and start the application for production:
 
 - `dev`: Starts the development server.
 - `build`: Builds the app for production.
+- `postbuild`: Installs Playwright and its dependencies after building.
 - `start`: Starts the production server.
 - `lint`: Runs ESLint to check code quality.
 - `seed`: Seeds the database using Prisma.
@@ -83,8 +88,8 @@ To build and start the application for production:
 - **Prisma**: Database ORM for type-safe database queries.
 - **NextAuth**: Authentication library for secure user accounts.
 - **Playwright**: End-to-end testing and scraping framework.
-- ***TypeScript***: For type-safe code.
-- ***Mantine***: Modern React UI library.
+- **TypeScript**: For type-safe code.
+- **Mantine**: Modern React UI library.
 
 ### License
 

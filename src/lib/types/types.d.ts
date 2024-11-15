@@ -123,3 +123,15 @@ type HowToSection = {
 };
 
 type ScrapedInstruction = HowToStep | HowToSection | string;
+
+type EditableItem = {
+  id: string;
+  text: string;
+};
+
+type SetListItem = React.Dispatch<React.SetStateAction<EditableItem[]>>;
+type SetListSection = React.Dispatch<
+  React.SetStateAction<{ text: EditableItem[] }[]>
+>;
+
+type SetListFunction = SetListItem | SetListSection;

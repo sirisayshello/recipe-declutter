@@ -49,7 +49,7 @@ export const EditIngredientAndInstructionList = ({
         }))
       );
     }
-  }, [form.values.ingredients, form.values.instructions]);
+  }, [form.values.ingredients, form.values.instructions, hasSections]);
 
   // Function to add an item to a list
   const addItem = (path: string, sectionIndex?: number) => {

@@ -181,18 +181,20 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
           </Flex>
         </Paper>
         {/* General info */}
-        <Fieldset mb="md" legend="Recipe information">
+        <Fieldset my="md" legend="Recipe information">
           <TextInput
             label="Title"
             placeholder="Recipe title"
             {...form.getInputProps("title")}
           />
           <TextInput
+            mt={"md"}
             label="Total time"
             placeholder="Total time to cook"
             {...form.getInputProps("time")}
           />
           <TextInput
+            mt={"md"}
             label="Servings"
             placeholder="Serving size"
             {...form.getInputProps("yield")}

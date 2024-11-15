@@ -22,7 +22,7 @@ export default function TagsFilter({
       onChange={onTagsChange}
       searchable
       clearable
-      style={{ width: "100%" }}
+      style={{ width: "100%", dropdown: { borderRadius: "24px" } }}
     />
   );
 }

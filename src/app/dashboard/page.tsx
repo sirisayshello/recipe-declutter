@@ -1,9 +1,9 @@
-import { Box, Button, Group, Text, Title } from "@mantine/core";
+import { Box, Button, Group, Space, Text, Title } from "@mantine/core";
 import { getAuth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getRecipesByUserId, getUserTags } from "@/lib/queries";
 import { IconArrowsShuffle2, IconCirclePlus } from "@tabler/icons-react";
-import { DashboardRecipeList } from "@/components/DashboardRecipeList";
+import RecipesList from "@/components/RecipesList";
 
 export default async function Dashboard() {
   const session = await getAuth();
@@ -33,7 +33,8 @@ export default async function Dashboard() {
           </Button>
         </Group>
       </Box>
-      <DashboardRecipeList tags={tags} recipes={convertedRecipes} />
+      <RecipesList tags={tags} recipes={convertedRecipes} />
+      <Space h="xl" />
     </>
   );
 }

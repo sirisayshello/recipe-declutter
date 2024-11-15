@@ -1,15 +1,18 @@
 "use client";
 
-import { updateRecipe } from "@/lib/queries";
+import { deleteRecipeById, updateRecipe } from "@/lib/queries";
 import { isSectionedInstruction, isSimpleInstruction } from "@/lib/utils";
 import {
+  ActionIcon,
   Button,
   Fieldset,
+  Flex,
   Group,
+  Paper,
   Space,
   TagsInput,
   TextInput,
-  Paper,
+  Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
@@ -21,6 +24,11 @@ import {
   updateNotificationAsError,
   updateNotificationAsSuccess,
 } from "@/lib/notifications";
+import {
+  IconChevronLeft,
+  IconDeviceFloppy,
+  IconTrash,
+} from "@tabler/icons-react";
 
 type EditRecipeProps = {
   recipe: UserRecipe;
@@ -101,11 +109,6 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
         );
 
         router.refresh();
-
-        // setTimeout(
-        //   () => router.push(`/dashboard/${recipe.slug}?id=${recipe.id}`),
-        //   1500
-        // );
       } catch (err) {
         console.error(err);
 
@@ -121,6 +124,62 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
   return (
     <>
       <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Paper
+          display={"flex"}
+          pos="sticky"
+          mt={"md"}
+          top={0}
+          left={0}
+          right={0}
+          py={"md"}
+          style={{
+            zIndex: 1000, // Ensure it's above other elements
+            alignItems: "center",
+            justifyContent: "space-between",
+            borderRadius: "0 0 0 0",
+          }}
+        >
+          <ActionIcon
+            variant={"filled"}
+            aria-label="Go back"
+            component={Link}
+            href={`/dashboard/${recipe.slug}?id=${recipe.id}`}
+            size={"lg"}
+          >
+            <IconChevronLeft
+              style={{ width: "70%", height: "70%" }}
+              stroke={1.5}
+            />
+          </ActionIcon>
+
+          <Title size="h3">Edit recipe</Title>
+
+          <Flex gap={"sm"}>
+            <ActionIcon
+              variant={"filled"}
+              aria-label="Save changes"
+              type="submit"
+              size={"lg"}
+            >
+              <IconDeviceFloppy
+                style={{ width: "70%", height: "70%" }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+
+            <ActionIcon
+              variant={"filled"}
+              aria-label="Delete recipe"
+              onClick={() => {
+                deleteRecipeById(recipe.id as number);
+                router.push("/dashboard");
+              }}
+              size={"lg"}
+            >
+              <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            </ActionIcon>
+          </Flex>
+        </Paper>
         {/* General info */}
         <Fieldset mb="md" legend="Recipe information">
           <TextInput
@@ -172,37 +231,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
           />
         </Fieldset>
 
-        <Space h="xl" />
-        <Space h="xl" />
-        <Space h="xl" />
-
-        <Paper
-          shadow="md"
-          p={16}
-          style={{
-            position: "fixed",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 1000,
-            borderRadius: "0 0 0 0",
-          }}
-        >
-          <Group justify="center" mt={"xs"} mb={"xs"}>
-            <Button size="md" type="submit">
-              Save Changes
-            </Button>
-            <Button
-              component="a"
-              size="md"
-              onClick={() =>
-                router.push(`/dashboard/${recipe.slug}?id=${recipe.id}`)
-              }
-            >
-              Cancel
-            </Button>
-          </Group>
-        </Paper>
+        <Space h="md" />
       </form>
     </>
   );

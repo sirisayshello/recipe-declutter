@@ -9,13 +9,16 @@ import {
   Space,
   TagsInput,
   TextInput,
-  Alert,
   Paper,
+  rem,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { EditIngredientAndInstructionList } from "./EditIngredientsAndInstructionsLists";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
+import Link from "next/link";
 
 type EditRecipeProps = {
   recipe: UserRecipe;
@@ -29,8 +32,6 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
   const allUserTags = userTags?.map((tag) => tag.name);
   const existingTags = recipe.tags?.map((tag) => tag.tag.name);
   const [tags, setTags] = useState<string[]>(existingTags || []);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   // Check if the instructions are sectioned or simple
@@ -58,6 +59,17 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
 
   // Function to handle form submission
   async function handleSubmit(values: FormValues) {
+    // Notification for each form submit. Initially as a loading notification.
+    const loadingNotification = notifications.show({
+      loading: true,
+      title: "Just a moment",
+      message: "Saving your changes...",
+      autoClose: false,
+      withCloseButton: false,
+      withBorder: true,
+      px: "lg",
+    });
+
     if (!form.validate().hasErrors) {
       const updatedRecipe = {
         ...recipe,
@@ -82,18 +94,44 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
 
       try {
         const result = await updateRecipe(updatedRecipe);
-        if (!result.success)
+        if (!result.success) {
           throw new Error(result.error?.message || "Failed to save recipe");
+        }
 
-        setSuccess(true);
-        console.log(success);
-        setTimeout(
-          () => router.push(`/dashboard/${recipe.slug}?id=${recipe.id}`),
-          1500
-        );
+        // Update notification to show success message
+        notifications.update({
+          id: loadingNotification,
+          loading: false,
+          autoClose: 1000, // show success for 1 second
+          withCloseButton: true,
+          closeButtonProps: { "aria-label": "Hide notification" },
+          color: "teal",
+          title: "Success!",
+          message: "Recipe successfully updated.",
+          icon: <IconCheck style={{ width: rem(20), height: rem(20) }} />,
+        });
+
+        router.refresh();
+
+        // setTimeout(
+        //   () => router.push(`/dashboard/${recipe.slug}?id=${recipe.id}`),
+        //   1500
+        // );
       } catch (err) {
         console.error(err);
-        setError("An error occurred while saving. Please try again.");
+
+        // Update notification to show an error message
+        notifications.update({
+          id: loadingNotification,
+          loading: false,
+          autoClose: 5000, // show error for 5 seconds
+          withCloseButton: true,
+          closeButtonProps: { "aria-label": "Hide notification" },
+          color: "red",
+          title: "Oh no!",
+          message: "An error occurred while saving. Please try again.",
+          icon: <IconX style={{ width: rem(20), height: rem(20) }} />,
+        });
       }
     }
   }
@@ -155,17 +193,6 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
         <Space h="xl" />
         <Space h="xl" />
         <Space h="xl" />
-
-        {error && (
-          <Alert
-            variant="light"
-            color="red"
-            title="Recipe failed to save"
-            mt="md"
-          >
-            {error}
-          </Alert>
-        )}
 
         <Paper
           shadow="md"

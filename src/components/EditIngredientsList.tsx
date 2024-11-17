@@ -2,10 +2,11 @@ import React from "react";
 import {
   Fieldset,
   Group,
-  ActionIcon,
   Button,
   TextInput,
-  Center,
+  Menu,
+  Flex,
+  ActionIcon,
 } from "@mantine/core";
 import {
   DragDropContext,
@@ -13,7 +14,12 @@ import {
   Draggable,
   DropResult,
 } from "@hello-pangea/dnd";
-import { IconPlus, IconTrash, IconGripVertical } from "@tabler/icons-react";
+import {
+  IconPlus,
+  IconDotsVertical,
+  IconMenu,
+  IconTrash,
+} from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
 
 type EditIngredientsListProps = {
@@ -68,39 +74,53 @@ export const EditIngredientsList = ({
                     <Group
                       wrap="nowrap"
                       mt="xs"
-                      align="flex-start"
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                     >
-                      <Center {...provided.dragHandleProps}>
-                        <IconGripVertical size="1.2rem" />
-                      </Center>
-                      <TextInput
-                        style={{ width: "100%" }}
-                        placeholder={`Ingredient ${index + 1}`}
-                        value={ingredient.text}
-                        onChange={(event) =>
-                          handleTextChange(
-                            index,
-                            event.currentTarget.value,
-                            "ingredients"
-                          )
-                        }
-                      />
-                      <ActionIcon
-                        onClick={() =>
-                          deleteItem(
-                            index,
-                            ingredients,
-                            setIngredients,
-                            "ingredients"
-                          )
-                        }
-                        variant="transparent"
-                        aria-label="Delete ingredient"
-                      >
-                        <IconTrash />
-                      </ActionIcon>
+                      <Menu position="left" offset={-35}>
+                        <Menu.Dropdown>
+                          <Menu.Item>
+                            <ActionIcon
+                              mt={2}
+                              onClick={() =>
+                                deleteItem(
+                                  index,
+                                  ingredients,
+                                  setIngredients,
+                                  "ingredients"
+                                )
+                              }
+                              variant="transparent"
+                              size="sm"
+                              aria-label="Delete"
+                            >
+                              <IconTrash size={24} />
+                            </ActionIcon>
+                          </Menu.Item>
+                        </Menu.Dropdown>
+                        <Flex {...provided.dragHandleProps}>
+                          <IconMenu size="1.2rem" />
+                        </Flex>
+                        <TextInput
+                          style={{ width: "100%" }}
+                          placeholder={`Ingredient ${index + 1}`}
+                          value={ingredient.text}
+                          rightSection={
+                            <Menu.Target>
+                              <IconDotsVertical
+                                style={{ color: "lightgray" }}
+                              />
+                            </Menu.Target>
+                          }
+                          onChange={(event) =>
+                            handleTextChange(
+                              index,
+                              event.currentTarget.value,
+                              "ingredients"
+                            )
+                          }
+                        />
+                      </Menu>
                     </Group>
                   )}
                 </Draggable>

@@ -140,7 +140,8 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
           }}
         >
           <ActionIcon
-            variant={"filled"}
+            hiddenFrom="sm"
+            variant="filled"
             aria-label="Go back"
             component={Link}
             href={`/dashboard/${recipe.slug}?id=${recipe.id}`}
@@ -151,11 +152,20 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
               stroke={1.5}
             />
           </ActionIcon>
-
-          <Title size="h3">Edit recipe</Title>
+          <Button
+            visibleFrom="sm"
+            size="md"
+            component={Link}
+            href={`/dashboard/${recipe.slug}?id=${recipe.id}`}
+            variant="light"
+            leftSection={<IconChevronLeft />}
+          >
+            Back to recipe
+          </Button>
 
           <Flex gap={"sm"}>
             <ActionIcon
+              hiddenFrom="sm"
               variant={"filled"}
               aria-label="Save changes"
               type="submit"
@@ -166,9 +176,19 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
                 stroke={1.5}
               />
             </ActionIcon>
+            <Button
+              visibleFrom="sm"
+              size="md"
+              type="submit"
+              variant="filled"
+              leftSection={<IconDeviceFloppy />}
+            >
+              Save changes
+            </Button>
 
             <ActionIcon
-              variant={"filled"}
+              hiddenFrom="sm"
+              variant="filled"
               aria-label="Delete recipe"
               onClick={() => {
                 deleteRecipeById(recipe.id as number);
@@ -178,8 +198,25 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
             >
               <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
             </ActionIcon>
+            <Button
+              visibleFrom="sm"
+              size="md"
+              variant="light"
+              leftSection={<IconTrash />}
+              onClick={() => {
+                deleteRecipeById(recipe.id as number);
+                router.push("/dashboard");
+              }}
+            >
+              Delete recipe
+            </Button>
           </Flex>
         </Paper>
+
+        <Title size="h3" mt={"md"} ta="center">
+          {recipe.title}
+        </Title>
+
         {/* General info */}
         <Fieldset my="md" legend="Recipe information">
           <TextInput

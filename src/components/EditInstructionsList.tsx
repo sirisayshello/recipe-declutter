@@ -61,7 +61,7 @@ export const EditInstructionsList = ({
   addItem,
 }: EditInstructionsListProps) => {
   return (
-    <Fieldset radius={"md"} mb="md" legend="Instructions">
+    <Fieldset radius={"sm"} mb="md" legend="Instructions">
       {/* If sectioned instructions */}
       {hasSections ? (
         <>

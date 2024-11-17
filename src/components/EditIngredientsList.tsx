@@ -51,7 +51,7 @@ export const EditIngredientsList = ({
   addItem,
 }: EditIngredientsListProps) => {
   return (
-    <Fieldset radius={"md"} mb="md" legend="Ingredients">
+    <Fieldset radius={"sm"} mb="md" legend="Ingredients">
       <DragDropContext
         onDragEnd={handleDragEnd("ingredients", ingredients, setIngredients)}
       >

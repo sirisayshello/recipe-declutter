@@ -102,7 +102,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
     <>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         {/* General info */}
-        <Fieldset mb="md" legend="Recipe information">
+        <Fieldset radius={"md"} mb="md" legend="Recipe information">
           <TextInput
             label="Title"
             placeholder="Recipe title"
@@ -140,7 +140,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
           view={view}
         />
 
-        <Fieldset mb="md" legend="Recipe tags">
+        <Fieldset radius={"md"} mb="md" legend="Tags">
           <TagsInput
             label="Recipe tags"
             placeholder="Press Enter to submit a tag"

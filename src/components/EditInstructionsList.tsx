@@ -61,7 +61,7 @@ export const EditInstructionsList = ({
   addItem,
 }: EditInstructionsListProps) => {
   return (
-    <Fieldset mb="md" legend="Instructions">
+    <Fieldset radius={"md"} mb="md" legend="Instructions">
       {/* If sectioned instructions */}
       {hasSections ? (
         <>
@@ -107,6 +107,7 @@ export const EditInstructionsList = ({
                                 <IconGripVertical size="1.2rem" />
                               </Center>
                               <Textarea
+                                radius={"md"}
                                 style={{ width: "100%" }}
                                 placeholder={`Step ${index + 1}`}
                                 minRows={3}
@@ -189,6 +190,7 @@ export const EditInstructionsList = ({
                             <IconGripVertical size="1.2rem" />
                           </Center>
                           <Textarea
+                            radius={"md"}
                             style={{ width: "100%" }}
                             placeholder={`Step ${index + 1}`}
                             minRows={3}

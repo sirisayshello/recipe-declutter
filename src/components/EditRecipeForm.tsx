@@ -127,13 +127,10 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
         <Paper
           display={"flex"}
           pos="sticky"
-          mt={"md"}
           top={0}
-          left={0}
-          right={0}
           py={"md"}
           style={{
-            zIndex: 1000, // Ensure it's above other elements
+            zIndex: 100,
             alignItems: "center",
             justifyContent: "space-between",
             borderRadius: "0 0 0 0",

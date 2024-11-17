@@ -1,11 +1,11 @@
 import prisma from "@/lib/db";
 import Link from "next/link";
 import { Anchor, Group, Pill, Stack, Title, Text, Box } from "@mantine/core";
-import { IconArrowNarrowLeft, IconPencil } from "@tabler/icons-react";
+import { IconPencil } from "@tabler/icons-react";
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 import { getAuth } from "@/lib/auth";
 import { notFound } from "next/navigation";
-import ScreenAwakeToggle from "@/components/ScreenAwakeToggle";
+import { ScreenAwakeToggle } from "@/components/ScreenAwakeToggle";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export default async function RecipePage({
@@ -37,10 +37,7 @@ export default async function RecipePage({
   return (
     <>
       <Breadcrumbs />
-      <Group justify="space-between" mt="md">
-        <Anchor component={Link} href="/dashboard">
-          <IconArrowNarrowLeft />
-        </Anchor>
+      <Group justify="flex-end" mt="md">
         <Anchor
           component={Link}
           href={`/dashboard/${recipe.slug}/edit?id=${recipe.id}`}

@@ -1,21 +1,36 @@
 "use client";
 
-import { updateRecipe } from "@/lib/queries";
+import { deleteRecipeById, updateRecipe } from "@/lib/queries";
 import { isSectionedInstruction, isSimpleInstruction } from "@/lib/utils";
 import {
+  ActionIcon,
   Button,
   Fieldset,
+  Flex,
   Group,
+  Paper,
   Space,
   TagsInput,
+  Text,
   TextInput,
-  Alert,
-  Paper,
+  Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { EditIngredientAndInstructionList } from "./EditIngredientsAndInstructionsLists";
+import Link from "next/link";
+import {
+  showLoadingNotification,
+  updateNotificationAsError,
+  updateNotificationAsSuccess,
+} from "@/lib/notifications";
+import {
+  IconChevronLeft,
+  IconDeviceFloppy,
+  IconTrash,
+} from "@tabler/icons-react";
+import { modals } from "@mantine/modals";
 
 type EditRecipeProps = {
   recipe: UserRecipe;
@@ -29,8 +44,6 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
   const allUserTags = userTags?.map((tag) => tag.name);
   const existingTags = recipe.tags?.map((tag) => tag.tag.name);
   const [tags, setTags] = useState<string[]>(existingTags || []);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   // Check if the instructions are sectioned or simple
@@ -58,6 +71,11 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
 
   // Function to handle form submission
   async function handleSubmit(values: FormValues) {
+    // Notification for each form submit. Initially as a loading notification.
+    const loadingNotification = showLoadingNotification(
+      "Saving your changes..."
+    );
+
     if (!form.validate().hasErrors) {
       const updatedRecipe = {
         ...recipe,
@@ -82,38 +100,161 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
 
       try {
         const result = await updateRecipe(updatedRecipe);
-        if (!result.success)
+        if (!result.success) {
           throw new Error(result.error?.message || "Failed to save recipe");
+        }
 
-        setSuccess(true);
-        console.log(success);
-        setTimeout(
-          () => router.push(`/dashboard/${recipe.slug}?id=${recipe.id}`),
-          1500
+        // Update notification to show success message
+        updateNotificationAsSuccess(
+          loadingNotification,
+          "Recipe successfully updated."
         );
+
+        router.refresh();
       } catch (err) {
         console.error(err);
-        setError("An error occurred while saving. Please try again.");
+
+        // Update notification to show an error message
+        updateNotificationAsError(
+          loadingNotification,
+          "An error occurred while saving. Please try again."
+        );
       }
     }
   }
 
+  const openDeleteModal = () =>
+    modals.openConfirmModal({
+      title: (
+        <Title component={"p"} size={"h4"}>
+          Delete Recipe
+        </Title>
+      ),
+      centered: true,
+      children: (
+        <Text size="md">Are you sure you want to delete this recipe?</Text>
+      ),
+      labels: { confirm: "Delete it", cancel: "Keep it" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => {
+        console.log(recipe);
+
+        const test = showLoadingNotification("deleting recipe...");
+
+        deleteRecipeById(recipe.id as number);
+
+        updateNotificationAsSuccess(test, "Deleted recipe successfully");
+
+        router.push("/dashboard");
+        router.refresh();
+      },
+    });
+
   return (
     <>
       <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Paper
+          display={"flex"}
+          pos="sticky"
+          top={0}
+          py={"md"}
+          style={{
+            zIndex: 100,
+            alignItems: "center",
+            justifyContent: "space-between",
+            borderRadius: "0 0 0 0",
+          }}
+        >
+          <ActionIcon
+            hiddenFrom="sm"
+            variant="filled"
+            aria-label="Go back"
+            component={Link}
+            href={`/dashboard/${recipe.slug}?id=${recipe.id}`}
+            size={"lg"}
+          >
+            <IconChevronLeft
+              style={{ width: "70%", height: "70%" }}
+              stroke={1.5}
+            />
+          </ActionIcon>
+          <Button
+            visibleFrom="sm"
+            size="md"
+            component={Link}
+            href={`/dashboard/${recipe.slug}?id=${recipe.id}`}
+            variant="light"
+            leftSection={<IconChevronLeft />}
+          >
+            Back to recipe
+          </Button>
+
+          <Flex gap={"sm"}>
+            <ActionIcon
+              hiddenFrom="sm"
+              variant={"filled"}
+              aria-label="Save changes"
+              type="submit"
+              size={"lg"}
+            >
+              <IconDeviceFloppy
+                style={{ width: "70%", height: "70%" }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+            <Button
+              visibleFrom="sm"
+              size="md"
+              type="submit"
+              variant="filled"
+              leftSection={<IconDeviceFloppy />}
+            >
+              Save changes
+            </Button>
+
+            <ActionIcon
+              hiddenFrom="sm"
+              variant="filled"
+              aria-label="Delete recipe"
+              onClick={() => openDeleteModal()}
+              size={"lg"}
+            >
+              <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            </ActionIcon>
+            <Button
+              visibleFrom="sm"
+              size="md"
+              variant="light"
+              leftSection={<IconTrash />}
+              onClick={() => openDeleteModal()}
+            >
+              Delete recipe
+            </Button>
+          </Flex>
+        </Paper>
+
+        <Title size="h3" mt={"md"} ta="center">
+          {recipe.title}
+        </Title>
+
         {/* General info */}
+
         <Fieldset radius={"sm"} mb="md" legend="Recipe information">
+
           <TextInput
             label="Title"
             placeholder="Recipe title"
             {...form.getInputProps("title")}
           />
           <TextInput
+            mt={"md"}
             label="Total time"
             placeholder="Total time to cook"
             {...form.getInputProps("time")}
           />
           <TextInput
+            mt={"md"}
             label="Servings"
             placeholder="Serving size"
             {...form.getInputProps("yield")}
@@ -153,48 +294,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
           />
         </Fieldset>
 
-        <Space h="xl" />
-        <Space h="xl" />
-        <Space h="xl" />
-
-        {error && (
-          <Alert
-            variant="light"
-            color="red"
-            title="Recipe failed to save"
-            mt="md"
-          >
-            {error}
-          </Alert>
-        )}
-
-        <Paper
-          shadow="md"
-          p={16}
-          style={{
-            position: "fixed",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 1000,
-            borderRadius: "0 0 0 0",
-          }}
-        >
-          <Group justify="center" mt={"xs"} mb={"xs"}>
-            <Button size="md" type="submit">
-              Save Changes
-            </Button>
-            <Button
-              component="a"
-              size="md"
-              onClick={() =>
-                router.push(`/dashboard/${recipe.slug}?id=${recipe.id}`)
-              }
-            >
-              Cancel
-            </Button>
-          </Group>
-        </Paper>
+        <Space h="md" />
       </form>
     </>
   );

@@ -1,10 +1,9 @@
+
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import DeleteRecipeButton from "@/components/DeleteRecipeButton";
 import { EditRecipeForm } from "@/components/EditRecipeForm";
 import { getAuth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { getUserTags } from "@/lib/queries";
-import { Group, Title } from "@mantine/core";
 import { notFound } from "next/navigation";
 
 export default async function EditRecipePage({
@@ -36,10 +35,6 @@ export default async function EditRecipePage({
   return (
     <>
       <Breadcrumbs />
-      <Group justify="space-between" mt="md" mb="md">
-        <Title size="h3">Edit recipe</Title>
-        <DeleteRecipeButton id={recipe.id} />
-      </Group>
 
       <EditRecipeForm recipe={convertedRecipe} userTags={userTags} />
     </>

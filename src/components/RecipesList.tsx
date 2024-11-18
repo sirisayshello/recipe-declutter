@@ -48,12 +48,6 @@ export default function RecipesList({ recipes, title, tags }: RecipeListProps) {
                 onTagsChange={setFilteredTags}
               />
             )}
-            {!recipes && (
-              <p>
-                Ready to start your collection? Click the + button to add your
-                first recipe!
-              </p>
-            )}
 
             <Group maw={80} mb={8} wrap="nowrap">
               <ActionIcon
@@ -113,6 +107,13 @@ export default function RecipesList({ recipes, title, tags }: RecipeListProps) {
             </Grid>
           )}
         </Box>
+      )}
+
+      {recipes.length < 1 && (
+        <p>
+          Ready to start your collection? Click &quot;Add New Recipe&quot; to
+          add your first recipe!
+        </p>
       )}
     </>
   );

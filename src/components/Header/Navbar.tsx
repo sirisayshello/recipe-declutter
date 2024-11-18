@@ -145,7 +145,6 @@ export const Navbar = () => {
                     href={item.href}
                     onClick={closeUserButton}
                     c="var(--mantine-color-text)"
-                    // style={{ color: "" }}
                   >
                     <Group
                       align="center"

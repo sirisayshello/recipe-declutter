@@ -51,7 +51,7 @@ export default async function RecipePage({
         <Group justify="center" mb="md" mt="md">
           <Text size="xs">
             Author:{" "}
-            <Anchor component={Link} href={recipe.url}>
+            <Anchor component={Link} href={recipe.url} target="_blank">
               {recipe.author}
             </Anchor>
           </Text>

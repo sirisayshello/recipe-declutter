@@ -61,11 +61,11 @@ export default async function RecipePage({
       </Stack>
 
       <ScreenAwakeToggle />
-      <Box component="section" mb={"md"} pb={"md"}>
+      <Box component="section" pb={"xl"}>
         <IngredientsAndInstructionsToggle recipe={convertedRecipe} />
       </Box>
 
-      <Group mb="md">
+      <Group pb={"xl"}>
         {recipe.tags?.map((tagRelation, index) => (
           <Pill key={index} size="md">
             {tagRelation.tag.name}

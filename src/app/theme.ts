@@ -78,6 +78,16 @@ export const theme = createTheme({
         size: "md",
       },
     },
+    TagsInput: {
+      defaultProps: {
+        size: "md",
+      },
+    },
+    Textarea: {
+      defaultProps: {
+        size: "md",
+      },
+    },
     Button: {
       defaultProps: {
         size: "md",

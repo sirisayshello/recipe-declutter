@@ -135,6 +135,8 @@ export const EditInstructionsList = ({
                                 </Flex>
                                 <Textarea
                                   radius={"md"}
+                                  autosize
+                                  minRows={1}
                                   rightSection={
                                     <Menu.Target>
                                       <IconDotsVertical
@@ -144,7 +146,6 @@ export const EditInstructionsList = ({
                                   }
                                   style={{ width: "100%" }}
                                   placeholder={`Step ${index + 1}`}
-                                  minRows={3}
                                   value={instruction.text}
                                   onChange={(event) =>
                                     handleTextChange(
@@ -230,6 +231,8 @@ export const EditInstructionsList = ({
                             </Flex>
                             <Textarea
                               radius={"md"}
+                              autosize
+                              minRows={1}
                               rightSection={
                                 <Menu.Target>
                                   <IconDotsVertical
@@ -239,7 +242,6 @@ export const EditInstructionsList = ({
                               }
                               style={{ width: "100%" }}
                               placeholder={`Step ${index + 1}`}
-                              minRows={3}
                               value={instruction.text}
                               onChange={(event) =>
                                 handleTextChange(

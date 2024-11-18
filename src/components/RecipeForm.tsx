@@ -27,6 +27,7 @@ import {
   updateNotificationAsSuccess,
 } from "@/lib/notifications";
 import { ScreenAwakeToggle } from "./ScreenAwakeToggle";
+import { Confetti } from "./Confetti";
 
 type RecipeFormProps = {
   session?: Session | null;
@@ -52,6 +53,7 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
   const [loading, setLoading] = useState(false);
   const [shouldOpenModal, setShouldOpenModal] = useState(false);
   const notificationsStore = useNotifications();
+  const [confetti, setConfetti] = useState<boolean>(false);
 
   const field = useField({
     initialValue: "",
@@ -81,6 +83,15 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
 
   useEffect(() => {
     scrollToElement();
+  }, [recipe]);
+
+  // When a recipe is fetched successfully; Celebrate with confetti!
+  useEffect(() => {
+    if (recipe) {
+      setConfetti(true);
+    } else {
+      setConfetti(false);
+    }
   }, [recipe]);
 
   async function handleSubmit(e: FormEvent) {
@@ -168,6 +179,7 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
       </Flex>
 
       {/* recipe section */}
+      {confetti && <Confetti />}
       {recipe?.ingredients && recipe.instructions.length > 0 && (
         <Box component="section" style={{ justifySelf: "flex-start" }}>
           <Divider variant="dotted" size="md" />

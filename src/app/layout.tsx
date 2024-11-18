@@ -6,6 +6,7 @@ import { theme } from "./theme";
 import SessionWrapper from "@/components/SessionWrapper";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
+import { ModalsProvider } from "@mantine/modals";
 
 export const metadata: Metadata = {
   title: "Recipe Declutter",
@@ -27,12 +28,14 @@ export default function RootLayout({
       </head>
       <body style={{ height: "100dvh" }}>
         <MantineProvider defaultColorScheme="auto" theme={theme}>
-          <Notifications position="bottom-center" />
-          <SessionWrapper>
-            <Navbar />
-          </SessionWrapper>
-          {/* 56px current height of navbar. Update if it changes */}
-          <Container h="calc(100dvh - 56px)">{children}</Container>
+          <ModalsProvider>
+            <Notifications position="bottom-center" />
+            <SessionWrapper>
+              <Navbar />
+            </SessionWrapper>
+            {/* 56px current height of navbar. Update if it changes */}
+            <Container h="calc(100dvh - 56px)">{children}</Container>
+          </ModalsProvider>
         </MantineProvider>
       </body>
     </html>

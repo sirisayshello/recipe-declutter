@@ -11,6 +11,7 @@ import {
   Paper,
   Space,
   TagsInput,
+  Text,
   TextInput,
   Title,
 } from "@mantine/core";
@@ -29,6 +30,7 @@ import {
   IconDeviceFloppy,
   IconTrash,
 } from "@tabler/icons-react";
+import { modals } from "@mantine/modals";
 
 type EditRecipeProps = {
   recipe: UserRecipe;
@@ -121,6 +123,34 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
     }
   }
 
+  const openDeleteModal = () =>
+    modals.openConfirmModal({
+      title: (
+        <Title component={"p"} size={"h4"}>
+          Delete Recipe
+        </Title>
+      ),
+      centered: true,
+      children: (
+        <Text size="md">Are you sure you want to delete this recipe?</Text>
+      ),
+      labels: { confirm: "Delete it", cancel: "Keep it" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => {
+        console.log(recipe);
+
+        const test = showLoadingNotification("deleting recipe...");
+
+        deleteRecipeById(recipe.id as number);
+
+        updateNotificationAsSuccess(test, "Deleted recipe successfully");
+
+        router.push("/dashboard");
+        router.refresh();
+      },
+    });
+
   return (
     <>
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -187,10 +217,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
               hiddenFrom="sm"
               variant="filled"
               aria-label="Delete recipe"
-              onClick={() => {
-                deleteRecipeById(recipe.id as number);
-                router.push("/dashboard");
-              }}
+              onClick={() => openDeleteModal()}
               size={"lg"}
             >
               <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
@@ -200,10 +227,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
               size="md"
               variant="light"
               leftSection={<IconTrash />}
-              onClick={() => {
-                deleteRecipeById(recipe.id as number);
-                router.push("/dashboard");
-              }}
+              onClick={() => openDeleteModal()}
             >
               Delete recipe
             </Button>

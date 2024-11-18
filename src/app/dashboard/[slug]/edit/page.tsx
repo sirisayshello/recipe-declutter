@@ -1,3 +1,4 @@
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeleteRecipeButton from "@/components/DeleteRecipeButton";
 import { EditRecipeForm } from "@/components/EditRecipeForm";
 import { getAuth } from "@/lib/auth";
@@ -34,6 +35,7 @@ export default async function EditRecipePage({
 
   return (
     <>
+      <Breadcrumbs />
       <Group justify="space-between" mt="md" mb="md">
         <Title size="h3">Edit recipe</Title>
         <DeleteRecipeButton id={recipe.id} />

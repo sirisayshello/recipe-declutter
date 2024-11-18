@@ -22,7 +22,7 @@ import { SaveRecipeModal } from "./SaveRecipeModal";
 import { Session } from "next-auth";
 import { IconCheck, IconChefHat, IconX } from "@tabler/icons-react";
 import Link from "next/link";
-import ScreenAwakeToggle from "./ScreenAwakeToggle";
+import { ScreenAwakeToggle } from "./ScreenAwakeToggle";
 
 type RecipeFormProps = {
   session?: Session | null;

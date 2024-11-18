@@ -1,8 +1,7 @@
 "use client";
-import { Anchor, Button, Group, List, Stack, Text } from "@mantine/core";
+import { Button, Group, List, Stack } from "@mantine/core";
 import { useState } from "react";
 import RenderedInstructions from "./RenderedInstructions";
-import Link from "next/link";
 
 type IngAndInstToggleProps = {
   recipe: UserRecipe;
@@ -14,17 +13,7 @@ export const IngredientsAndInstructionsToggle = ({
   const [view, setView] = useState("ingredients");
 
   return (
-    <Stack component="section">
-      <Group justify="center" mb="md" mt="md">
-        <Text size="xs">
-          Author:{" "}
-          <Anchor component={Link} href={recipe.url}>
-            {recipe.author}
-          </Anchor>
-        </Text>
-        <Text size="xs">Total time: {recipe.time}</Text>
-        <Text size="xs">Servings: {recipe.yield}</Text>
-      </Group>
+    <Stack mb={"md"}>
       <Group justify="space-between" grow mb="md">
         <Button
           variant={view === "ingredients" ? "filled" : "light"}
@@ -44,7 +33,7 @@ export const IngredientsAndInstructionsToggle = ({
       </Group>
 
       {view === "ingredients" && (
-        <List>
+        <List listStyleType="none">
           {recipe.ingredients.map((ingredient, index) => {
             return (
               <List.Item

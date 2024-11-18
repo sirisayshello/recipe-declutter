@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const RecipeCard = ({ recipe }: { recipe: UserRecipe }) => {
   return (
-    <Paper withBorder p="md" h={"100%"}>
+    <Paper withBorder radius={"sm"} p="md" h={"100%"}>
       <Anchor
         component={Link}
         href={`/dashboard/${recipe.slug}?id=${recipe.id}`}

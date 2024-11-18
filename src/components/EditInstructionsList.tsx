@@ -2,7 +2,6 @@ import React from "react";
 import {
   Fieldset,
   Group,
-  ActionIcon,
   Button,
   Textarea,
   Card,
@@ -17,13 +16,9 @@ import {
   Draggable,
   DropResult,
 } from "@hello-pangea/dnd";
-import {
-  IconPlus,
-  IconTrash,
-  IconDotsVertical,
-  IconMenu,
-} from "@tabler/icons-react";
+import { IconPlus, IconDotsVertical, IconMenu } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
+import DeleteButtonDropdown from "./DeleteButtonDropdown";
 
 type EditInstructionsListProps = {
   form: UseFormReturnType<FormValues>;
@@ -108,33 +103,28 @@ export const EditInstructionsList = ({
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                             >
-                              <Menu position="left" offset={-35}>
-                                <Menu.Dropdown>
-                                  <Menu.Item>
-                                    <ActionIcon
-                                      mt={2}
-                                      onClick={() =>
-                                        deleteItem(
-                                          index,
-                                          sectionedInstructions[sectionIndex]
-                                            .text,
-                                          setSectionedInstructions,
-                                          "instructions",
-                                          sectionIndex
-                                        )
-                                      }
-                                      variant="transparent"
-                                      aria-label="Delete instruction"
-                                    >
-                                      <IconTrash size={24} />
-                                    </ActionIcon>
-                                  </Menu.Item>
-                                </Menu.Dropdown>
+                              <Menu position="left" offset={-45}>
+                                <DeleteButtonDropdown
+                                  onClickDelete={() =>
+                                    deleteItem(
+                                      index,
+                                      sectionedInstructions[sectionIndex].text,
+                                      setSectionedInstructions,
+                                      "instructions",
+                                      sectionIndex
+                                    )
+                                  }
+                                  type="instruction"
+                                />
+
                                 <Flex {...provided.dragHandleProps}>
                                   <IconMenu size="1.2rem" />
                                 </Flex>
+
                                 <Textarea
                                   radius={"md"}
+                                  autosize
+                                  minRows={1}
                                   rightSection={
                                     <Menu.Target>
                                       <IconDotsVertical
@@ -144,7 +134,6 @@ export const EditInstructionsList = ({
                                   }
                                   style={{ width: "100%" }}
                                   placeholder={`Step ${index + 1}`}
-                                  minRows={3}
                                   value={instruction.text}
                                   onChange={(event) =>
                                     handleTextChange(
@@ -205,31 +194,26 @@ export const EditInstructionsList = ({
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                         >
-                          <Menu position="left" offset={-35}>
-                            <Menu.Dropdown>
-                              <Menu.Item>
-                                <ActionIcon
-                                  mt={2}
-                                  onClick={() =>
-                                    deleteItem(
-                                      index,
-                                      instructions,
-                                      setInstructions,
-                                      "instructions"
-                                    )
-                                  }
-                                  variant="transparent"
-                                  aria-label="Delete instruction"
-                                >
-                                  <IconTrash size={24} />
-                                </ActionIcon>
-                              </Menu.Item>
-                            </Menu.Dropdown>
+                          <Menu position="left" offset={-45}>
+                            <DeleteButtonDropdown
+                              onClickDelete={() =>
+                                deleteItem(
+                                  index,
+                                  instructions,
+                                  setInstructions,
+                                  "instructions"
+                                )
+                              }
+                              type="instruction"
+                            />
+
                             <Flex {...provided.dragHandleProps}>
                               <IconMenu size="1.2rem" />
                             </Flex>
                             <Textarea
                               radius={"md"}
+                              autosize
+                              minRows={1}
                               rightSection={
                                 <Menu.Target>
                                   <IconDotsVertical
@@ -239,7 +223,6 @@ export const EditInstructionsList = ({
                               }
                               style={{ width: "100%" }}
                               placeholder={`Step ${index + 1}`}
-                              minRows={3}
                               value={instruction.text}
                               onChange={(event) =>
                                 handleTextChange(

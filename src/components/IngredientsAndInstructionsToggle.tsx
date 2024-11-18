@@ -1,7 +1,8 @@
 "use client";
-import { Button, Checkbox, Group, List, Stack } from "@mantine/core";
+import { Button, Flex, Group, Paper, Stack, Text } from "@mantine/core";
 import { useState } from "react";
 import RenderedInstructions from "./RenderedInstructions";
+import RenderedIngredients from "./RenderedIngredients";
 
 type IngAndInstToggleProps = {
   recipe: UserRecipe;
@@ -29,71 +30,72 @@ export const IngredientsAndInstructionsToggle = ({
   };
 
   return (
-    <Stack>
-      <Group justify="space-between" grow mb="md">
-        <Button
-          variant={view === "ingredients" ? "filled" : "light"}
-          size="md"
-          onClick={() => setView("ingredients")}
-        >
-          Ingredients
-        </Button>
+    <>
+      <Flex gap={"sm"} visibleFrom="sm">
+        <Paper miw={"30%"} withBorder radius={"xs"} p="md" shadow="xs">
+          <Text fw={700} size="xl" mb={"md"}>
+            Ingredients
+          </Text>
+          <RenderedIngredients
+            recipe={recipe}
+            checkboxStates={checkboxStates.ingredients}
+            onCheckboxChange={(index, checked) =>
+              handleCheckboxChange("ingredients", index, checked)
+            }
+          />
+        </Paper>
+        <Paper withBorder radius={"xs"} p="md" shadow="xs">
+          <Text fw={700} size="xl" mb={"md"}>
+            Instructions
+          </Text>
+          <RenderedInstructions
+            recipe={recipe}
+            checkboxStates={checkboxStates.instructions}
+            onCheckboxChange={(index, checked) =>
+              handleCheckboxChange("instructions", index, checked)
+            }
+          />
+        </Paper>
+      </Flex>
 
-        <Button
-          variant={view === "instructions" ? "filled" : "light"}
-          size="md"
-          onClick={() => setView("instructions")}
-        >
-          Instructions
-        </Button>
-      </Group>
+      <Stack hiddenFrom="sm">
+        <Group justify="space-between" grow mb="md">
+          <Button
+            variant={view === "ingredients" ? "filled" : "light"}
+            size="md"
+            onClick={() => setView("ingredients")}
+          >
+            Ingredients
+          </Button>
 
-      {view === "ingredients" && (
-        <List listStyleType="none" spacing="xs">
-          {recipe.ingredients.map((ingredient, index) => {
-            return (
-              <List.Item
-                styles={{
-                  itemWrapper: {
-                    display: "inline",
-                  },
-                }}
-                key={index}
-              >
-                <Checkbox
-                  size="md"
-                  checked={checkboxStates.ingredients[index]}
-                  onChange={(event) =>
-                    handleCheckboxChange(
-                      "ingredients",
-                      index,
-                      event.currentTarget.checked
-                    )
-                  }
-                  label={
-                    <span
-                      style={{
-                        opacity: checkboxStates.ingredients[index] ? 0.5 : 1,
-                      }}
-                    >
-                      {ingredient}
-                    </span>
-                  }
-                />
-              </List.Item>
-            );
-          })}
-        </List>
-      )}
-      {view === "instructions" && (
-        <RenderedInstructions
-          recipe={recipe}
-          checkboxStates={checkboxStates.instructions}
-          onCheckboxChange={(index, checked) =>
-            handleCheckboxChange("instructions", index, checked)
-          }
-        />
-      )}
-    </Stack>
+          <Button
+            variant={view === "instructions" ? "filled" : "light"}
+            size="md"
+            onClick={() => setView("instructions")}
+          >
+            Instructions
+          </Button>
+        </Group>
+
+        {view === "ingredients" && (
+          <RenderedIngredients
+            recipe={recipe}
+            checkboxStates={checkboxStates.ingredients}
+            onCheckboxChange={(index, checked) =>
+              handleCheckboxChange("ingredients", index, checked)
+            }
+          />
+        )}
+        {view === "instructions" && (
+          <RenderedInstructions
+            recipe={recipe}
+            checkboxStates={checkboxStates.instructions}
+            onCheckboxChange={(index, checked) =>
+              handleCheckboxChange("instructions", index, checked)
+            }
+          />
+        )}
+      </Stack>
+    </>
   );
 };

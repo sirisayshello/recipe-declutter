@@ -24,6 +24,12 @@ export default function RecipesList({ recipes, title, tags }: RecipeListProps) {
   const [view, setView] = useState("list");
   const [filteredTags, setFilteredTags] = useState<string[]>([]);
 
+  const filteredRecipes = recipes.filter((recipe) => {
+    return filteredTags.every((tag) =>
+      recipe.tags?.map((tag) => tag.tag.name).includes(tag)
+    );
+  });
+
   return (
     <>
       {recipes.length > 0 && (
@@ -74,7 +80,7 @@ export default function RecipesList({ recipes, title, tags }: RecipeListProps) {
           </Group>
           {view === "list" && (
             <List listStyleType="none">
-              {recipes.map((recipe) => {
+              {filteredRecipes.map((recipe) => {
                 return (
                   <li
                     key={recipe.id}
@@ -97,7 +103,7 @@ export default function RecipesList({ recipes, title, tags }: RecipeListProps) {
           )}
           {view === "card" && (
             <Grid mt="md">
-              {recipes.map((recipe) => {
+              {filteredRecipes.map((recipe) => {
                 return (
                   <Grid.Col key={recipe.id} span={{ base: 12, md: 6, lg: 3 }}>
                     <RecipeCard recipe={recipe} />

@@ -32,7 +32,7 @@ export function updateNotificationAsSuccess(id: string, message: string) {
   notifications.update({
     id,
     loading: false,
-    autoClose: 1000, // show success for 1 second
+    autoClose: 2000, // show success for 2 seconds
     withCloseButton: true,
     closeButtonProps: { "aria-label": "Hide notification" },
     color: "teal",

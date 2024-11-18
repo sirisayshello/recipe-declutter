@@ -32,7 +32,7 @@ export const IngredientsAndInstructionsToggle = ({
   return (
     <>
       <Flex gap={"sm"} visibleFrom="sm">
-        <Paper miw={"30%"} withBorder radius={"xs"} p="md" shadow="xs">
+        <Paper bg={"white"} miw={"30%"} radius={"xs"} p="md" shadow="xs">
           <Text fw={700} size="xl" mb={"md"}>
             Ingredients
           </Text>
@@ -44,7 +44,7 @@ export const IngredientsAndInstructionsToggle = ({
             }
           />
         </Paper>
-        <Paper withBorder radius={"xs"} p="md" shadow="xs">
+        <Paper bg={"white"} radius={"xs"} p="md" shadow="xs">
           <Text fw={700} size="xl" mb={"md"}>
             Instructions
           </Text>

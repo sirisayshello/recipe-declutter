@@ -1,26 +1,14 @@
 import React from "react";
-import {
-  Fieldset,
-  Group,
-  Button,
-  TextInput,
-  Menu,
-  Flex,
-  ActionIcon,
-} from "@mantine/core";
+import { Fieldset, Group, Button, TextInput, Menu, Flex } from "@mantine/core";
 import {
   DragDropContext,
   Droppable,
   Draggable,
   DropResult,
 } from "@hello-pangea/dnd";
-import {
-  IconPlus,
-  IconDotsVertical,
-  IconMenu,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconPlus, IconDotsVertical, IconMenu } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
+import DeleteButtonDropdown from "./DeleteButtonDropdown";
 
 type EditIngredientsListProps = {
   form: UseFormReturnType<FormValues>;
@@ -77,27 +65,19 @@ export const EditIngredientsList = ({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                     >
-                      <Menu position="left" offset={-35}>
-                        <Menu.Dropdown>
-                          <Menu.Item>
-                            <ActionIcon
-                              mt={2}
-                              onClick={() =>
-                                deleteItem(
-                                  index,
-                                  ingredients,
-                                  setIngredients,
-                                  "ingredients"
-                                )
-                              }
-                              variant="transparent"
-                              size="sm"
-                              aria-label="Delete"
-                            >
-                              <IconTrash size={24} />
-                            </ActionIcon>
-                          </Menu.Item>
-                        </Menu.Dropdown>
+                      <Menu position="left" offset={-45}>
+                        <DeleteButtonDropdown
+                          onClickDelete={() =>
+                            deleteItem(
+                              index,
+                              ingredients,
+                              setIngredients,
+                              "ingredients"
+                            )
+                          }
+                          type="ingredient"
+                        />
+
                         <Flex {...provided.dragHandleProps}>
                           <IconMenu size="1.2rem" />
                         </Flex>

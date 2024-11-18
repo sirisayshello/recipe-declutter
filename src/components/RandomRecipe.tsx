@@ -17,9 +17,26 @@ export const RandomRecipe = ({ recipes }: RandomRecipeModalProps) => {
   const [randomRecipe, setRandomRecipe] = useState<UserRecipe>(
     getRandomRecipe()
   );
+  const friendlyPhrases = [
+    "Sounds pretty tasty, huh?",
+    "This could be your next favorite dish!",
+    "Feeling adventurous? Give it a try!",
+    "Looks like a treat for your taste buds!",
+    "Ready to whip this up in the kitchen?",
+    "Who’s hungry? This looks amazing!",
+    "You’ll be the chef of the hour with this one!",
+    "Can you almost smell it already?",
+    "Let’s turn this idea into reality!",
+    "Your next delicious adventure starts here!",
+  ];
+
+  const getRandomPhrase = () =>
+    friendlyPhrases[Math.floor(Math.random() * friendlyPhrases.length)];
+  const [randomPhrase, setRandomPhrase] = useState<string>(getRandomPhrase());
 
   const shuffle = () => {
     setRandomRecipe(getRandomRecipe());
+    setRandomPhrase(getRandomPhrase());
   };
 
   return (
@@ -42,9 +59,10 @@ export const RandomRecipe = ({ recipes }: RandomRecipeModalProps) => {
         }}
       >
         <Stack align="center">
-          <Text ta={"center"} size="xl" fw={700} mb={"lg"}>
+          <Text maw={"350px"} ta={"center"} size="xl" fw={700}>
             {randomRecipe.title}
           </Text>
+          <Text>{randomPhrase}</Text>
           <Group gap={"xs"}>
             <Button onClick={shuffle} variant="light" size="md">
               Give me another

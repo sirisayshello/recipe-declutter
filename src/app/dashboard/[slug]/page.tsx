@@ -1,12 +1,22 @@
 import prisma from "@/lib/db";
 import Link from "next/link";
-import { Anchor, Group, Pill, Stack, Title, Text, Box } from "@mantine/core";
+import {
+  Anchor,
+  Group,
+  Pill,
+  Stack,
+  Title,
+  Text,
+  Box,
+  Button,
+} from "@mantine/core";
 import { IconPencil } from "@tabler/icons-react";
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 import { getAuth } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import { ScreenAwakeToggle } from "@/components/ScreenAwakeToggle";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import EditRecipeButton from "@/components/EditRecipeButton";
 
 export default async function RecipePage({
   searchParams,
@@ -34,16 +44,15 @@ export default async function RecipePage({
   if (!recipe) {
     notFound();
   }
+
   return (
     <>
-      <Breadcrumbs />
-      <Group justify="flex-end" mt="md">
-        <Anchor
-          component={Link}
+      <Group justify="space-between" align="center" mb="xl">
+        <Breadcrumbs />
+
+        <EditRecipeButton
           href={`/dashboard/${recipe.slug}/edit?id=${recipe.id}`}
-        >
-          <IconPencil />
-        </Anchor>
+        />
       </Group>
 
       <Stack component="section">

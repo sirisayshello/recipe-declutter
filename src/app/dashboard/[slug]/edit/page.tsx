@@ -1,3 +1,5 @@
+
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { EditRecipeForm } from "@/components/EditRecipeForm";
 import { getAuth } from "@/lib/auth";
 import prisma from "@/lib/db";
@@ -32,6 +34,8 @@ export default async function EditRecipePage({
 
   return (
     <>
+      <Breadcrumbs />
+
       <EditRecipeForm recipe={convertedRecipe} userTags={userTags} />
     </>
   );

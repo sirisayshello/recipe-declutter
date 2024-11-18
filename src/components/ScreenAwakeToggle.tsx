@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Switch } from "@mantine/core";
+import { Group, Switch } from "@mantine/core";
 
-const ScreenAwakeToggle = () => {
+export const ScreenAwakeToggle = () => {
   const [isWakeLockActive, setIsWakeLockActive] = useState(false);
   let wakeLock: WakeLockSentinel | null = null;
 
@@ -36,12 +36,13 @@ const ScreenAwakeToggle = () => {
   }, [isWakeLockActive]);
 
   return (
-    <Switch
-      checked={isWakeLockActive}
-      onChange={() => setIsWakeLockActive((prev) => !prev)}
-      label="Keep screen awake"
-    />
+    <Group justify="flex-end" mb={"md"}>
+      <Switch
+        checked={isWakeLockActive}
+        onChange={() => setIsWakeLockActive((prev) => !prev)}
+        label="Keep screen awake"
+        labelPosition="left"
+      />
+    </Group>
   );
 };
-
-export default ScreenAwakeToggle;

@@ -35,7 +35,12 @@ export default function RecipesList({ recipes, title, tags }: RecipeListProps) {
             wrap="nowrap"
           >
             {title ? (
-              <Title order={2}>{title}</Title>
+              <Group>
+                <Title order={2}>{title}</Title>
+                <Anchor component={Link} href="/dashboard">
+                  View full collection
+                </Anchor>
+              </Group>
             ) : (
               <TagsFilter
                 allUserTags={tags || []}

@@ -5,10 +5,11 @@ import {
   ActionIcon,
   Button,
   Textarea,
-  Center,
   Card,
   Divider,
   TextInput,
+  Flex,
+  Menu,
 } from "@mantine/core";
 import {
   DragDropContext,
@@ -16,7 +17,12 @@ import {
   Draggable,
   DropResult,
 } from "@hello-pangea/dnd";
-import { IconPlus, IconTrash, IconGripVertical } from "@tabler/icons-react";
+import {
+  IconPlus,
+  IconTrash,
+  IconDotsVertical,
+  IconMenu,
+} from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
 
 type EditInstructionsListProps = {
@@ -61,7 +67,7 @@ export const EditInstructionsList = ({
   addItem,
 }: EditInstructionsListProps) => {
   return (
-    <Fieldset mb="md" legend="Instructions">
+    <Fieldset radius={"sm"} mb="md" legend="Instructions">
       {/* If sectioned instructions */}
       {hasSections ? (
         <>
@@ -99,42 +105,57 @@ export const EditInstructionsList = ({
                             <Group
                               wrap="nowrap"
                               mt="xs"
-                              align="flex-start"
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                             >
-                              <Center {...provided.dragHandleProps}>
-                                <IconGripVertical size="1.2rem" />
-                              </Center>
-                              <Textarea
-                                style={{ width: "100%" }}
-                                placeholder={`Step ${index + 1}`}
-                                minRows={3}
-                                value={instruction.text}
-                                onChange={(event) =>
-                                  handleTextChange(
-                                    index,
-                                    event.currentTarget.value,
-                                    "instructions",
-                                    sectionIndex
-                                  )
-                                }
-                              />
-                              <ActionIcon
-                                onClick={() =>
-                                  deleteItem(
-                                    index,
-                                    sectionedInstructions[sectionIndex].text,
-                                    setSectionedInstructions,
-                                    "instructions",
-                                    sectionIndex
-                                  )
-                                }
-                                variant="transparent"
-                                aria-label="Delete instruction"
-                              >
-                                <IconTrash />
-                              </ActionIcon>
+                              <Menu position="left" offset={-35}>
+                                <Menu.Dropdown>
+                                  <Menu.Item>
+                                    <ActionIcon
+                                      mt={2}
+                                      onClick={() =>
+                                        deleteItem(
+                                          index,
+                                          sectionedInstructions[sectionIndex]
+                                            .text,
+                                          setSectionedInstructions,
+                                          "instructions",
+                                          sectionIndex
+                                        )
+                                      }
+                                      variant="transparent"
+                                      aria-label="Delete instruction"
+                                    >
+                                      <IconTrash size={24} />
+                                    </ActionIcon>
+                                  </Menu.Item>
+                                </Menu.Dropdown>
+                                <Flex {...provided.dragHandleProps}>
+                                  <IconMenu size="1.2rem" />
+                                </Flex>
+                                <Textarea
+                                  radius={"md"}
+                                  rightSection={
+                                    <Menu.Target>
+                                      <IconDotsVertical
+                                        style={{ color: "lightgray" }}
+                                      />
+                                    </Menu.Target>
+                                  }
+                                  style={{ width: "100%" }}
+                                  placeholder={`Step ${index + 1}`}
+                                  minRows={3}
+                                  value={instruction.text}
+                                  onChange={(event) =>
+                                    handleTextChange(
+                                      index,
+                                      event.currentTarget.value,
+                                      "instructions",
+                                      sectionIndex
+                                    )
+                                  }
+                                />
+                              </Menu>
                             </Group>
                           )}
                         </Draggable>
@@ -181,40 +202,54 @@ export const EditInstructionsList = ({
                         <Group
                           wrap="nowrap"
                           mt="xs"
-                          align="flex-start"
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                         >
-                          <Center {...provided.dragHandleProps}>
-                            <IconGripVertical size="1.2rem" />
-                          </Center>
-                          <Textarea
-                            style={{ width: "100%" }}
-                            placeholder={`Step ${index + 1}`}
-                            minRows={3}
-                            value={instruction.text}
-                            onChange={(event) =>
-                              handleTextChange(
-                                index,
-                                event.currentTarget.value,
-                                "instructions"
-                              )
-                            }
-                          />
-                          <ActionIcon
-                            onClick={() =>
-                              deleteItem(
-                                index,
-                                instructions,
-                                setInstructions,
-                                "instructions"
-                              )
-                            }
-                            variant="transparent"
-                            aria-label="Delete instruction"
-                          >
-                            <IconTrash />
-                          </ActionIcon>
+                          <Menu position="left" offset={-35}>
+                            <Menu.Dropdown>
+                              <Menu.Item>
+                                <ActionIcon
+                                  mt={2}
+                                  onClick={() =>
+                                    deleteItem(
+                                      index,
+                                      instructions,
+                                      setInstructions,
+                                      "instructions"
+                                    )
+                                  }
+                                  variant="transparent"
+                                  aria-label="Delete instruction"
+                                >
+                                  <IconTrash size={24} />
+                                </ActionIcon>
+                              </Menu.Item>
+                            </Menu.Dropdown>
+                            <Flex {...provided.dragHandleProps}>
+                              <IconMenu size="1.2rem" />
+                            </Flex>
+                            <Textarea
+                              radius={"md"}
+                              rightSection={
+                                <Menu.Target>
+                                  <IconDotsVertical
+                                    style={{ color: "lightgray" }}
+                                  />
+                                </Menu.Target>
+                              }
+                              style={{ width: "100%" }}
+                              placeholder={`Step ${index + 1}`}
+                              minRows={3}
+                              value={instruction.text}
+                              onChange={(event) =>
+                                handleTextChange(
+                                  index,
+                                  event.currentTarget.value,
+                                  "instructions"
+                                )
+                              }
+                            />
+                          </Menu>
                         </Group>
                       )}
                     </Draggable>

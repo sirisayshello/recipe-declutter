@@ -1,9 +1,10 @@
-import { Box, Button, Group, Space, Text, Title } from "@mantine/core";
-import { getAuth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { getRecipesByUserId, getUserTags } from "@/lib/queries";
-import { IconArrowsShuffle2, IconCirclePlus } from "@tabler/icons-react";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import RecipesList from "@/components/RecipesList";
+import { getAuth } from "@/lib/auth";
+import { getRecipesByUserId, getUserTags } from "@/lib/queries";
+import { Box, Button, Group, Space, Text, Title } from "@mantine/core";
+import { IconArrowsShuffle2, IconCirclePlus } from "@tabler/icons-react";
+import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
   const session = await getAuth();
@@ -21,6 +22,7 @@ export default async function Dashboard() {
 
   return (
     <>
+      <Breadcrumbs />
       <Box mt="md" mb="md" component="section">
         <Title mb="xs">Your recipes</Title>
         <Text>

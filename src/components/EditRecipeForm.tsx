@@ -239,7 +239,9 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
         </Title>
 
         {/* General info */}
-        <Fieldset my="md" legend="Recipe information">
+
+        <Fieldset radius={"sm"} mb="md" legend="Recipe information">
+
           <TextInput
             label="Title"
             placeholder="Recipe title"
@@ -279,7 +281,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
           view={view}
         />
 
-        <Fieldset mb="md" legend="Recipe tags">
+        <Fieldset radius={"sm"} mb="md" legend="Tags">
           <TagsInput
             label="Recipe tags"
             placeholder="Press Enter to submit a tag"
@@ -288,6 +290,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
             data={allUserTags}
             onChange={setTags}
             mb="md"
+            styles={{ dropdown: { borderRadius: "24px" } }}
           />
         </Fieldset>
 

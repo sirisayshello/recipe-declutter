@@ -21,12 +21,12 @@ import { SaveRecipeModal } from "./SaveRecipeModal";
 import { Session } from "next-auth";
 import { IconChefHat } from "@tabler/icons-react";
 import Link from "next/link";
-import ScreenAwakeToggle from "./ScreenAwakeToggle";
 import {
   showLoadingNotification,
   updateNotificationAsError,
   updateNotificationAsSuccess,
 } from "@/lib/notifications";
+import { ScreenAwakeToggle } from "./ScreenAwakeToggle";
 
 type RecipeFormProps = {
   session?: Session | null;

@@ -1,13 +1,5 @@
 import { saveRecipe } from "@/lib/queries";
-import {
-  Button,
-  Group,
-  Loader,
-  Modal,
-  Stack,
-  TagsInput,
-  Text,
-} from "@mantine/core";
+import { Button, Loader, Modal, Stack, TagsInput, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Session } from "next-auth";
 import { useDisclosure } from "@mantine/hooks";
@@ -154,10 +146,10 @@ export const SaveRecipeModal = ({
               Want to save this recipe for later?
             </Text>
             <Text ta="center" size="sm" c="dimmed">
-              Create an account or log in to start building your personal recipe
+              Create an account to start building your personal recipe
               collection!
             </Text>
-            <Group>
+            <Stack gap={"xs"}>
               <Button
                 onClick={() => storeRecipeAndRedirect("/signup")}
                 variant="filled"
@@ -167,12 +159,12 @@ export const SaveRecipeModal = ({
               </Button>
               <Button
                 onClick={() => storeRecipeAndRedirect("/login")}
-                variant="outline"
-                size="md"
+                variant="transparent"
+                size="xs"
               >
-                Log in
+                Already have an account? Log in
               </Button>
-            </Group>
+            </Stack>
           </Stack>
         )}
       </Modal>

@@ -167,7 +167,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
           }}
         >
           <ActionIcon
-            hiddenFrom="sm"
+            hiddenFrom="xs"
             variant="filled"
             aria-label="Go back"
             component={Link}
@@ -180,8 +180,8 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
             />
           </ActionIcon>
           <Button
-            visibleFrom="sm"
-            size="md"
+            visibleFrom="xs"
+            size="sm"
             component={Link}
             href={`/dashboard/${recipe.slug}?id=${recipe.id}`}
             variant="light"
@@ -192,7 +192,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
 
           <Flex gap={"sm"}>
             <ActionIcon
-              hiddenFrom="sm"
+              hiddenFrom="xs"
               variant={"filled"}
               aria-label="Save changes"
               type="submit"
@@ -204,8 +204,8 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
               />
             </ActionIcon>
             <Button
-              visibleFrom="sm"
-              size="md"
+              visibleFrom="xs"
+              size="sm"
               type="submit"
               variant="filled"
               leftSection={<IconDeviceFloppy />}
@@ -214,7 +214,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
             </Button>
 
             <ActionIcon
-              hiddenFrom="sm"
+              hiddenFrom="xs"
               variant="filled"
               aria-label="Delete recipe"
               onClick={() => openDeleteModal()}
@@ -223,8 +223,8 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
               <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
             </ActionIcon>
             <Button
-              visibleFrom="sm"
-              size="md"
+              visibleFrom="xs"
+              size="sm"
               variant="light"
               leftSection={<IconTrash />}
               onClick={() => openDeleteModal()}
@@ -241,7 +241,6 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
         {/* General info */}
 
         <Fieldset radius={"sm"} mb="md" legend="Recipe information">
-
           <TextInput
             label="Title"
             placeholder="Recipe title"

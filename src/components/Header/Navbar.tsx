@@ -11,24 +11,14 @@ import {
   Group,
   useMantineTheme,
   Box,
-  Paper,
   Flex,
-  Menu,
-  rem,
-  UnstyledButton,
   Button,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { UserButton } from "../LogInButton";
-// import UserMenu from "./UserMenu";
-import {
-  IconLogout2,
-  IconNotebook,
-  IconSettings,
-  IconUser,
-} from "@tabler/icons-react";
+import { IconLogout2, IconNotebook, IconSettings } from "@tabler/icons-react";
 // import { usePathname } from "next/navigation";
 
 const userMenuItems = [

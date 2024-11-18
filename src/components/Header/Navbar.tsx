@@ -144,9 +144,10 @@ export const Navbar = () => {
                     component={Link}
                     href={item.href}
                     onClick={closeUserButton}
-                    style={{ color: "var(--mantine-color-text)" }}
+                    c="var(--mantine-color-text)"
+                    // style={{ color: "" }}
                   >
-                    <Flex
+                    <Group
                       align="center"
                       gap="sm"
                       p="md"
@@ -156,10 +157,9 @@ export const Navbar = () => {
                     >
                       {item.icon}
                       {item.name}
-                    </Flex>
+                    </Group>
                   </Anchor>
                 ))}
-
                 <Button
                   leftSection={<IconLogout2 size={24} />}
                   onClick={() => signOut({ callbackUrl: "/login" })}

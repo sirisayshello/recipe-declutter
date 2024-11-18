@@ -1,4 +1,4 @@
-import { Checkbox, List, Title } from "@mantine/core";
+import { Box, Checkbox, List, Text } from "@mantine/core";
 
 type RenderProps = {
   recipe: UserRecipe;
@@ -49,8 +49,10 @@ export default function RenderedInstructions({
         {recipe.instructions.map((section, sectionIndex) => {
           if (typeof section === "object" && "name" in section) {
             return (
-              <div key={sectionIndex}>
-                <Title order={3}>{section.name}</Title>
+              <Box key={sectionIndex} pb={"sm"}>
+                <Text pl={"md"} ml={"lg"} fw={"bold"}>
+                  {section.name}
+                </Text>
                 <List listStyleType="none" spacing="xs">
                   {section.text.map((instruction: string, index: number) => (
                     <List.Item
@@ -80,7 +82,7 @@ export default function RenderedInstructions({
                     </List.Item>
                   ))}
                 </List>
-              </div>
+              </Box>
             );
           }
         })}

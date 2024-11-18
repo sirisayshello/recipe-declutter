@@ -1,13 +1,16 @@
-import { Checkbox, List, Title } from "@mantine/core";
-import { useRef } from "react";
+import { Box, Checkbox, List, Text } from "@mantine/core";
 
 type RenderProps = {
   recipe: UserRecipe;
+  checkboxStates: boolean[];
+  onCheckboxChange: (index: number, checked: boolean) => void;
 };
 
-export default function RenderedInstructions({ recipe }: RenderProps) {
-  const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
-
+export default function RenderedInstructions({
+  recipe,
+  checkboxStates,
+  onCheckboxChange,
+}: RenderProps) {
   if (typeof recipe.instructions[0] === "string") {
     return (
       <List listStyleType="none" spacing="xs">
@@ -22,18 +25,14 @@ export default function RenderedInstructions({ recipe }: RenderProps) {
           >
             <Checkbox
               size="md"
-              onChange={(event) => {
-                if (labelRefs.current[index]) {
-                  labelRefs.current[index].style.opacity = event.currentTarget
-                    .checked
-                    ? "0.4"
-                    : "1";
-                }
-              }}
+              checked={checkboxStates[index]}
+              onChange={(event) =>
+                onCheckboxChange(index, event.currentTarget.checked)
+              }
               label={
                 <span
-                  ref={(el) => {
-                    labelRefs.current[index] = el;
+                  style={{
+                    opacity: checkboxStates[index] ? 0.5 : 1,
                   }}
                 >
                   {`${index + 1}. ${instruction}`}
@@ -50,9 +49,11 @@ export default function RenderedInstructions({ recipe }: RenderProps) {
         {recipe.instructions.map((section, sectionIndex) => {
           if (typeof section === "object" && "name" in section) {
             return (
-              <div key={sectionIndex}>
-                <Title order={3}>{section.name}</Title>
-                <List type="ordered" spacing="xs">
+              <Box key={sectionIndex} pb={"sm"}>
+                <Text pl={"md"} ml={"lg"} fw={"bold"}>
+                  {section.name}
+                </Text>
+                <List listStyleType="none" spacing="xs">
                   {section.text.map((instruction: string, index: number) => (
                     <List.Item
                       styles={{
@@ -62,11 +63,26 @@ export default function RenderedInstructions({ recipe }: RenderProps) {
                       }}
                       key={index}
                     >
-                      {instruction}
+                      <Checkbox
+                        size="md"
+                        checked={checkboxStates[index]}
+                        onChange={(event) =>
+                          onCheckboxChange(index, event.currentTarget.checked)
+                        }
+                        label={
+                          <span
+                            style={{
+                              opacity: checkboxStates[index] ? 0.5 : 1,
+                            }}
+                          >
+                            {`${index + 1}. ${instruction}`}
+                          </span>
+                        }
+                      />
                     </List.Item>
                   ))}
                 </List>
-              </div>
+              </Box>
             );
           }
         })}

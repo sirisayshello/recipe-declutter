@@ -24,7 +24,8 @@ export default async function Dashboard() {
       <Box mt="md" mb="md" component="section">
         <Title mb="xs">Your recipes</Title>
         <Text>
-          You have {numberOfRecipes} delicious recipes in your collection
+          You have {numberOfRecipes} delicious{" "}
+          {numberOfRecipes === 1 ? "recipe" : "recipes"} in your collection
         </Text>
         <Group mt="xl">
           <Button leftSection={<IconCirclePlus />}>Add New Recipe</Button>

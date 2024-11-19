@@ -242,17 +242,20 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
 
         <Fieldset radius={"sm"} mb="md" legend="Recipe information">
           <TextInput
+            radius={"md"}
             label="Title"
             placeholder="Recipe title"
             {...form.getInputProps("title")}
           />
           <TextInput
+            radius={"md"}
             mt={"md"}
             label="Total time"
             placeholder="Total time to cook"
             {...form.getInputProps("time")}
           />
           <TextInput
+            radius={"md"}
             mt={"md"}
             label="Servings"
             placeholder="Serving size"
@@ -282,6 +285,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
 
         <Fieldset radius={"sm"} mb="md" legend="Tags">
           <TagsInput
+            radius={"md"}
             label="Recipe tags"
             placeholder="Press Enter to submit a tag"
             value={tags}

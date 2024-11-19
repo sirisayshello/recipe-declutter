@@ -67,10 +67,11 @@ export const EditInstructionsList = ({
       {hasSections ? (
         <>
           {sectionedInstructions.map((section, sectionIndex) => (
-            <Card key={sectionIndex} withBorder mb="md">
+            <Card key={sectionIndex} shadow="sm" mb="md" radius={"md"}>
               <Group wrap="nowrap" align="flex-start">
                 <TextInput
-                  label="Section title"
+                  radius={"md"}
+                  description="Section title"
                   style={{ width: "100%" }}
                   placeholder="Section title"
                   {...form.getInputProps(`instructions.${sectionIndex}.name`)}

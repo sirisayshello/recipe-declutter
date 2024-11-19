@@ -85,6 +85,7 @@ export const EditIngredientsList = ({
                           <IconMenu size="1.2rem" />
                         </Flex>
                         <TextInput
+                          radius={"md"}
                           style={{ width: "100%" }}
                           placeholder={`Ingredient ${index + 1}`}
                           value={ingredient.text}

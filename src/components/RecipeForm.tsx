@@ -12,6 +12,7 @@ import {
   Alert,
   Stack,
   Transition,
+  Space,
 } from "@mantine/core";
 import { useField } from "@mantine/form";
 import { useNotifications } from "@mantine/notifications";
@@ -141,6 +142,8 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
     }
   }
 
+  const hasResult = recipe?.ingredients && recipe.instructions.length > 0;
+
   return (
     <Stack
       // Styling dependent on whether banner should be displayed on the bottom (space-between),
@@ -179,11 +182,15 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
 
       {/* recipe section */}
       {confetti && <Confetti />}
-      {recipe?.ingredients && recipe.instructions.length > 0 && (
-        <Box component="section" style={{ justifySelf: "flex-start" }}>
-
+      {!hasResult && <Space h={{ base: "4rem", xs: "8rem" }} />}
+      {hasResult && (
+        <Box
+          mb={"md"}
+          component="section"
+          style={{ justifySelf: "flex-start" }}
+        >
           <Divider my="md" />
-        
+
           <Box
             mb="md"
             display={{ base: "block", sm: "flex" }}
@@ -218,7 +225,7 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
 
       {/* sign up banner */}
       {/* Only shown when there is no scraped recipe, user is not logged in and no notifications are on screen */}
-      <Transition
+      {/* <Transition
         mounted={
           !recipe?.ingredients &&
           !session &&
@@ -245,7 +252,7 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
             </Alert>
           </Box>
         )}
-      </Transition>
+      </Transition> */}
     </Stack>
   );
 };

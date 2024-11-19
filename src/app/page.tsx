@@ -1,24 +1,26 @@
+import { CreateAccountBanner } from "@/components/CreateAccountBanner";
 import { RecipeForm } from "@/components/RecipeForm";
-import { Box, Flex, Space, Text, Title } from "@mantine/core";
+import { Box, Flex, Space, Stack, Text, Title } from "@mantine/core";
 
 export default function Home() {
   return (
-    <Flex direction="column" h="100%">
+    <Flex direction="column">
       <Box mt="xl">
-        <Flex gap="md" direction="column">
-          <Title fz={{ base: "54px", xs: "60px" }}>
+        <Stack gap="md">
+          <Title fz={{ base: "48px", xs: "60px" }}>
             Welcome to <br /> Recipe Declutter!
           </Title>
           <Text>
             Paste, click, and get the essentials — your ingredients and
             instructions at your fingertips.
           </Text>
-        </Flex>
+        </Stack>
         <Space h="xl" />
       </Box>
       <Box style={{ flex: 1 }}>
         <RecipeForm />
       </Box>
+      <CreateAccountBanner />
       <Space h="xl" />
     </Flex>
   );

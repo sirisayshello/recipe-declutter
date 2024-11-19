@@ -181,11 +181,22 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
       {confetti && <Confetti />}
       {recipe?.ingredients && recipe.instructions.length > 0 && (
         <Box component="section" style={{ justifySelf: "flex-start" }}>
+
           <Divider my="md" />
-          <Title order={2} ta="center" pt="xl" ref={titleRef}>
-            {recipe.title}
-          </Title>
-          <ScreenAwakeToggle />
+        
+          <Box
+            mb="md"
+            display={{ base: "block", sm: "flex" }}
+            style={{ justifyContent: "space-between", alignItems: "flex-end" }}
+          >
+            <Title order={2} ta="center" pt="xl" ref={titleRef}>
+              {recipe.title}
+            </Title>
+
+            {/* ScreenAwakeToggle rendered inside IngredientsAndInstructionsToggle on small screens */}
+            <ScreenAwakeToggle labelPosition="left" visibleFrom="sm" />
+          </Box>
+
           <IngredientsAndInstructionsToggle recipe={recipe} />
 
           <Button mt="xl" mb="xl" onClick={() => setShouldOpenModal(true)}>

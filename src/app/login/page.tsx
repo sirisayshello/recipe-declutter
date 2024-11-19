@@ -4,8 +4,8 @@ import Link from "next/link";
 
 export default function Login() {
   return (
-    <Box py="4rem">
-      <Title ta="center" mb="xl">
+    <Box py="2rem">
+      <Title ta="center" mb="xl" fz={"h2"}>
         Welcome back!
       </Title>
 
@@ -15,7 +15,7 @@ export default function Login() {
         Don&apos;t have an account?{" "}
         <span>
           <Anchor component={Link} href="/signup" fw="bold">
-            Create one
+            Create one here
           </Anchor>
         </span>
       </Text>

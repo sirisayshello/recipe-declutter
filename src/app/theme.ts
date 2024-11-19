@@ -58,6 +58,12 @@ export const theme = createTheme({
 
   headings: {
     fontFamily: `${poppins.style.fontFamily}, sans-serif`,
+    sizes: {
+      h1: {
+        fontSize: "48px",
+      },
+      h2: { fontSize: "24px" },
+    },
   },
 
   other: {

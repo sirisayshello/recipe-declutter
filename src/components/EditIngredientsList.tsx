@@ -78,7 +78,10 @@ export const EditIngredientsList = ({
                           type="ingredient"
                         />
 
-                        <Flex {...provided.dragHandleProps}>
+                        <Flex
+                          {...provided.dragHandleProps}
+                          style={{ cursor: "grab" }}
+                        >
                           <IconMenu size="1.2rem" />
                         </Flex>
                         <TextInput

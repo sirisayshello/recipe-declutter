@@ -155,9 +155,8 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
         onSubmit={(e) => handleSubmit(e)}
         component="form"
         gap="md"
-        justify="center"
-        align="center"
         direction={{ base: "column", xs: "row" }}
+        maw={{ base: "100%", xs: "645px" }}
       >
         <TextInput
           {...field.getInputProps()}
@@ -182,8 +181,9 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
       {confetti && <Confetti />}
       {recipe?.ingredients && recipe.instructions.length > 0 && (
         <Box component="section" style={{ justifySelf: "flex-start" }}>
-          <Divider variant="dotted" size="md" />
 
+          <Divider my="md" />
+        
           <Box
             mb="md"
             display={{ base: "block", sm: "flex" }}
@@ -199,8 +199,8 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
 
           <IngredientsAndInstructionsToggle recipe={recipe} />
 
-          <Button mt="md" mb="xl" onClick={() => setShouldOpenModal(true)}>
-            Save This Recipe
+          <Button mt="xl" mb="xl" onClick={() => setShouldOpenModal(true)}>
+            Save this recipe
           </Button>
 
           {shouldOpenModal && (
@@ -212,7 +212,7 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
               onClose={() => setShouldOpenModal(false)}
             />
           )}
-          <Divider variant="dotted" size="md" />
+          <Divider my="md" />
         </Box>
       )}
 

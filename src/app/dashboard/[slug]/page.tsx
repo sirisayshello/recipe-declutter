@@ -1,12 +1,22 @@
 import prisma from "@/lib/db";
 import Link from "next/link";
-import { Anchor, Group, Pill, Stack, Title, Text, Box } from "@mantine/core";
-import { IconPencil } from "@tabler/icons-react";
+import {
+  Anchor,
+  Group,
+  Pill,
+  Stack,
+  Title,
+  Text,
+  Box,
+  Chip,
+} from "@mantine/core";
+import { IconHash, IconPencil, IconToolsKitchen2 } from "@tabler/icons-react";
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 import { getAuth } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import { ScreenAwakeToggle } from "@/components/ScreenAwakeToggle";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { useState } from "react";
 
 export default async function RecipePage({
   searchParams,
@@ -67,9 +77,17 @@ export default async function RecipePage({
 
       <Group pb={"xl"}>
         {recipe.tags?.map((tagRelation, index) => (
-          <Pill key={index} size="md">
+          <Chip
+            key={index}
+            defaultChecked
+            color="dustyRed"
+            variant="light"
+            size="sm"
+            checked={true}
+            icon={<IconHash size={14} />}
+          >
             {tagRelation.tag.name}
-          </Pill>
+          </Chip>
         ))}
       </Group>
     </>

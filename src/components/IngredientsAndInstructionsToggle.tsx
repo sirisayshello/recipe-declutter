@@ -33,7 +33,9 @@ export const IngredientsAndInstructionsToggle = ({
       return instructions.reduce(
         (total, section) =>
           total +
-          (typeof section === "object" && section.text ? section.text.length : 0),
+          (typeof section === "object" && section.text
+            ? section.text.length
+            : 0),
         0
       );
     }
@@ -60,7 +62,13 @@ export const IngredientsAndInstructionsToggle = ({
   return (
     <>
       <Flex gap={"sm"} visibleFrom="sm">
-        <Paper bg={"white"} miw={"30%"} radius={"xs"} p="md" shadow="xs">
+        <Paper
+          bg={"var(--mantine-color-default)"}
+          miw={"30%"}
+          radius={"xs"}
+          p="md"
+          shadow="xs"
+        >
           <Text fw={700} size="xl" mb={"md"}>
             Ingredients
           </Text>
@@ -72,7 +80,12 @@ export const IngredientsAndInstructionsToggle = ({
             }
           />
         </Paper>
-        <Paper bg={"white"} radius={"xs"} p="md" shadow="xs">
+        <Paper
+          bg={"var(--mantine-color-default)"}
+          radius={"xs"}
+          p="md"
+          shadow="xs"
+        >
           <Text fw={700} size="xl" mb={"md"}>
             Instructions
           </Text>

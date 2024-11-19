@@ -25,7 +25,7 @@ export default async function Welcome() {
   return (
     <Flex direction="column" h="100%">
       <Box mt="md">
-        <Flex gap="md" justify="center" align="center" direction="column">
+        <Flex gap="md" direction="column">
           <WelcomeMessage userName={userName ?? "you"} />
         </Flex>
         <Space h="xl" />

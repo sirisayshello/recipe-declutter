@@ -1,16 +1,6 @@
 import prisma from "@/lib/db";
 import Link from "next/link";
-import {
-  Anchor,
-  Group,
-  Pill,
-  Stack,
-  Title,
-  Text,
-  Box,
-  Button,
-} from "@mantine/core";
-import { IconPencil } from "@tabler/icons-react";
+import { Anchor, Group, Pill, Stack, Title, Text, Box } from "@mantine/core";
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 import { getAuth } from "@/lib/auth";
 import { notFound } from "next/navigation";
@@ -56,20 +46,36 @@ export default async function RecipePage({
       </Group>
 
       <Stack component="section">
-        <Title ta="center">{recipe.title}</Title>
-        <Group justify="center" mb="md" mt="md">
-          <Text size="xs">
-            Author:{" "}
-            <Anchor component={Link} href={recipe.url}>
-              {recipe.author}
-            </Anchor>
-          </Text>
-          <Text size="xs">Total time: {recipe.time}</Text>
-          <Text size="xs">Servings: {recipe.yield}</Text>
+        <Title
+          ta="center"
+          mb={{ base: "none", sm: "xl" }}
+          fz={{ base: "h1", sm: "3rem" }}
+        >
+          {recipe.title}
+        </Title>
+
+        <Group
+          justify="space-between"
+          align="flex-end"
+          display={{ base: "block", sm: "flex" }}
+          mb="md"
+        >
+          <Group justify="center">
+            <Text size="xs">
+              Author:{" "}
+              <Anchor component={Link} href={recipe.url}>
+                {recipe.author}
+              </Anchor>
+            </Text>
+            <Text size="xs">Total time: {recipe.time}</Text>
+            <Text size="xs">Servings: {recipe.yield}</Text>
+          </Group>
+
+          {/* The ScreenAwakeToggle is rendered inside IngredientsAndInstructionsToggle on small screens */}
+          <ScreenAwakeToggle visibleFrom="sm" labelPosition="left" />
         </Group>
       </Stack>
 
-      <ScreenAwakeToggle />
       <Box component="section" pb={"xl"}>
         <IngredientsAndInstructionsToggle recipe={convertedRecipe} />
       </Box>

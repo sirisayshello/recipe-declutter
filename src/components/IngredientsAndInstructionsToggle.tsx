@@ -1,8 +1,20 @@
 "use client";
-import { Button, Flex, Group, Paper, Stack, Text } from "@mantine/core";
+import {
+  Box,
+  Center,
+  Divider,
+  Flex,
+  Paper,
+  rem,
+  SegmentedControl,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { useState } from "react";
 import RenderedInstructions from "./RenderedInstructions";
 import RenderedIngredients from "./RenderedIngredients";
+import { ScreenAwakeToggle } from "./ScreenAwakeToggle";
+import { IconLadle, IconMushroom } from "@tabler/icons-react";
 
 type IngAndInstToggleProps = {
   recipe: UserRecipe;
@@ -58,24 +70,56 @@ export const IngredientsAndInstructionsToggle = ({
         </Paper>
       </Flex>
 
-      <Stack hiddenFrom="sm">
-        <Group justify="space-between" grow mb="md">
-          <Button
-            variant={view === "ingredients" ? "filled" : "light"}
-            size="md"
-            onClick={() => setView("ingredients")}
-          >
-            Ingredients
-          </Button>
+      <Stack hiddenFrom="sm" mt={"xl"}>
+        {/* The ScreenAwakeToggle is rendered in src/app/dashboard/[slug]/page.tsx on larger screens */}
+        <ScreenAwakeToggle labelPosition="right" />
 
-          <Button
-            variant={view === "instructions" ? "filled" : "light"}
-            size="md"
-            onClick={() => setView("instructions")}
-          >
-            Instructions
-          </Button>
-        </Group>
+        <Box
+          mt={"-2.75rem"}
+          ml="auto"
+          mr={0}
+          pos="sticky"
+          top={"1rem"}
+          style={{
+            zIndex: 100,
+          }}
+        >
+          <SegmentedControl
+            style={{ border: "1px solid var(--mantine-color-default-border)" }}
+            color="var(--mantine-primary-color-filled)"
+            onChange={setView}
+            data={[
+              {
+                value: "ingredients",
+                label: (
+                  <>
+                    <Center style={{ gap: 10 }}>
+                      <IconMushroom
+                        style={{ width: rem(16), height: rem(16) }}
+                      />
+                      <Text size="sm" visibleFrom="xs">
+                        Ingredients
+                      </Text>
+                    </Center>
+                  </>
+                ),
+              },
+              {
+                value: "instructions",
+                label: (
+                  <Center style={{ gap: 10 }}>
+                    <IconLadle style={{ width: rem(16), height: rem(16) }} />
+                    <Text size="sm" visibleFrom="xs">
+                      Instructions
+                    </Text>
+                  </Center>
+                ),
+              },
+            ]}
+          />
+        </Box>
+
+        <Divider />
 
         {view === "ingredients" && (
           <RenderedIngredients

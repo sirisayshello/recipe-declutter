@@ -76,7 +76,7 @@ export const Navbar = () => {
           >
             <Group>
               <Drawer.CloseButton m={0} />
-              <Text size="xl" fw={700}>
+              <Text size="xl" fw={700} ff={theme.other.fontFamily}>
                 Recipe Declutter
               </Text>
             </Group>

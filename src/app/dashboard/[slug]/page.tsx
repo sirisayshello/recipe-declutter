@@ -3,20 +3,19 @@ import Link from "next/link";
 import {
   Anchor,
   Group,
-  Pill,
+  // Pill,
   Stack,
   Title,
   Text,
   Box,
   Chip,
 } from "@mantine/core";
-import { IconHash, IconPencil, IconToolsKitchen2 } from "@tabler/icons-react";
+import { IconHash, IconPencil } from "@tabler/icons-react";
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 import { getAuth } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import { ScreenAwakeToggle } from "@/components/ScreenAwakeToggle";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { useState } from "react";
 
 export default async function RecipePage({
   searchParams,

@@ -293,7 +293,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
             data={allUserTags}
             onChange={setTags}
             mb="md"
-            styles={{ dropdown: { borderRadius: "24px" } }}
+            comboboxProps={{ dropdownPadding: 8 }}
           />
         </Fieldset>
 

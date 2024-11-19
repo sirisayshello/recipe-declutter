@@ -167,7 +167,6 @@ export const Navbar = () => {
                   leftSection={<IconLogout2 size={24} />}
                   onClick={() => signOut({ callbackUrl: "/login" })}
                   p="md"
-                  radius={0}
                   size="xl"
                   fz="md"
                   fw="400"

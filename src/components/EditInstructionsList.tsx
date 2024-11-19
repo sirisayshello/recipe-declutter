@@ -62,7 +62,7 @@ export const EditInstructionsList = ({
   addItem,
 }: EditInstructionsListProps) => {
   return (
-    <Fieldset radius={"sm"} mb="md" legend="Instructions">
+    <Fieldset mb="md" legend="Instructions">
       {/* If sectioned instructions */}
       {hasSections ? (
         <>
@@ -125,7 +125,6 @@ export const EditInstructionsList = ({
                                 </Flex>
 
                                 <Textarea
-                                  radius={"md"}
                                   autosize
                                   minRows={1}
                                   rightSection={
@@ -217,7 +216,6 @@ export const EditInstructionsList = ({
                               <IconMenu size="1.2rem" />
                             </Flex>
                             <Textarea
-                              radius={"md"}
                               autosize
                               minRows={1}
                               rightSection={

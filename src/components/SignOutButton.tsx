@@ -9,7 +9,7 @@ export default function SignOutButton() {
   };
 
   return (
-    <Button onClick={onSignOut} variant="filled" size="md" radius="xl">
+    <Button onClick={onSignOut} variant="filled" size="md">
       Sign out
     </Button>
   );

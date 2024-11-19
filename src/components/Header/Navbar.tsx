@@ -52,6 +52,11 @@ export const Navbar = () => {
     },
   };
 
+  const displayName = () => {
+    const name = session?.user?.name ?? "U";
+    return name.length < 8 ? name : name.charAt(0).toUpperCase();
+  };
+
   return (
     <Box component="header" bg={theme.primaryColor} h={"56px"}>
       <Container {...containerProps} size="md">
@@ -119,7 +124,7 @@ export const Navbar = () => {
           <>
             <UserButton
               isLoggedIn={true}
-              displayName={session.user.name?.charAt(0).toUpperCase() || "U"}
+              displayName={displayName()}
               onClick={openUserButton}
             />
             <Drawer

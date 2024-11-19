@@ -13,8 +13,24 @@ export const IngredientsAndInstructionsToggle = ({
 }: IngAndInstToggleProps) => {
   const [view, setView] = useState("ingredients");
 
+  // If instructions are sectioned, the total instructions count is calculated.
+  const getTotalInstructionsCount = (instructions: Instructions) => {
+    if (typeof instructions[0] === "string") {
+      return instructions.length;
+    } else if (typeof recipe.instructions[0] === "object") {
+      return instructions.reduce(
+        (total, section) =>
+          total +
+          (typeof section === "object" && section.text ? section.text.length : 0),
+        0
+      );
+    }
+  };
+
   const [checkboxStates, setCheckboxStates] = useState({
-    instructions: Array(recipe.instructions.length).fill(false),
+    instructions: Array(getTotalInstructionsCount(recipe.instructions)).fill(
+      false
+    ),
     ingredients: Array(recipe.ingredients.length).fill(false),
   });
 

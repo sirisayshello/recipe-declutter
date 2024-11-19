@@ -1,6 +1,6 @@
 import prisma from "@/lib/db";
 import Link from "next/link";
-import { Anchor, Group, Pill, Stack, Title, Text, Box } from "@mantine/core";
+import { Anchor, Group, Stack, Title, Text, Box, Badge } from "@mantine/core";
 import { IconPencil } from "@tabler/icons-react";
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 import { getAuth } from "@/lib/auth";
@@ -67,9 +67,18 @@ export default async function RecipePage({
 
       <Group pb={"xl"}>
         {recipe.tags?.map((tagRelation, index) => (
-          <Pill key={index} size="md">
+          <Badge
+            key={index}
+            color="dustyRed"
+            variant="light"
+            size="lg"
+            style={{
+              textTransform: "none",
+              fontWeight: 600,
+            }}
+          >
             {tagRelation.tag.name}
-          </Pill>
+          </Badge>
         ))}
       </Group>
     </>

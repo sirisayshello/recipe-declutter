@@ -8,6 +8,7 @@ import SessionWrapper from "@/components/SessionWrapper";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import { ModalsProvider } from "@mantine/modals";
+import "./index.css";
 
 export const metadata: Metadata = {
   title: "Recipe Declutter",

@@ -3,14 +3,17 @@ import { ColorSchemeScript, Container, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import { theme } from "./theme";
+import Favicon from "./favicon.svg";
 import SessionWrapper from "@/components/SessionWrapper";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import { ModalsProvider } from "@mantine/modals";
+import "./index.css";
 
 export const metadata: Metadata = {
   title: "Recipe Declutter",
   description: "Declutter your favorite recipes here!",
+  icons: [{ rel: "icon", url: Favicon.src }],
 };
 
 export default function RootLayout({

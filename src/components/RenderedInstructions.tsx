@@ -11,6 +11,7 @@ export default function RenderedInstructions({
   checkboxStates,
   onCheckboxChange,
 }: RenderProps) {
+  let sectionInstructionIndex = 0;
   if (typeof recipe.instructions[0] === "string") {
     return (
       <List listStyleType="none" spacing="xs">
@@ -54,33 +55,50 @@ export default function RenderedInstructions({
                   {section.name}
                 </Text>
                 <List listStyleType="none" spacing="xs">
-                  {section.text.map((instruction: string, index: number) => (
-                    <List.Item
-                      styles={{
-                        itemWrapper: {
-                          display: "inline",
-                        },
-                      }}
-                      key={index}
-                    >
-                      <Checkbox
-                        size="md"
-                        checked={checkboxStates[index]}
-                        onChange={(event) =>
-                          onCheckboxChange(index, event.currentTarget.checked)
-                        }
-                        label={
-                          <span
-                            style={{
-                              opacity: checkboxStates[index] ? 0.5 : 1,
-                            }}
-                          >
-                            {`${index + 1}. ${instruction}`}
-                          </span>
-                        }
-                      />
-                    </List.Item>
-                  ))}
+                  {section.text.map((instruction: string, index: number) => {
+                    const currentSectionInstructionIndex =
+                      sectionInstructionIndex;
+                    sectionInstructionIndex++;
+
+                    return (
+                      <List.Item
+                        styles={{
+                          itemWrapper: {
+                            display: "inline",
+                          },
+                        }}
+                        key={index}
+                      >
+                        <Checkbox
+                          size="md"
+                          checked={
+                            checkboxStates[currentSectionInstructionIndex]
+                          }
+                          onChange={(event) =>
+                            onCheckboxChange(
+                              currentSectionInstructionIndex,
+                              event.currentTarget.checked
+                            )
+                          }
+                          label={
+                            <span
+                              style={{
+                                opacity: checkboxStates[
+                                  currentSectionInstructionIndex
+                                ]
+                                  ? 0.5
+                                  : 1,
+                              }}
+                            >
+                              {`${
+                                currentSectionInstructionIndex + 1
+                              }. ${instruction}`}
+                            </span>
+                          }
+                        />
+                      </List.Item>
+                    );
+                  })}
                 </List>
               </Box>
             );

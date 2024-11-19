@@ -117,7 +117,10 @@ export const EditInstructionsList = ({
                                   type="instruction"
                                 />
 
-                                <Flex {...provided.dragHandleProps}>
+                                <Flex
+                                  {...provided.dragHandleProps}
+                                  style={{ cursor: "grab" }}
+                                >
                                   <IconMenu size="1.2rem" />
                                 </Flex>
 
@@ -207,7 +210,10 @@ export const EditInstructionsList = ({
                               type="instruction"
                             />
 
-                            <Flex {...provided.dragHandleProps}>
+                            <Flex
+                              {...provided.dragHandleProps}
+                              style={{ cursor: "grab" }}
+                            >
                               <IconMenu size="1.2rem" />
                             </Flex>
                             <Textarea

@@ -63,7 +63,7 @@ export default async function RecipePage({
           <Group justify="center">
             <Text size="xs">
               Author:{" "}
-              <Anchor component={Link} href={recipe.url}>
+              <Anchor component={Link} href={recipe.url} target="_blank">
                 {recipe.author}
               </Anchor>
             </Text>
@@ -73,6 +73,7 @@ export default async function RecipePage({
 
           {/* The ScreenAwakeToggle is rendered inside IngredientsAndInstructionsToggle on small screens */}
           <ScreenAwakeToggle visibleFrom="sm" labelPosition="left" />
+
         </Group>
       </Stack>
 

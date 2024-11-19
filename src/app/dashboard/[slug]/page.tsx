@@ -69,7 +69,6 @@ export default async function RecipePage({
         {recipe.tags?.map((tagRelation, index) => (
           <Badge
             key={index}
-            defaultChecked
             color="dustyRed"
             variant="light"
             size="lg"

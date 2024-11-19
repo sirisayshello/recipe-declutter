@@ -1,4 +1,12 @@
-import { Title, Text, Stack, Anchor, Center, List } from "@mantine/core";
+import {
+  Title,
+  Text,
+  Stack,
+  Anchor,
+  Center,
+  List,
+  Button,
+} from "@mantine/core";
 import Link from "next/link";
 
 export default function About() {
@@ -83,6 +91,15 @@ export default function About() {
             building it (bugs and all).
           </Text>
           <Text>Now, go declutter a recipe and get cooking!</Text>
+          <Button
+            component={Link}
+            href="/"
+            size="md"
+            mt={"md"}
+            style={{ width: "min-content", alignSelf: "center" }}
+          >
+            I want to declutter!
+          </Button>
         </Stack>
       </Stack>
     </Center>

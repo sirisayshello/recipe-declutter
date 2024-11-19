@@ -62,7 +62,12 @@ export const IngredientsAndInstructionsToggle = ({
   return (
     <>
       <Flex gap={"sm"} visibleFrom="sm">
-        <Paper bg={"white"} miw={"30%"} p="md" shadow="xs">
+        <Paper
+          bg={"var(--mantine-color-default)"}
+          miw={"30%"}
+          p="md"
+          shadow="xs"
+        >
           <Text fw={700} size="xl" mb={"md"}>
             Ingredients
           </Text>
@@ -74,7 +79,12 @@ export const IngredientsAndInstructionsToggle = ({
             }
           />
         </Paper>
-        <Paper bg={"white"} p="md" shadow="xs">
+
+        <Paper
+          bg={"var(--mantine-color-default)"}
+          p="md"
+          shadow="xs"
+        >
           <Text fw={700} size="xl" mb={"md"}>
             Instructions
           </Text>

@@ -26,7 +26,6 @@ import {
   updateNotificationAsError,
   updateNotificationAsSuccess,
 } from "@/lib/notifications";
-import { ScreenAwakeToggle } from "./ScreenAwakeToggle";
 
 type RecipeFormProps = {
   session?: Session | null;
@@ -174,7 +173,6 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
           <Title order={2} ta="center" pt="xl" ref={titleRef}>
             {recipe.title}
           </Title>
-          <ScreenAwakeToggle />
           <IngredientsAndInstructionsToggle recipe={recipe} />
 
           <Button mt="md" mb="xl" onClick={() => setShouldOpenModal(true)}>

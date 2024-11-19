@@ -46,8 +46,7 @@ export const theme = createTheme({
     ],
   },
   primaryColor: "dustyRed",
-  primaryShade: 7,
-  defaultRadius: "xl",
+  defaultRadius: "lg",
 
   shadows: {
     md: "1px 1px 3px rgba(0, 0, 0, .25)",

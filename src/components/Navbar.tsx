@@ -16,7 +16,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { UserButton } from "../LogInButton";
+import { UserButton } from "./LogInButton";
 import { IconLogout2, IconNotebook, IconSettings } from "@tabler/icons-react";
 // import { usePathname } from "next/navigation";
 
@@ -61,59 +61,66 @@ export const Navbar = () => {
     <Box component="header" bg={theme.primaryColor} h={"56px"}>
       <Container {...containerProps} size="md">
         {/* Burger menu */}
-        <Burger
-          hiddenFrom="xs"
-          color="cream.0"
-          opened={burgerOpened}
-          onClick={openBurger}
-          size="md"
-        />
-        <Drawer
-          opened={burgerOpened}
-          onClose={closeBurger}
-          withCloseButton={false}
-        >
-          <Group>
-            <Drawer.CloseButton m={0} />
-            <Text size="xl" fw={700}>
+        <Group>
+          <Burger
+            hiddenFrom="xs"
+            color="cream.0"
+            opened={burgerOpened}
+            onClick={openBurger}
+            size="md"
+          />
+          <Drawer
+            opened={burgerOpened}
+            onClose={closeBurger}
+            withCloseButton={false}
+          >
+            <Group>
+              <Drawer.CloseButton m={0} />
+              <Text size="xl" fw={700}>
+                Recipe Declutter
+              </Text>
+            </Group>
+            <Divider mt={16} mb={16} />
+            <Stack gap={24}>
+              <Anchor component={Link} href="/about">
+                About
+              </Anchor>
+              <Anchor
+                component={Link}
+                href="https://github.com/sirisayshello/recipe-declutter"
+                target="_blank"
+              >
+                Github
+              </Anchor>
+            </Stack>
+          </Drawer>
+          {/* Logo */}
+          <Anchor component={Link} href="/" underline="never">
+            <Text
+              c="cream.0"
+              fw={700}
+              ff={theme.other.fontFamily}
+              fz={theme.other.fontSizes}
+              pr={"lg"}
+            >
               Recipe Declutter
             </Text>
-          </Group>
-          <Divider mt={16} mb={16} />
-          <Stack gap={24}>
-            <Anchor component={Link} href="/about">
+          </Anchor>
+          {/* Burger menu content if big screen */}
+          <Group visibleFrom="xs">
+            <Anchor c="cream.0" component={Link} href="/about">
               About
             </Anchor>
             <Anchor
+              c="cream.0"
               component={Link}
               href="https://github.com/sirisayshello/recipe-declutter"
               target="_blank"
             >
               Github
             </Anchor>
-          </Stack>
-        </Drawer>
-        {/* Burger menu content if big screen */}
-        <Group visibleFrom="xs">
-          <Anchor c="cream.0" component={Link} href="/about">
-            About
-          </Anchor>
-          <Anchor
-            c="cream.0"
-            component={Link}
-            href="https://github.com/sirisayshello/recipe-declutter"
-            target="_blank"
-          >
-            Github
-          </Anchor>
+          </Group>
         </Group>
-
-        {/* Logo */}
-        <Anchor component={Link} href="/" underline="never">
-          <Text c="cream.0" fw={500}>
-            Recipe Declutter
-          </Text>
-        </Anchor>
 
         {/* User menu (no menu if logged out, only login button) */}
         {!session ? (

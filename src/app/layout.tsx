@@ -1,4 +1,4 @@
-import { Navbar } from "../components/Header/Navbar";
+import { Navbar } from "../components/Navbar";
 import { ColorSchemeScript, Container, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import type { Metadata } from "next";

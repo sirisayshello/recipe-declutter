@@ -1,4 +1,3 @@
-import { CreateAccountBanner } from "@/components/CreateAccountBanner";
 import { RecipeForm } from "@/components/RecipeForm";
 import { Box, Flex, Space, Stack, Text, Title } from "@mantine/core";
 

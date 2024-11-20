@@ -16,11 +16,11 @@ export default function About() {
         <Stack mt={"xl"}>
           <Title ta="center">About us</Title>
           <Text>
-            Welcome to <strong>Recipe Declutter</strong>—the ultimate solution
-            for home cooks who’ve had enough of endless scrolling, pop-up ads,
-            and life stories before getting to the actual recipe. We’re here to
-            bring simplicity back to your kitchen with clean, distraction-free
-            recipes that are easy to save, edit, and organize.
+            Welcome to <strong>Savorly</strong>—the ultimate solution for home
+            cooks who’ve had enough of endless scrolling, pop-up ads, and life
+            stories before getting to the actual recipe. We’re here to bring
+            simplicity back to your kitchen with clean, distraction-free recipes
+            that are easy to save, edit, and organize.
           </Text>
           <Text>
             Our mission is to help you spend less time scrolling and more time
@@ -29,7 +29,7 @@ export default function About() {
         </Stack>
         <Stack mt={"xl"}>
           <Title order={2} ta="center">
-            Why we built Recipe Declutter
+            Why we built Savorly
           </Title>
           <Text>
             This site isn’t just a passion project; it’s our exam project for
@@ -85,10 +85,10 @@ export default function About() {
           </Title>
           <Text>
             Thank you for supporting a student project with big dreams! By using
-            Recipe Declutter, you’re not just getting a better cooking
-            experience—you’re helping launch the careers of three web developers
-            into the wild. We hope you love using the site as much as we loved
-            building it (bugs and all).
+            Savorly, you’re not just getting a better cooking experience—you’re
+            helping launch the careers of three web developers into the wild. We
+            hope you love using the site as much as we loved building it (bugs
+            and all).
           </Text>
           <Text>Now, go declutter a recipe and get cooking!</Text>
           <Button

@@ -11,8 +11,8 @@ import { ModalsProvider } from "@mantine/modals";
 import "./index.css";
 
 export const metadata: Metadata = {
-  title: "Recipe Declutter",
-  description: "Declutter your favorite recipes here!",
+  title: "Savorly",
+  description: "Declutter and save your favorite recipes here!",
   icons: [{ rel: "icon", url: Favicon.src }],
 };
 

@@ -126,6 +126,7 @@ export default function SignUpForm() {
 
   return (
     <Paper
+      bg={"var(--mantine-color-default)"}
       p={{ base: "md", sm: "xl" }}
       withBorder
       shadow="md"

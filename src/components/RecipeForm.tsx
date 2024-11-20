@@ -9,9 +9,9 @@ import {
   Box,
   Title,
   Divider,
-  Alert,
   Stack,
   Transition,
+  Space,
 } from "@mantine/core";
 import { useField } from "@mantine/form";
 import { useNotifications } from "@mantine/notifications";
@@ -19,8 +19,6 @@ import { useNotifications } from "@mantine/notifications";
 import { IngredientsAndInstructionsToggle } from "./IngredientsAndInstructionsToggle";
 import { SaveRecipeModal } from "./SaveRecipeModal";
 import { Session } from "next-auth";
-import { IconChefHat } from "@tabler/icons-react";
-import Link from "next/link";
 import {
   showLoadingNotification,
   updateNotificationAsError,
@@ -28,6 +26,7 @@ import {
 } from "@/lib/notifications";
 import { ScreenAwakeToggle } from "./ScreenAwakeToggle";
 import { Confetti } from "./Confetti";
+import { CreateAccountBanner } from "./CreateAccountBanner";
 
 type RecipeFormProps = {
   session?: Session | null;
@@ -141,6 +140,8 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
     }
   }
 
+  const hasResult = recipe?.ingredients && recipe.instructions.length > 0;
+
   return (
     <Stack
       // Styling dependent on whether banner should be displayed on the bottom (space-between),
@@ -179,8 +180,15 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
 
       {/* recipe section */}
       {confetti && <Confetti />}
-      {recipe?.ingredients && recipe.instructions.length > 0 && (
-        <Box component="section" style={{ justifySelf: "flex-start" }}>
+
+      {!hasResult && <Space h={{ base: "4rem", xs: "8rem" }} />}
+      {hasResult && (
+        <Box
+          mb={"md"}
+          component="section"
+          style={{ justifySelf: "flex-start" }}
+        >
+
           <Divider my="md" />
 
           <Box
@@ -229,22 +237,11 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
       >
         {(styles) => (
           <Box mt="auto" style={styles}>
-            <Alert
-              variant="light"
-              title="Save, Edit & Organize Recipes"
-              icon={<IconChefHat />}
-            >
-              <Box>
-                Unlock the full experience by creating an account. Keep your
-                recipes saved, customized, and perfectly organized.
-              </Box>
-              <Button component={Link} href={"/signup"} mt={"md"}>
-                Create Free Account
-              </Button>
-            </Alert>
+            <CreateAccountBanner />
           </Box>
         )}
       </Transition>
+      {recipe && <CreateAccountBanner />}
     </Stack>
   );
 };

@@ -5,8 +5,8 @@ import Link from "next/link";
 export default function SignUp() {
   return (
     <>
-      <Box py="4rem">
-        <Title ta="center" mb="xl">
+      <Box py="2rem">
+        <Title ta="center" mb="xl" fz={"h2"}>
           Welcome to Recipe Declutter!
         </Title>
 

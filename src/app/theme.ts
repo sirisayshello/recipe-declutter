@@ -1,9 +1,13 @@
 import { createTheme } from "@mantine/core";
-import { Poppins, Grand_Hotel } from "next/font/google";
+import { Poppins, Grand_Hotel, Karla } from "next/font/google";
 
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
+const karla = Karla({
+  subsets: ["latin"],
 });
 
 const grandHotel = Grand_Hotel({ subsets: ["latin"], weight: ["400"] });
@@ -59,6 +63,9 @@ export const theme = createTheme({
   headings: {
     fontFamily: `${poppins.style.fontFamily}, sans-serif`,
   },
+
+  // all text except headings:
+  fontFamily: `${karla.style.fontFamily}, sans-serif`,
 
   other: {
     fontFamily: `${grandHotel.style.fontFamily}, sans-serif`,

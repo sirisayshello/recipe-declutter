@@ -181,9 +181,8 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
       {confetti && <Confetti />}
       {recipe?.ingredients && recipe.instructions.length > 0 && (
         <Box component="section" style={{ justifySelf: "flex-start" }}>
-
           <Divider my="md" />
-        
+
           <Box
             mb="md"
             display={{ base: "block", sm: "flex" }}

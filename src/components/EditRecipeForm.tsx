@@ -138,8 +138,6 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
       onConfirm: () => {
-        console.log(recipe);
-
         const test = showLoadingNotification("deleting recipe...");
 
         deleteRecipeById(recipe.id as number);

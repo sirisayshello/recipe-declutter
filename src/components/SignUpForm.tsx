@@ -9,6 +9,7 @@ import {
   rem,
   Stack,
   TextInput,
+  Tooltip,
 } from "@mantine/core";
 import { hasLength, isEmail, useForm } from "@mantine/form";
 import { signIn } from "next-auth/react";
@@ -165,12 +166,21 @@ export default function SignUpForm() {
             disabled={loading}
             type="password"
           />
-          {/* add popup with some simple t&c */}
-          <Checkbox
-            key={form.key("accepted")}
-            {...form.getInputProps("accepted", { type: "checkbox" })}
-            label="I accept terms and conditions"
-          />
+
+          <Tooltip
+            multiline
+            w={220}
+            radius={"sm"}
+            position="right-end"
+            label="By creating an account at Savorly I waive my rights to GDRP (The developers didn't have time to develop CRUD for the users table)."
+          >
+            <Checkbox
+              key={form.key("accepted")}
+              {...form.getInputProps("accepted", { type: "checkbox" })}
+              label="I accept terms and conditions"
+            />
+          </Tooltip>
+
           <Button type="submit" mt="md" variant="filled" loading={loading}>
             Create account
           </Button>

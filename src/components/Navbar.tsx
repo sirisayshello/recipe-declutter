@@ -82,13 +82,14 @@ export const Navbar = () => {
             </Group>
             <Divider mt={16} mb={16} />
             <Stack gap={24}>
-              <Anchor component={Link} href="/about">
+              <Anchor component={Link} href="/about" onClick={closeBurger}>
                 About
               </Anchor>
               <Anchor
                 component={Link}
                 href="https://github.com/sirisayshello/recipe-declutter"
                 target="_blank"
+                onClick={closeBurger}
               >
                 Github
               </Anchor>

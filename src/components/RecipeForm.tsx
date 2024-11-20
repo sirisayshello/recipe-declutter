@@ -183,6 +183,7 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
 
       {/* recipe section */}
       {confetti && <Confetti />}
+
       {!hasResult && <Space h={{ base: "4rem", xs: "8rem" }} />}
       {hasResult && (
         <Box
@@ -190,6 +191,7 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
           component="section"
           style={{ justifySelf: "flex-start" }}
         >
+
           <Divider my="md" />
 
           <Box

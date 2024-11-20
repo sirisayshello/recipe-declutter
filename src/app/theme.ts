@@ -1,12 +1,18 @@
 import { createTheme } from "@mantine/core";
-import { Poppins, Galada } from "next/font/google";
+import { Poppins, Galada, Karla } from "next/font/google";
+
 
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
+
 const galada = Galada({ subsets: ["latin"], weight: ["400"] });
+
+const karla = Karla({
+  subsets: ["latin"],
+});
 
 export const theme = createTheme({
   colors: {
@@ -65,6 +71,9 @@ export const theme = createTheme({
       h2: { fontSize: "24px" },
     },
   },
+
+  // all text except headings:
+  fontFamily: `${karla.style.fontFamily}, sans-serif`,
 
   other: {
     fontFamily: `${galada.style.fontFamily}, sans-serif`,

@@ -147,27 +147,31 @@ export const IngredientsAndInstructionsToggle = ({
             ]}
           />
         </Box>
-
-        <Divider />
-
-        {view === "ingredients" && (
-          <RenderedIngredients
-            recipe={recipe}
-            checkboxStates={checkboxStates.ingredients}
-            onCheckboxChange={(index, checked) =>
-              handleCheckboxChange("ingredients", index, checked)
-            }
-          />
-        )}
-        {view === "instructions" && (
-          <RenderedInstructions
-            recipe={recipe}
-            checkboxStates={checkboxStates.instructions}
-            onCheckboxChange={(index, checked) =>
-              handleCheckboxChange("instructions", index, checked)
-            }
-          />
-        )}
+        <Paper
+          bg={"var(--mantine-color-default)"}
+          radius="sm"
+          p="md"
+          shadow="xs"
+        >
+          {view === "ingredients" && (
+            <RenderedIngredients
+              recipe={recipe}
+              checkboxStates={checkboxStates.ingredients}
+              onCheckboxChange={(index, checked) =>
+                handleCheckboxChange("ingredients", index, checked)
+              }
+            />
+          )}
+          {view === "instructions" && (
+            <RenderedInstructions
+              recipe={recipe}
+              checkboxStates={checkboxStates.instructions}
+              onCheckboxChange={(index, checked) =>
+                handleCheckboxChange("instructions", index, checked)
+              }
+            />
+          )}
+        </Paper>
       </Stack>
     </>
   );

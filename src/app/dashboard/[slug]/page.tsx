@@ -74,7 +74,6 @@ export default async function RecipePage({
 
           {/* The ScreenAwakeToggle is rendered inside IngredientsAndInstructionsToggle on small screens */}
           <ScreenAwakeToggle visibleFrom="sm" labelPosition="left" />
-
         </Group>
       </Stack>
 

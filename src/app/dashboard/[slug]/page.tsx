@@ -1,6 +1,15 @@
 import prisma from "@/lib/db";
 import Link from "next/link";
-import { Anchor, Group, Stack, Title, Text, Box, Badge } from "@mantine/core";
+import {
+  Anchor,
+  Group,
+  Stack,
+  Title,
+  Text,
+  Box,
+  Badge,
+  Space,
+} from "@mantine/core";
 
 import { IngredientsAndInstructionsToggle } from "@/components/IngredientsAndInstructionsToggle";
 import { getAuth } from "@/lib/auth";
@@ -8,6 +17,7 @@ import { notFound } from "next/navigation";
 import { ScreenAwakeToggle } from "@/components/ScreenAwakeToggle";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import EditRecipeButton from "@/components/EditRecipeButton";
+import { IconClockHour4, IconToolsKitchen2 } from "@tabler/icons-react";
 
 export default async function RecipePage({
   searchParams,
@@ -68,13 +78,19 @@ export default async function RecipePage({
                 {recipe.author}
               </Anchor>
             </Text>
-            <Text size="xs">Total time: {recipe.time}</Text>
-            <Text size="xs">Servings: {recipe.yield}</Text>
+            <Group gap={"xs"}>
+              <IconClockHour4 size={16} />
+              <Text size="xs">Total time: {recipe.time}</Text>
+            </Group>
+
+            <Group gap={"xs"}>
+              <IconToolsKitchen2 size={16} />
+              <Text size="xs">Servings: {recipe.yield}</Text>
+            </Group>
           </Group>
 
           {/* The ScreenAwakeToggle is rendered inside IngredientsAndInstructionsToggle on small screens */}
           <ScreenAwakeToggle visibleFrom="sm" labelPosition="left" />
-
         </Group>
       </Stack>
 
@@ -82,7 +98,7 @@ export default async function RecipePage({
         <IngredientsAndInstructionsToggle recipe={convertedRecipe} />
       </Box>
 
-      <Group pb={"xl"}>
+      <Group>
         {recipe.tags?.map((tagRelation, index) => (
           <Badge
             key={index}
@@ -98,6 +114,7 @@ export default async function RecipePage({
           </Badge>
         ))}
       </Group>
+      <Space h="4rem" />
     </>
   );
 }

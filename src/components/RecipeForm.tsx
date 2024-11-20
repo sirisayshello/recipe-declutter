@@ -188,7 +188,6 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
           component="section"
           style={{ justifySelf: "flex-start" }}
         >
-
           <Divider my="md" />
 
           <Box
@@ -227,9 +226,8 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
       {/* Only shown when there is no scraped recipe, user is not logged in and no notifications are on screen */}
       <Transition
         mounted={
-          !recipe?.ingredients &&
-          !session &&
-          notificationsStore.notifications.length === 0
+          (!session && notificationsStore.notifications.length === 0) ||
+          (!session && !!recipe)
         }
         transition="slide-down"
         duration={300}
@@ -241,7 +239,6 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
           </Box>
         )}
       </Transition>
-      {recipe && <CreateAccountBanner />}
     </Stack>
   );
 };

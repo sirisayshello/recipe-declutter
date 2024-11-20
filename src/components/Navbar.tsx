@@ -61,7 +61,7 @@ export const Navbar = () => {
     <Box component="header" bg={theme.primaryColor} h={"56px"}>
       <Container {...containerProps} size="md">
         {/* Burger menu */}
-        <Group>
+        <Group align="center" justify="center">
           <Burger
             hiddenFrom="xs"
             color="cream.0"
@@ -77,7 +77,7 @@ export const Navbar = () => {
             <Group>
               <Drawer.CloseButton m={0} />
               <Text size="xl" fw={700} ff={theme.other.fontFamily}>
-                Recipe Declutter
+                Savorly
               </Text>
             </Group>
             <Divider mt={16} mb={16} />
@@ -103,7 +103,7 @@ export const Navbar = () => {
               fz={theme.other.fontSizes}
               pr={"lg"}
             >
-              Recipe Declutter
+              Savorly
             </Text>
           </Anchor>
           {/* Burger menu content if big screen */}

@@ -7,8 +7,8 @@ export default function Home() {
     <Flex direction="column">
       <Box mt="xl">
         <Stack gap="md">
-          <Title fz={{ base: "48px", xs: "60px" }}>
-            Welcome to <br /> Recipe Declutter!
+          <Title fz={{ base: "40px", xs: "60px" }}>
+            Declutter your recipes <br /> with Savorly!
           </Title>
           <Text>
             Paste, click, and get the essentials — your ingredients and
@@ -20,7 +20,6 @@ export default function Home() {
       <Box style={{ flex: 1 }}>
         <RecipeForm />
       </Box>
-      <CreateAccountBanner />
       <Space h="xl" />
     </Flex>
   );

@@ -9,7 +9,6 @@ import {
   Box,
   Title,
   Divider,
-  Alert,
   Stack,
   Transition,
   Space,
@@ -20,8 +19,6 @@ import { useNotifications } from "@mantine/notifications";
 import { IngredientsAndInstructionsToggle } from "./IngredientsAndInstructionsToggle";
 import { SaveRecipeModal } from "./SaveRecipeModal";
 import { Session } from "next-auth";
-import { IconChefHat } from "@tabler/icons-react";
-import Link from "next/link";
 import {
   showLoadingNotification,
   updateNotificationAsError,

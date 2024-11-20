@@ -3,6 +3,7 @@ import { EditRecipeForm } from "@/components/EditRecipeForm";
 import { getAuth } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { getUserTags } from "@/lib/queries";
+import { Space } from "@mantine/core";
 import { notFound } from "next/navigation";
 
 export default async function EditRecipePage({
@@ -36,6 +37,7 @@ export default async function EditRecipePage({
       <Breadcrumbs />
 
       <EditRecipeForm recipe={convertedRecipe} userTags={userTags} />
+      <Space h="4rem" />
     </>
   );
 }

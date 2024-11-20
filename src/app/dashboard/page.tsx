@@ -39,7 +39,7 @@ export default async function Dashboard() {
         </Group>
       </Box>
       <RecipesList tags={tags} recipes={convertedRecipes} />
-      <Space h="xl" />
+      <Space h="4rem" />
     </>
   );
 }

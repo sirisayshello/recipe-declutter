@@ -9,7 +9,6 @@ import {
   Flex,
   Group,
   Paper,
-  Space,
   TagsInput,
   Text,
   TextInput,
@@ -238,7 +237,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
 
         {/* General info */}
 
-        <Fieldset radius={"sm"} mb="md" legend="Recipe information">
+        <Fieldset radius={"sm"} mt="lg" mb="lg" legend="Recipe information">
           <TextInput
             radius={"sm"}
             label="Title"
@@ -281,7 +280,7 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
           view={view}
         />
 
-        <Fieldset radius={"sm"} mb="md" legend="Tags">
+        <Fieldset radius={"sm"} legend="Tags">
           <TagsInput
             radius={"sm"}
             label="Recipe tags"
@@ -294,8 +293,6 @@ export const EditRecipeForm = ({ recipe, userTags }: EditRecipeProps) => {
             comboboxProps={{ dropdownPadding: 8 }}
           />
         </Fieldset>
-
-        <Space h="md" />
       </form>
     </>
   );

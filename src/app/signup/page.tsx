@@ -7,7 +7,7 @@ export default function SignUp() {
     <>
       <Box py="2rem">
         <Title ta="center" mb="xl" fz={"h2"}>
-          Welcome to Recipe Declutter!
+          Welcome to Savorly!
         </Title>
 
         <SignUpForm />

@@ -8,7 +8,7 @@ export const CreateAccountBanner = () => {
       component="section"
       p="xl"
       bg={"var(--mantine-color-default)"}
-      radius={"xs"}
+      radius={"sm"}
       shadow="xs"
     >
       <Flex justify="space-between" gap={"sm"}>

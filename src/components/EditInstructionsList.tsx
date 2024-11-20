@@ -67,10 +67,10 @@ export const EditInstructionsList = ({
       {hasSections ? (
         <>
           {sectionedInstructions.map((section, sectionIndex) => (
-            <Card key={sectionIndex} shadow="sm" mb="md" radius={"md"}>
+            <Card key={sectionIndex} shadow="sm" mb="md" radius={"sm"}>
               <Group wrap="nowrap" align="flex-start">
                 <TextInput
-                  radius={"md"}
+                  radius={"sm"}
                   description="Section title"
                   style={{ width: "100%" }}
                   placeholder="Section title"
@@ -126,7 +126,7 @@ export const EditInstructionsList = ({
                                 </Flex>
 
                                 <Textarea
-                                  radius={"md"}
+                                  radius={"sm"}
                                   autosize
                                   minRows={1}
                                   rightSection={
@@ -218,7 +218,7 @@ export const EditInstructionsList = ({
                               <IconMenu size="1.2rem" />
                             </Flex>
                             <Textarea
-                              radius={"md"}
+                              radius={"sm"}
                               autosize
                               minRows={1}
                               rightSection={

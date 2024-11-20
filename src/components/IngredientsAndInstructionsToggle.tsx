@@ -65,7 +65,7 @@ export const IngredientsAndInstructionsToggle = ({
         <Paper
           bg={"var(--mantine-color-default)"}
           miw={"30%"}
-          radius={"xs"}
+          radius={"sm"}
           p="md"
           shadow="xs"
         >
@@ -82,7 +82,7 @@ export const IngredientsAndInstructionsToggle = ({
         </Paper>
         <Paper
           bg={"var(--mantine-color-default)"}
-          radius={"xs"}
+          radius={"sm"}
           p="md"
           shadow="xs"
         >

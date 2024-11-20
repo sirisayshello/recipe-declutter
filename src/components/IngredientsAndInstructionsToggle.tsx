@@ -2,7 +2,6 @@
 import {
   Box,
   Center,
-  Divider,
   Flex,
   Paper,
   rem,

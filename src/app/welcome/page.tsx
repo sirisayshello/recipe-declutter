@@ -32,7 +32,7 @@ export default async function Welcome() {
       </Box>
       <RecipeForm session={session} userTags={userTags} />
       <RecipesList recipes={convertedRecipes} title="Your latest recipes" />
-      <Space h="xl" />
+      <Space h="4rem" />
     </Flex>
   );
 }

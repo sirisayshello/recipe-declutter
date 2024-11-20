@@ -13,7 +13,7 @@ import { useState } from "react";
 import RenderedInstructions from "./RenderedInstructions";
 import RenderedIngredients from "./RenderedIngredients";
 import { ScreenAwakeToggle } from "./ScreenAwakeToggle";
-import { IconLadle, IconMushroom } from "@tabler/icons-react";
+import { IconCarrot, IconLadle } from "@tabler/icons-react";
 
 type IngAndInstToggleProps = {
   recipe: UserRecipe;
@@ -122,9 +122,7 @@ export const IngredientsAndInstructionsToggle = ({
                 label: (
                   <>
                     <Center style={{ gap: 10 }}>
-                      <IconMushroom
-                        style={{ width: rem(16), height: rem(16) }}
-                      />
+                      <IconCarrot style={{ width: rem(16), height: rem(16) }} />
                       <Text size="sm" visibleFrom="xs">
                         Ingredients
                       </Text>

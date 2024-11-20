@@ -12,7 +12,7 @@ import Link from "next/link";
 export default function About() {
   return (
     <Center>
-      <Stack pb={"xl"} maw={"60ch"}>
+      <Stack mb="4rem" maw={"60ch"}>
         <Stack mt={"xl"}>
           <Title ta="center">About us</Title>
           <Text>

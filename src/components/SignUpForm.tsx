@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  Anchor,
   Button,
   Checkbox,
   Paper,
@@ -25,6 +26,7 @@ type UserData = {
 
 export default function SignUpForm() {
   const [loading, setLoading] = useState(false);
+  const [tooltipOpened, setTooltipOpened] = useState(false);
 
   const router = useRouter();
 
@@ -168,16 +170,32 @@ export default function SignUpForm() {
           />
 
           <Tooltip
+            opened={tooltipOpened}
             multiline
             w={220}
             radius={"sm"}
-            position="right-end"
+            position="top-start"
+            transitionProps={{ transition: "fade-down", duration: 500 }}
             label="By creating an account at Savorly I waive my rights to GDRP (The developers didn't have time to develop CRUD for the users table)."
           >
             <Checkbox
+              onClick={() => setTooltipOpened(false)}
               key={form.key("accepted")}
               {...form.getInputProps("accepted", { type: "checkbox" })}
-              label="I accept terms and conditions"
+              label={
+                <>
+                  I accept the{" "}
+                  <Anchor
+                    underline={tooltipOpened ? "always" : "hover"}
+                    component={"button"}
+                    type="button"
+                    inherit
+                    onClick={() => setTooltipOpened((o) => !o)}
+                  >
+                    terms and conditions
+                  </Anchor>
+                </>
+              }
             />
           </Tooltip>
 

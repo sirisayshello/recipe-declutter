@@ -59,23 +59,34 @@ export const RandomRecipe = ({ recipes }: RandomRecipeModalProps) => {
         }}
       >
         <Stack align="center">
-          <Text maw={"350px"} ta={"center"} size="xl" fw={700}>
-            {randomRecipe.title}
-          </Text>
-          <Text>{randomPhrase}</Text>
-          <Group gap={"xs"}>
-            <Button onClick={shuffle} variant="light" size="md">
-              Give me another
-            </Button>
-            <Button
-              component={Link}
-              href={`/dashboard/${randomRecipe.slug}?id=${randomRecipe.id}`}
-              variant="filled"
-              size="md"
-            >
-              Take me there!
-            </Button>
-          </Group>
+          {recipes.length < 1 ? (
+            <>
+              <Text maw={"350px"} ta={"center"} size="xl" fw={700}>
+                Oh no!
+              </Text>
+              <Text mb={"md"}>You have no recipes to choose from</Text>
+            </>
+          ) : (
+            <>
+              <Text maw={"350px"} ta={"center"} size="xl" fw={700}>
+                {randomRecipe.title}
+              </Text>
+              <Text>{randomPhrase}</Text>
+              <Group gap={"xs"}>
+                <Button onClick={shuffle} variant="light" size="md">
+                  Give me another
+                </Button>
+                <Button
+                  component={Link}
+                  href={`/dashboard/${randomRecipe.slug}?id=${randomRecipe.id}`}
+                  variant="filled"
+                  size="md"
+                >
+                  Take me there!
+                </Button>
+              </Group>
+            </>
+          )}
         </Stack>
       </Modal>
     </>

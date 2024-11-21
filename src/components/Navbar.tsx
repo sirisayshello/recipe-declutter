@@ -44,7 +44,6 @@ export const Navbar = () => {
   // const active = usePathname();
 
   const containerProps = {
-    h: 56,
     style: {
       display: "flex",
       alignItems: "center",
@@ -58,8 +57,12 @@ export const Navbar = () => {
   };
 
   return (
-    <Box component="header" bg={theme.primaryColor} h={"56px"}>
-      <Container {...containerProps} size="md">
+    <Box
+      component="header"
+      bg={theme.primaryColor}
+      h={{ base: "56px", xs: "64px" }}
+    >
+      <Container {...containerProps} h={{ base: "56px", xs: "64px" }} size="md">
         {/* Burger menu */}
         <Group align="center" justify="center">
           <Burger

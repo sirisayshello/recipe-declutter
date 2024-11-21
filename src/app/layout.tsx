@@ -37,7 +37,11 @@ export default function RootLayout({
               <Navbar />
             </SessionWrapper>
             {/* 56px current height of navbar. Update if it changes */}
-            <Container h="calc(100dvh - 56px)">{children}</Container>
+            <Container
+              h={{ base: "calc(100dvh - 56px)", xs: "calc(100dvh - 64px)" }}
+            >
+              {children}
+            </Container>
           </ModalsProvider>
         </MantineProvider>
       </body>

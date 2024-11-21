@@ -60,7 +60,7 @@ export default async function RecipePage({
         <Title
           ta="center"
           mb={{ base: "none", sm: "xl" }}
-          fz={{ base: "h1", sm: "3rem" }}
+          fz={{ base: "2rem", xs: "3rem" }}
         >
           {recipe.title}
         </Title>

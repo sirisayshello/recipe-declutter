@@ -25,7 +25,7 @@ export default async function Dashboard() {
   return (
     <>
       <Breadcrumbs />
-      <Box mt="md" mb="md" component="section">
+      <Box mt="xl" mb="md" component="section">
         <Title mb="xs">Your recipes</Title>
         <Text>
           You have {numberOfRecipes} delicious{" "}

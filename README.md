@@ -1,4 +1,4 @@
-# Recipe Declutter
+# Savorly
 
 A web application that simplifies cooking by decluttering recipes. Users can access clean, distraction-free recipes, save them, and organize their favorites. Built with **Next.js**, **Prisma**, and a suite of modern web technologies.
 

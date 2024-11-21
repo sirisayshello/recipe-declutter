@@ -37,7 +37,7 @@ const WelcomeMessage = ({ userName }: WelcomeMessageProps) => {
 
   return (
     <Box>
-      <Title>
+      <Title fz={{ base: "2.5rem", xs: "3rem" }}>
         {greeting}, {userName}!
       </Title>
       <Text>{subtext}</Text>

@@ -6,7 +6,7 @@ export default function Home() {
     <Flex direction="column">
       <Box mt="xl">
         <Stack gap="md">
-          <Title fz={{ base: "40px", xs: "60px" }}>
+          <Title fz={{ base: "2.5rem", xs: "3.75rem" }}>
             Declutter your recipes <br /> with Savorly!
           </Title>
           <Text>

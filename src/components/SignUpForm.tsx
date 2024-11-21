@@ -176,7 +176,7 @@ export default function SignUpForm() {
             radius={"sm"}
             position="top-start"
             transitionProps={{ transition: "fade-down", duration: 500 }}
-            label="By creating an account at Savorly I waive my rights to GDRP (The developers didn't have time to develop CRUD for the users table)."
+            label="By creating an account at Savorly I waive my rights to GDPR (The developers didn't have time to develop CRUD for the users table)."
           >
             <Checkbox
               onClick={() => setTooltipOpened(false)}

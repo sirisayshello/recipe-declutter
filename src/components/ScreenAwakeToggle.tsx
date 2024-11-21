@@ -53,9 +53,9 @@ export const ScreenAwakeToggle: React.FC<ScreenAwakeToggleProps> = ({
       visibleFrom={visibleFrom}
       checked={isWakeLockActive}
       onChange={() => setIsWakeLockActive((prev) => !prev)}
-      label="Keep screen awake"
+      label="Screen awake"
       labelPosition={labelPosition}
-      size="sm"
+      size="md"
     />
   );
 };

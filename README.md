@@ -4,10 +4,10 @@ A web application that simplifies cooking by decluttering recipes. Users can acc
 
 ## Features
 
-- 🧹 **Declutter Recipes**: Remove unnecessary content and focus on ingredients and instructions.  
-- 📂 **Save, Edit & Organize Recipes**: Manage your favorite recipes in one place.  
-- 🔒 **Secure User Accounts**: Seamlessly manage your recipes with personalized accounts using **NextAuth**.  
-- 🚀 **Fast and Modern**: Built with Next.js and TypeScript for optimal performance.  
+- 🧹 **Declutter Recipes**: Remove unnecessary content and focus on ingredients and instructions.
+- 📂 **Save, Edit & Organize Recipes**: Manage your favorite recipes in one place.
+- 🔒 **Secure User Accounts**: Seamlessly manage your recipes with personalized accounts using **NextAuth**.
+- 🚀 **Fast and Modern**: Built with Next.js and TypeScript for optimal performance.
 
 ---
 
@@ -19,7 +19,6 @@ Follow these instructions to set up the project locally.
 
 - **Node.js** (v18 or later)
 - **npm** or **yarn** (for managing dependencies)
-
 
 ### Installation
 
@@ -39,6 +38,7 @@ Follow these instructions to set up the project locally.
 3. Set up the environment:
 
 Create a `.env` file in the root directory and include necessary environment variables. Key variables might include:
+
 - `DATABASE_URL` for Prisma
 - `NEXTAUTH_SECRET` for authentication
 - `NEXTAUTH_URL` for app URL
@@ -47,9 +47,9 @@ Create a `.env` file in the root directory and include necessary environment var
 
 Run the development server:
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 
 Visit http://localhost:3000 to see the app in action.
 
@@ -68,8 +68,9 @@ To build and start the application for production:
    ```bash
    npm run postbuild
    ```
+
 3. Start the app
-    ```bash
+   ```bash
    npm start
    ```
 
@@ -93,4 +94,4 @@ To build and start the application for production:
 
 ### License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License!

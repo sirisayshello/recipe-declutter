@@ -1,0 +1,6 @@
+POST http://localhost:4000/scrape
+content-type: application/json
+
+{
+  "url": "https://www.ica.se/recept/svamprisotto-med-vitloksstekt-broccoli-727264/"
+}

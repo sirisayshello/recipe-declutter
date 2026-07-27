@@ -90,7 +90,7 @@ export const saveRecipe = async (
           url: recipe.url,
           title: recipe.title,
           slug: generateSlug(recipe.title),
-          author: recipe.author,
+          author: recipe.author ?? "Unknown",
           time: recipe.time,
           yield: recipe.yield,
           ingredients: recipe.ingredients,

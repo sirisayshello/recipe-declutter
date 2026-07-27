@@ -3,8 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [main]
+    paths: "apps/web/**"
   pull_request:
     branches: [main]
+    paths: "apps/web/**"
 
 jobs:
   # Code quality checks

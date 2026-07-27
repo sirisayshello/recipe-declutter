@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, FormEvent, useRef } from "react";
-import { getScrapedRecipe } from "@/lib/scraper";
 import {
   Flex,
   TextInput,
@@ -104,9 +103,18 @@ export const RecipeForm = ({ session, userTags }: RecipeFormProps) => {
       "Fetching recipe from URL"
     );
 
+    const scraperUrl = process.env.NEXT_PUBLIC_SCRAPER_URL;
+
     try {
       const url = field.getValue();
-      const data = await getScrapedRecipe(url);
+      const response = await fetch(`${scraperUrl}/scrape`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url }),
+      });
+      const data = await response.json();
 
       // Half a second delay so that the loading spinner doesn't just flash
       await new Promise((resolve) => setTimeout(resolve, 500));

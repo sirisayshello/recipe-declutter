@@ -1,0 +1,28 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "packageManager": "pnpm@10.15.1",
+  "scripts": {
+    "dev": "tsx ./src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "render:build": "npm run build && PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.19.1",
+    "@types/he": "^1.2.3",
+    "he": "^1.2.0",
+    "hono": "^4.9.6",
+    "playwright": "^1.55.0"
+  },
+  "devDependencies": {
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  }
+}
